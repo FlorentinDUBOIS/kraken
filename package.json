@@ -1,0 +1,20 @@
+{
+  "name": "file-manager",
+  "version": "0.0.1",
+  "description": "Lightweight file manager powered by node.js",
+  "main": "source/main.ts",
+  "scripts": {
+    "start": "node node_modules/.bin/tsc index.ts"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/FlorentinDUBOIS/file-manager.git"
+  },
+  "author": "FlorentinDUBOIS",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/FlorentinDUBOIS/file-manager/issues"
+  },
+  "homepage": "https://github.com/FlorentinDUBOIS/file-manager#readme",
+  "dependencies": {}
+}
