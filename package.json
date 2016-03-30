@@ -2,9 +2,9 @@
   "name": "file-manager",
   "version": "0.0.1",
   "description": "Lightweight file manager powered by node.js",
-  "main": "source/main.ts",
+  "main": "node --use_strict --harmony server.js",
   "scripts": {
-    "start": "node node_modules/.bin/tsc index.ts"
+    "start": ""
   },
   "repository": {
     "type": "git",
@@ -16,5 +16,26 @@
     "url": "https://github.com/FlorentinDUBOIS/file-manager/issues"
   },
   "homepage": "https://github.com/FlorentinDUBOIS/file-manager#readme",
-  "dependencies": {}
+  "dependencies": {
+    "angular": ">=1.5.0",
+    "angular-animate": ">=1.5.0",
+    "angular-aria": ">=1.5.0",
+    "angular-sanitize": ">=1.5.0",
+    "angular-material": ">=1.0.5",
+    "angular-messages": ">=1.5.0",
+    "angular-route": ">=1.5.0",
+    "angular-translate": ">=2.9.1",
+    "body-parser": ">=1.15.0",
+    "compression": ">=1.6.1",
+    "cookie-parser": ">=1.4.1",
+    "express": ">=4.13.4",
+    "express-session": ">=1.13.0",
+    "helmet": ">=1.1.0",
+    "jade": ">=1.11.0",
+    "normalize.css": ">=3.0.3",
+    "shelljs": ">=0.6.0",
+    "sprintf-js": ">=1.0.3",
+    "uuid": ">=2.0.1",
+    "walk": ">=2.3.9"
+  }
 }
