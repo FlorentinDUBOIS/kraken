@@ -1,3 +1,10 @@
 {
-    "esversion": 6
+    "undef": true,
+    "unused": true,
+    "esversion": 6,
+    "predef": [
+        "require",
+        "__dirname",
+        "process"
+    ]
 }

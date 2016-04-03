@@ -23,12 +23,15 @@ const secret      = uuid.v4();
 
 // -----------------------------------------------------------------------------
 // special event
+logger.info( 'Bind process events' );
+logger.info( 'Bind process event : "uncaughtException"' );
 process.on( 'uncaughtException', ( e ) => {
     logger.error( e.message );
 });
 
 // -----------------------------------------------------------------------------
 // configs
+logger.info( 'Load configurations' );
 app.engine( 'jade', jade.__express );
 
 app.set( 'views', path.join( __dirname, 'views' ));
@@ -51,15 +54,23 @@ app.use( session({
 
 // -----------------------------------------------------------------------------
 // static files
-app.use( '/libs/react', express.static( 'views/react-compiled' ));
+logger.info( 'Bind static routes' );
+logger.info( 'Bind static route : libs/stylesheets/compiled => /libs/stylesheets' );
+app.use( '/libs/stylesheets', express.static( 'libs/stylesheets/compiled' ));
+
+logger.info( 'Bind static route : libs/react/compiled => /libs/react' );
+app.use( '/libs/react', express.static( 'libs/react/compiled' ));
+
+logger.info( 'Bind static route : node_modules/normalize.css => /libs/normalize' );
 app.use( '/libs/normalize', express.static( 'node_modules/normalize.css' ));
 
 // -----------------------------------------------------------------------------
 // get routes
 let walker = walk.walk( path.join( __dirname, 'routes' ), {});
 
+logger.info( 'Load routes' );
 walker.on( 'file', ( root, fileStats, next ) => {
-    logger.info( `Load routes files ${ path.join( root, fileStats.name ) }` );
+    logger.info( `Load routes files : ${ path.join( root, fileStats.name ) }` );
     app.use( require( path.join( root, fileStats.name )));
 
     next();
