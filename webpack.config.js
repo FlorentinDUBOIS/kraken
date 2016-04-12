@@ -1,9 +1,9 @@
 const path = require( 'path' );
 
 module.exports = {
-    entry: path.join( __dirname, 'libs/react/sources/main.jsx' ),
+    entry: path.join( __dirname, 'views/main.jsx' ),
     output: {
-        path: path.join( __dirname, 'libs/react/compiled' ),
+        path: path.join( __dirname, 'views/' ),
         filename: "main.js"
     },
 

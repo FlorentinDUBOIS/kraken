@@ -7,11 +7,15 @@ html, body {
     display: flex;
     flex-direction: column;
 
-    // & > header {
-    //     margin-bottom: 1rem;
-    // }
-
     & > main {
         flex: auto;
+
+        & > div {
+            padding: 1rem 0;
+        }
     }
+}
+
+a {
+    cursor: pointer;
 }

@@ -5,6 +5,7 @@
     "predef": [
         "require",
         "__dirname",
-        "process"
+        "process",
+        "module"
     ]
 }

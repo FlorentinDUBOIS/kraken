@@ -9,8 +9,8 @@ const wpconf  = require( './webpack.config' );
 // -----------------------------------------------------------------------------
 // task
 gulp.task( 'default', ['build'], () => {
-    gulp.watch(['libs/react/sources/**/*.jsx'], ['build:js']);
-    gulp.watch(['libs/stylesheets/sources/**/*.scss'], ['build:scss']);
+    gulp.watch(['views/**/*.jsx'], ['build:js']);
+    gulp.watch(['views/stylesheets/**/*.scss'], ['build:scss']);
 });
 
 // -----------------------------------------------------------------------------
@@ -20,7 +20,7 @@ gulp.task( 'build', ['build:js', 'build:scss'] );
 // -----------------------------------------------------------------------------
 // build js
 gulp.task( 'build:js', () => {
-    gulp.src(['libs/react/sources/main.jsx'])
+    gulp.src(['views/main.jsx'])
         .pipe( plugins.plumberNotifier())
         .pipe( named())
         .pipe( webpack({ module: wpconf.module }))
@@ -33,12 +33,12 @@ gulp.task( 'build:js', () => {
 // -----------------------------------------------------------------------------
 // build scss
 gulp.task( 'build:scss', () => {
-    gulp.src(['libs/stylesheets/sources/imports.scss'])
+    gulp.src(['views/stylesheets/imports.scss'])
         .pipe( plugins.plumberNotifier())
         .pipe( plugins.sass.sync())
         .pipe( plugins.autoprefixer())
-        .pipe( gulp.dest( 'libs/stylesheets/compiled' ))
+        .pipe( gulp.dest( 'views/stylesheets/dist' ))
         .pipe( plugins.cssnano({ compress: {}}))
         .pipe( plugins.rename({ suffix: '.min' }))
-        .pipe( gulp.dest( 'libs/stylesheets/compiled' ));
+        .pipe( gulp.dest( 'views/stylesheets/dist' ));
 });

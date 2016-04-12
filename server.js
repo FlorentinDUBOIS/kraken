@@ -55,28 +55,31 @@ app.use( session({
 // -----------------------------------------------------------------------------
 // static files
 logger.info( 'Bind static routes' );
-logger.info( 'Bind static route : libs/stylesheets/compiled => /libs/stylesheets' );
-app.use( '/libs/stylesheets', express.static( 'libs/stylesheets/compiled' ));
 
-logger.info( 'Bind static route : libs/react/compiled => /libs/react' );
-app.use( '/libs/react', express.static( 'libs/react/compiled' ));
+let routes = [
+    { real: 'views',                             syml: '/views' },
+    { real: 'views/stylesheets/dist',            syml: '/stylesheets' },
+    { real: 'node_modules/materialize-css/dist', syml: '/materialize' },
+    { real: 'node_modules/jquery/dist',          syml: '/javascripts' }
+];
 
-logger.info( 'Bind static route : node_modules/normalize.css => /libs/normalize' );
-app.use( '/libs/normalize', express.static( 'node_modules/normalize.css' ));
-
+for( let route of routes ) {
+    logger.info( `Bind static route : ${ route.real } -> ${ route.syml }` );
+    app.use( route.syml, express.static( route.real ));
+}
 // -----------------------------------------------------------------------------
 // get routes
 let walker = walk.walk( path.join( __dirname, 'routes' ), {});
 
 logger.info( 'Load routes' );
 walker.on( 'file', ( root, fileStats, next ) => {
-    logger.info( `Load routes files : ${ path.join( root, fileStats.name ) }` );
+    logger.info( `Load routes in files : ${ path.join( root, fileStats.name ) }` );
     app.use( require( path.join( root, fileStats.name )));
 
     next();
 });
 
-logger.info( 'Launch server at 0.0.0.0:80' );
+logger.info( 'Launch server at ::1:80' );
 // -----------------------------------------------------------------------------
 // server
 server.listen( 80 );

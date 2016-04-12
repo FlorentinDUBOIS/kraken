@@ -1,0 +1,17 @@
+b, .bold {
+    font-weight: bold;
+}
+
+i, .italic {
+    font-style: italic;
+}
+
+.justify-align {
+    text-align: justify;
+}
+
+@for $i from 0 through 30 {
+    .font-size-#{$i} {
+        font-size: #{$i}pt;
+    }
+}
