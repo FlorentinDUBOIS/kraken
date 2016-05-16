@@ -1,0 +1,47 @@
+doctype html
+html( ng-app="florentindubois.filemanager" )
+    head
+        meta( charset="utf-8" )
+        meta( http-equiv="content-type" content="text/html; charset=utf-8" )
+        meta( http-equiv="default-style" content="text/css; charset=utf-8" )
+
+        meta( name="author" content="Florentin DUBOIS" )
+        meta( name="application-name" content="{{ 'app.name' | translate }}" )
+        meta( name="viewport" content="width=device-width, initial-scale=1.0" )
+
+        title {{ 'app.name' | translate | ucfirst }}
+
+        link( rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" )
+        link( rel="stylesheet" href="angular/angular-material.min.css" )
+        link( rel="stylesheet" href="imports.min.css" )
+
+    body( layout="column" )
+        md-toolbar
+            div.md-toolbar-tools
+                span {{ 'app.name' | translate | ucfirst }}
+
+        div( layout="row" layout-align="center center" flex="100" )
+            md-card( ng-controller="login" flex="40" )
+                md-card-content
+                    form( name="formLogin" )
+                        md-input-container.md-block
+                            label {{ 'login.username' | translate | ucfirst }}
+                            input( type="text" name="username" ng-model="login.username" required )
+                            div( ng-messages="formLogin.username.$error" )
+                                div( ng-message="required" ) {{ 'login.error.required' | translate | ucfirst }}
+
+                        md-input-container.md-block
+                            label {{ 'login.password' | translate | ucfirst }}
+                            input( type="text" name="password" ng-model="login.password" required )
+                            div( ng-messages="formLogin.password.$error" )
+                                div( ng-message="required" ) {{ 'login.error.required' | translate | ucfirst }}
+
+
+        script( type="application/javascript" src="angular/angular.min.js" )
+        script( type="application/javascript" src="angular/angular-animate.min.js" )
+        script( type="application/javascript" src="angular/angular-aria.min.js" )
+        script( type="application/javascript" src="angular/angular-material.min.js" )
+        script( type="application/javascript" src="angular/angular-messages.min.js" )
+        script( type="application/javascript" src="angular/angular-sanitize.min.js" )
+        script( type="application/javascript" src="angular/angular-translate.min.js" )
+        script( type="application/javascript" src="main.min.js" )

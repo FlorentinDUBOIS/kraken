@@ -1,0 +1,14 @@
+{
+    "app": {
+        "name": "File Manager"
+    },
+
+    "login": {
+        "username": "Username",
+        "password": "Password",
+
+        "error": {
+            "required": "This field is required"
+        }
+    }
+}

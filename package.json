@@ -1,0 +1,61 @@
+{
+  "name": "file-manager",
+  "version": "0.0.1",
+  "description": "file manger to manage files and folders on your server",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "nodemon server.js --ignore client"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/FlorentinDUBOIS/file-manager.git"
+  },
+  "keywords": [
+    "file",
+    "manage",
+    "material",
+    "gui"
+  ],
+  "author": "FlorentinDUBOIS",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/FlorentinDUBOIS/file-manager/issues"
+  },
+  "homepage": "https://github.com/FlorentinDUBOIS/file-manager#readme",
+  "devDependencies": {
+    "gulp": "^3.9.1",
+    "gulp-autoprefixer": "^3.1.0",
+    "gulp-concat": "^2.6.0",
+    "gulp-cssnano": "^2.1.2",
+    "gulp-load-plugins": "^1.2.2",
+    "gulp-plumber-notifier": "0.0.3",
+    "gulp-rename": "^1.2.2",
+    "gulp-sass": "^2.3.1",
+    "gulp-uglify": "^1.5.3",
+    "json-loader": "^0.5.4",
+    "nodemon": "^1.9.2",
+    "vinyl-named": "^1.1.0",
+    "webpack-stream": "^3.2.0"
+  },
+  "dependencies": {
+    "angular": "^1.5.5",
+    "angular-animate": "^1.5.5",
+    "angular-aria": "^1.5.5",
+    "angular-material": "^1.0.8",
+    "angular-messages": "^1.5.5",
+    "angular-mocks": "^1.5.5",
+    "angular-route": "^1.5.5",
+    "angular-sanitize": "^1.5.5",
+    "angular-translate": "^2.11.0",
+    "body-parser": "^1.15.1",
+    "compression": "^1.6.2",
+    "express": "^4.13.4",
+    "helmet": "^2.0.0",
+    "mongoose": "^4.4.17",
+    "morgan": "^1.7.0",
+    "printit": "^0.1.20",
+    "pug": "^2.0.0-alpha7",
+    "walk": "^2.3.9"
+  }
+}
