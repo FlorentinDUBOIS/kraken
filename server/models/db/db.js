@@ -1,10 +1,8 @@
 // ----------------------------------------------------------------------------
 // requirements
 const mongoose = require( 'mongoose' );
-const logger   = require( 'printit' )({
-    date: true,
-    prefix: 'MongoDB'
-});
+const Logger   = require( '../../models/logger' );
+const logger   = new Logger( __filename );
 
 // ----------------------------------------------------------------------------
 // connect

@@ -1,3 +1,5 @@
+// ----------------------------------------------------------------------------
+// create ucfirst filter
 filemanager.filter( 'ucfirst', [function() {
     return function( input ) {
         if( input ) {

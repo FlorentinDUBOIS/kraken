@@ -2,7 +2,7 @@
 // exports
 module.exports = {
     mongoose: require( './db' ),
-    schemas: {
+    models: {
         User: require( './user' )
     }
 };

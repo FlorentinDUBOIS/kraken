@@ -8,10 +8,10 @@ const morgan      = require( 'morgan' );
 const path        = require( 'path' );
 const walk        = require( 'walk' );
 const pug         = require( 'pug' );
-const logger      = require( 'printit' )({
-    date: true,
-    prefix: 'Server'
-});
+const session     = require( 'express-session' );
+const uuid        = require( 'uuid' );
+const Logger      = require( './server/models/logger' );
+const logger      = new Logger( 'Server' );
 
 // ----------------------------------------------------------------------------
 // bind uncaught exception
@@ -47,6 +47,15 @@ server.use( compression());
 server.use( bparser.urlencoded({ extended: true }));
 server.use( bparser.json());
 server.use( morgan( 'dev' ));
+server.use( session({
+    genid: uuid.v4,
+    secret: uuid.v4(),
+    resave: false,
+    saveUninitialized: true,
+    cookie: {
+        secure: true
+    }
+}));
 
 // ----------------------------------------------------------------------------
 // load static routes
@@ -59,9 +68,7 @@ for( let route of routes ) {
 }
 
 // ----------------------------------------------------------------------------
-// walk controller
-logger.info( 'Create walker' );
-
+// walk controllers
 let walker = walk.walk( path.join( __dirname, 'server', 'controllers' ));
 
 walker.on( 'file', ( root, fileStats, next ) => {
@@ -74,8 +81,6 @@ walker.on( 'file', ( root, fileStats, next ) => {
 
 // ----------------------------------------------------------------------------
 // launch server
-logger.info( 'Launch server' );
-
 server.listen( process.env.PORT || 80, () => {
     logger.info( `Server launch at port ${ process.env.PORT || 80 }` );
 });

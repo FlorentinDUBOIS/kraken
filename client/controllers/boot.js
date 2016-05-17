@@ -1,3 +1,5 @@
+// ----------------------------------------------------------------------------
+// create angular application
 var filemanager = angular.module( 'florentindubois.filemanager', [
     'ngAnimate',
     'ngAria',

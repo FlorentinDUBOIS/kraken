@@ -6,6 +6,7 @@
     "login": {
         "username": "Username",
         "password": "Password",
+        "send": "Sign in",
 
         "error": {
             "required": "This field is required"

@@ -18,12 +18,12 @@ html( ng-app="florentindubois.filemanager" )
     body( layout="column" )
         md-toolbar
             div.md-toolbar-tools
-                span {{ 'app.name' | translate | ucfirst }}
+                h1.md-headline {{ 'app.name' | translate | ucfirst }}
 
         div( layout="row" layout-align="center center" flex="100" )
-            md-card( ng-controller="login" flex="40" )
+            md-card( flex="40" )
                 md-card-content
-                    form( name="formLogin" )
+                    form( name="formLogin" ng-controller="login" ng-submit="submit()" )
                         md-input-container.md-block
                             label {{ 'login.username' | translate | ucfirst }}
                             input( type="text" name="username" ng-model="login.username" required )
@@ -36,6 +36,8 @@ html( ng-app="florentindubois.filemanager" )
                             div( ng-messages="formLogin.password.$error" )
                                 div( ng-message="required" ) {{ 'login.error.required' | translate | ucfirst }}
 
+                        div( layout="row" layout-align="end center" )
+                            md-button( type="submit" ).md-raised.md-primary {{ 'login.send' | translate | ucfirst }}
 
         script( type="application/javascript" src="angular/angular.min.js" )
         script( type="application/javascript" src="angular/angular-animate.min.js" )
