@@ -20,28 +20,11 @@ html( ng-app="florentindubois.filemanager" )
             div.md-toolbar-tools
                 h1.md-headline {{ 'app.name' | translate | ucfirst }}
 
-        md-content( layout="row" layout-align="center center" flex="100" )
-            md-card( flex="40" flex-md="60" flex-sm="70" flex-xs="80" )
-                md-toolbar
-                    div.md-toolbar-tools
-                        h2.md-headline {{ 'login.send' | translate | ucfirst }}
+        md-content( layout="column" ng-cloak flex )
+            section( layout="row" flex )
+                md-sidenav.md-sidenav-left.md-whiteframe-z2( md-component-id="left" md-is-locked-open="$mdMedia( 'gt-md' )" )
 
-                md-card-content
-                    form( name="formLogin" ng-controller="login" ng-submit="submit()" accept-charset="utf-8" autocomplete="off" )
-                        md-input-container.md-block
-                            label {{ 'login.username' | translate | ucfirst }}
-                            input( type="text" name="username" ng-model="login.username" required )
-                            div( ng-messages="formLogin.username.$error" )
-                                div( ng-message="required" ) {{ 'login.error.required' | translate | ucfirst }}
-
-                        md-input-container.md-block
-                            label {{ 'login.password' | translate | ucfirst }}
-                            input( type="password" name="password" ng-model="login.password" required )
-                            div( ng-messages="formLogin.password.$error" )
-                                div( ng-message="required" ) {{ 'login.error.required' | translate | ucfirst }}
-
-                        div( layout="row" layout-align="end center" )
-                            md-button( type="submit" ).md-raised.md-primary {{ 'login.send' | translate | ucfirst }}
+                md-content( flex layout-padding )
 
         script( type="application/javascript" src="angular/angular.min.js" )
         script( type="application/javascript" src="angular/angular-animate.min.js" )

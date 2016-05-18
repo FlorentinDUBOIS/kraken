@@ -3,10 +3,15 @@
         "name": "File Manager"
     },
 
+    "request": {
+        "failure": "An error has occured, please try later"
+    },
+
     "login": {
         "username": "Username",
         "password": "Password",
         "send": "Sign in",
+        "wrong": "Wrong username or password",
 
         "error": {
             "required": "This field is required"

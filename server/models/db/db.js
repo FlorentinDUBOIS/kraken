@@ -1,8 +1,9 @@
 // ----------------------------------------------------------------------------
 // requirements
 const mongoose = require( 'mongoose' );
-const Logger   = require( '../../models/logger' );
-const logger   = new Logger( __filename );
+const Logger   = require( '../logger' );
+const path     = require( 'path' );
+const logger   = new Logger( path.basename( __filename ));
 
 // ----------------------------------------------------------------------------
 // connect
