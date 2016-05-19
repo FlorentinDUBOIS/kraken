@@ -1,8 +1,7 @@
 // ----------------------------------------------------------------------------
 // requirements
 const router = require( 'express' ).Router();
-const db     = require( '../models/db' );
-const User   = db.models.User;
+const User   = require( '../models/db' ).models.User;
 const sha512 = require( 'sha512' );
 const Logger = require( '../models/logger' );
 const path   = require( 'path' );
@@ -10,7 +9,7 @@ const logger = new Logger( path.basename( __filename ));
 
 // ----------------------------------------------------------------------------
 // routes
-router.post( '/log', ( req, res ) => {
+router.route( '/log' ).post(( req, res ) => {
     if( !req.body || !req.body.username || !req.body.password ) {
         logger.warn( 'POST without data' );
 
@@ -20,36 +19,47 @@ router.post( '/log', ( req, res ) => {
     }
 
     User.find({ username: req.body.username }, ( error, users ) => {
-       if( error ) {
-           logger.error( error.message );
+        if( error ) {
+            logger.error( error.message );
 
-           return res.status( 500 ).end();
-       }
+            return res.status( 500 ).end();
+        }
 
-       if( !users.length ) {
-           logger.warn( `user ${ req.body.username } is not in base` );
+        if( !users.length ) {
+            logger.warn( `user ${ req.body.username } is not in base` );
 
-           return res.status( 403 ).json({
-               "login": false
-           });
-       }
+            return res.status( 403 ).json({
+                "login": false
+            });
+        }
 
-       for( var i in users ) {
-           if( users[i].password == sha512( `${ users[i].salt }:${ req.body.password }` ).toString( 'hex' )) {
-               logger.info( `user ${ req.body.username } is log` );
+        for( let user of users ) {
+            if( user.password == sha512( `${ user.salt }:${ req.body.password }` ).toString( 'hex' )) {
+                 logger.info( `user "${ req.body.username }" is log` );
 
-               req.session.user = users[i];
+                req.session.user = user;
 
-               return res.status( 200 ).json({
-                   "login": true
-               });
-           }
-       }
+                return res.json({
+                    "login": true,
+                    "redirect": "/home"
+                });
+            }
+        }
 
        return res.status( 403 ).json({
            "login": false
        });
     });
+}).delete(( req, res ) => {
+   if( !req.session ) {
+       return res.status( 500 ).end();
+   }
+
+   req.session = null;
+   res.json({
+       "success": true,
+       "redirect": "/"
+   });
 });
 
 // ----------------------------------------------------------------------------

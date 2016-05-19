@@ -1,6 +1,6 @@
 {
     "app": {
-        "name": "File Manager"
+        "name": "Kraken"
     },
 
     "request": {
@@ -16,5 +16,9 @@
         "error": {
             "required": "This field is required"
         }
+    },
+
+    "toolbar": {
+        "exit": "Exit"
     }
 }

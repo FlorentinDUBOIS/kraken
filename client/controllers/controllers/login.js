@@ -9,7 +9,7 @@ filemanager.controller( 'login', ['$scope', '$http', '$translate', '$mdToast', '
                 });
             }
 
-            $window.location.assign( 'home' );
+            $window.location.assign( res.data.redirect );
         }, function( res ) {
             if( res.status == 403 || !res.data.login ) {
                 return $translate( 'login.wrong' ).then( function( trad ) {

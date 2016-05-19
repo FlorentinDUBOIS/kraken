@@ -16,9 +16,13 @@ html( ng-app="florentindubois.filemanager" )
         link( rel="stylesheet" href="imports.min.css" )
 
     body( layout="column" )
-        md-toolbar
+        md-toolbar( ng-controller="toolbar" )
             div.md-toolbar-tools
                 h1.md-headline {{ 'app.name' | translate | ucfirst }}
+
+                span( flex )
+
+                md-button( ng-click="exit()" ) {{ 'toolbar.exit' | translate | ucfirst }}
 
         md-content( layout="column" ng-cloak flex )
             section( layout="row" flex )

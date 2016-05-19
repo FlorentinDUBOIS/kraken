@@ -61,9 +61,6 @@ server.use( session({
     secret: uuid.v4(),
     resave: false,
     saveUninitialized: true,
-    cookie: {
-        secure: true
-    }
 }));
 
 // ----------------------------------------------------------------------------
