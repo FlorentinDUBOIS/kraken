@@ -12,6 +12,8 @@ router.all( '*', ( req, res, next ) => {
     let get  = ['/'];
     let post = ['/log'];
 
+    return next();
+
     if( req.method == 'GET'  && get.indexOf( req.params['0'] ) != -1 ) {
         return next();
     }

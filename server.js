@@ -11,6 +11,7 @@ const pug         = require( 'pug' );
 const session     = require( 'express-session' );
 const uuid        = require( 'uuid' );
 const Logger      = require( './server/models/logger' );
+const method      = require( 'method-override' );
 const sha512      = require( 'sha512' );
 const logger      = new Logger( 'Server' );
 const User        = require( './server/models/db' ).models.User;
@@ -44,14 +45,7 @@ server.engine( 'jade', pug.__express );
 // load modules
 logger.info( 'Load modules' );
 
-if( server.get( 'env' ) != 'production' ) {
-    server.use( morgan( 'dev', {
-        skip: ( req, res ) => res.statusCode < 400
-    }));
-} else {
-    server.user( morgan( 'common' ));
-}
-
+server.use( method());
 server.use( helmet());
 server.use( compression());
 server.use( bparser.urlencoded({ extended: true }));
@@ -62,6 +56,14 @@ server.use( session({
     resave: false,
     saveUninitialized: true,
 }));
+
+if( server.get( 'env' ) != 'production' ) {
+    server.use( morgan( 'dev', {
+        skip: ( req, res ) => res.statusCode < 400
+    }));
+} else {
+    server.use( morgan( 'common' ));
+}
 
 // ----------------------------------------------------------------------------
 // load static routes
