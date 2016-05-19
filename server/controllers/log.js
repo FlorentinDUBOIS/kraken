@@ -51,15 +51,22 @@ router.route( '/log' ).post(( req, res ) => {
        });
     });
 }).delete(( req, res ) => {
-   if( !req.session ) {
-       return res.status( 500 ).end();
-   }
+    if( !req.session ) {
+        return res.status( 500 ).end();
+    }
 
-   req.session = null;
-   res.json({
-       "success": true,
-       "redirect": "/"
-   });
+    req.session.destroy(( error ) => {
+        if( error ) {
+            logger.error( error.message );
+
+            return res.status( 500 ).end();
+        }
+
+        res.json({
+            "success": true,
+            "redirect": "/"
+        });
+    });
 });
 
 // ----------------------------------------------------------------------------
