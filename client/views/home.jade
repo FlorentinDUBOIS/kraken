@@ -13,10 +13,10 @@ html( ng-app="florentindubois.filemanager" )
 
         link( rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" )
         link( rel="stylesheet" href="angular/angular-material.min.css" )
-        link( rel="stylesheet" href="imports.min.css" )
+        link( rel="stylesheet" href="dist/imports.min.css" )
 
     body( layout="column" )
-        md-toolbar( ng-controller="toolbar" )
+        md-toolbar( ng-controller="filemanager.toolbar" )
             div.md-toolbar-tools
                 h1.md-headline {{ 'app.name' | translate | ucfirst }}
 
@@ -27,14 +27,29 @@ html( ng-app="florentindubois.filemanager" )
         md-content( layout="column" ng-cloak flex )
             section( layout="row" flex )
                 md-sidenav.md-sidenav-left.md-whiteframe-z2( md-component-id="left" md-is-locked-open="$mdMedia( 'gt-md' )" )
+                    div( ng-controller="filemanager.sidenav" flex )
+                        md-list
+                            md-list-item( md-ink-ripple ng-repeat="item in user" )
+                                a( ng-href="{{ item.link }}" )
+                                    md-icon {{ item.icon }}
+                                    span {{ item.name | translate | ucfirst }}
+
+                            md-devider
+
+                            md-list-item( md-ink-ripple ng-repeat="item in signets" )
+                                a( ng-href="item.link" )
+                                    md-icon {{ item.icon }}
+                                    span {{ item.name | translate | ucfirst }}
 
                 md-content( flex layout-padding )
+                    div( flex ng-view )
 
         script( type="application/javascript" src="angular/angular.min.js" )
         script( type="application/javascript" src="angular/angular-animate.min.js" )
         script( type="application/javascript" src="angular/angular-aria.min.js" )
         script( type="application/javascript" src="angular/angular-material.min.js" )
         script( type="application/javascript" src="angular/angular-messages.min.js" )
+        script( type="application/javascript" src="angular/angular-route.min.js" )
         script( type="application/javascript" src="angular/angular-sanitize.min.js" )
         script( type="application/javascript" src="angular/angular-translate.min.js" )
-        script( type="application/javascript" src="main.min.js" )
+        script( type="application/javascript" src="dist/main.min.js" )

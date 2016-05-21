@@ -5,6 +5,7 @@ var filemanager = angular.module( 'florentindubois.filemanager', [
     'ngAria',
     'ngMaterial',
     'ngMessages',
+    'ngRoute',
     'ngSanitize',
     'pascalprecht.translate'
 ]);

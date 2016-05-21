@@ -20,5 +20,9 @@
 
     "toolbar": {
         "exit": "Exit"
+    },
+
+    "navigation": {
+        "manageAccount": "Manage account"
     }
 }

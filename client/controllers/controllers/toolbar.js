@@ -1,6 +1,6 @@
 // ----------------------------------------------------------------------------
 // filemanger's controller toolbar
-filemanager.controller( 'toolbar', ['$scope', '$http', '$window', '$translate', '$mdToast', function( $scope, $http, $window, $translate, $mdToast ) {
+filemanager.controller( 'filemanager.toolbar', ['$scope', '$http', '$window', '$translate', '$mdToast', function( $scope, $http, $window, $translate, $mdToast ) {
     $scope.exit = function() {
         $http.delete( 'log' ).then( function( res ) {
             if( !res.data.success ) {

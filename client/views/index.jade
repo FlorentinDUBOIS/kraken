@@ -13,7 +13,7 @@ html( ng-app="florentindubois.filemanager" )
 
         link( rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" )
         link( rel="stylesheet" href="angular/angular-material.min.css" )
-        link( rel="stylesheet" href="imports.min.css" )
+        link( rel="stylesheet" href="dist/imports.min.css" )
 
     body( layout="column" )
         md-toolbar
@@ -27,7 +27,7 @@ html( ng-app="florentindubois.filemanager" )
                         h2.md-headline {{ 'login.send' | translate | ucfirst }}
 
                 md-card-content
-                    form( name="formLogin" ng-controller="login" ng-submit="submit()" accept-charset="utf-8" autocomplete="off" )
+                    form( name="formLogin" ng-controller="filemanager.login" ng-submit="submit()" accept-charset="utf-8" autocomplete="off" )
                         md-input-container.md-block
                             label {{ 'login.username' | translate | ucfirst }}
                             input( type="text" name="username" ng-model="login.username" required )
@@ -48,6 +48,7 @@ html( ng-app="florentindubois.filemanager" )
         script( type="application/javascript" src="angular/angular-aria.min.js" )
         script( type="application/javascript" src="angular/angular-material.min.js" )
         script( type="application/javascript" src="angular/angular-messages.min.js" )
+        script( type="application/javascript" src="angular/angular-route.min.js" )
         script( type="application/javascript" src="angular/angular-sanitize.min.js" )
         script( type="application/javascript" src="angular/angular-translate.min.js" )
-        script( type="application/javascript" src="main.min.js" )
+        script( type="application/javascript" src="dist/main.min.js" )

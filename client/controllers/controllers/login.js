@@ -1,6 +1,6 @@
 // ----------------------------------------------------------------------------
 // create login controller
-filemanager.controller( 'login', ['$scope', '$http', '$translate', '$mdToast', '$window', function( $scope, $http, $translate, $mdToast, $window ) {
+filemanager.controller( 'filemanager.login', ['$scope', '$http', '$translate', '$mdToast', '$window', function( $scope, $http, $translate, $mdToast, $window ) {
     $scope.submit = function() {
         $http.post( '/log', $scope.login ).then( function( res ) {
             if( !res.data.login ) {

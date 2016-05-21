@@ -106,7 +106,8 @@ User.count(( error, count ) => {
             username: 'user',
             password: sha512( `${ salt }:password` ).toString( 'hex' ),
             salt: salt,
-            email: 'server@florentin-dubois.fr'
+            email: 'server@florentin-dubois.fr',
+            administrator: true
         });
 
         defaut.save(( error ) => {
