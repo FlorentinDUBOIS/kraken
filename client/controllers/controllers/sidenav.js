@@ -12,7 +12,7 @@ filemanager.controller( 'filemanager.sidenav', ['$scope', '$http', '$translate',
         });
     })
 
-    $http.get( 'sidenav/signets' ).then( function( res ) {
+    $http.get( 'sidenav/signet' ).then( function( res ) {
         $scope.signets = res.data;
     }, function() {
         $translate( 'request.failure' ).then( function( trad ) {

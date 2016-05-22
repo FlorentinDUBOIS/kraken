@@ -24,5 +24,21 @@
 
     "navigation": {
         "manageAccount": "Manage account"
+    },
+
+    "manageAccount": {
+        "username": "User name",
+        "password": "Password",
+        "firstname": "First name",
+        "lastname": "Last name",
+        "email": "Mail",
+        "administrator": "His an administrator ?",
+        "submit": "Save",
+        "remove": "Remove",
+
+        "error": {
+            "required": "This is required.",
+            "email": "This is not a correct email."
+        }
     }
 }

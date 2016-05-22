@@ -21,15 +21,10 @@ router.all( '*', ( req, res, next ) => {
     }
 
     if( !req.session || !req.session.user ) {
-        logger.warn( 'try to log in' );
-
         return res.status( 403 ).redirect( '/' );
     }
 
-    User.find({
-        username: req.session.user.username,
-        password: req.session.user.password
-    }).count(( error, count ) => {
+    User.find({ _id: req.session.user._id }).count(( error, count ) => {
        if( error ) {
            logger.error( error.message );
 
@@ -37,7 +32,7 @@ router.all( '*', ( req, res, next ) => {
        }
 
        if( !count ) {
-           logger.warn( `user not in data base "${ req.username }"` );
+           logger.warn( `User not in data base "${ req.username }"` );
 
            return res.status( 500 ).end();
        }

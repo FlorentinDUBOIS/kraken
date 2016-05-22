@@ -1,10 +1,10 @@
 // ----------------------------------------------------------------------------
 // requirements
 const router = require( 'express' ).Router();
-const User   = require( '../models/db' ).models.User;
 const sha512 = require( 'sha512' );
-const Logger = require( '../models/logger' );
 const path   = require( 'path' );
+const User   = require( '../models/db' ).models.User;
+const Logger = require( '../models/logger' );
 const logger = new Logger( path.basename( __filename ));
 
 // ----------------------------------------------------------------------------

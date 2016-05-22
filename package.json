@@ -5,7 +5,8 @@
   "main": "server.js",
   "scripts": {
     "start": "node --use_strict --harmony server.js",
-    "dev": "nodemon --use_strict --harmony server.js --ignore client"
+    "dev": "nodemon --use_strict --harmony server.js --ignore client",
+    "postinstall": "node --use_strict --harmony install.js"
   },
   "repository": {
     "type": "git",

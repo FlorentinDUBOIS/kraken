@@ -10,11 +10,9 @@ const walk        = require( 'walk' );
 const pug         = require( 'pug' );
 const session     = require( 'express-session' );
 const uuid        = require( 'uuid' );
-const Logger      = require( './server/models/logger' );
 const method      = require( 'method-override' );
-const sha512      = require( 'sha512' );
-const logger      = new Logger( 'Server' );
-const User        = require( './server/models/db' ).models.User;
+const Logger      = require( './server/models/logger' );
+const logger      = new Logger( path.basename( __filename ));
 
 // ----------------------------------------------------------------------------
 // bind uncaught exception
@@ -91,31 +89,4 @@ walker.on( 'file', ( root, fileStats, next ) => {
 // launch server
 server.listen( process.env.PORT || 80, () => {
     logger.info( `Server launch at port ${ process.env.PORT || 80 }` );
-});
-
-// ----------------------------------------------------------------------------
-// no user
-User.count(( error, count ) => {
-    if( error ) {
-        return logger.error( error );
-    }
-
-    if( !count ) {
-        let salt = uuid.v4();
-        let defaut = new User({
-            username: 'user',
-            password: sha512( `${ salt }:password` ).toString( 'hex' ),
-            salt: salt,
-            email: 'server@florentin-dubois.fr',
-            administrator: true
-        });
-
-        defaut.save(( error ) => {
-           if( error ) {
-               return logger.error( error );
-           }
-
-           logger.info( 'Default user created' );
-        });
-    }
 });

@@ -3,6 +3,7 @@
 module.exports = {
     mongoose: require( './db' ),
     models: {
-        User: require( './user' )
+        User: require( './user' ),
+        Signet: require( './signet' )
     }
 };

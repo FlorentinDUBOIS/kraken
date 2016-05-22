@@ -34,10 +34,10 @@ html( ng-app="florentindubois.filemanager" )
                                     md-icon {{ item.icon }}
                                     span {{ item.name | translate | ucfirst }}
 
-                            md-devider
+                            md-divider( ng-show="signets.length != 0 && user.length != 0" )
 
                             md-list-item( md-ink-ripple ng-repeat="item in signets" )
-                                a( ng-href="item.link" )
+                                a( ng-href="{{ item.path }}" )
                                     md-icon {{ item.icon }}
                                     span {{ item.name | translate | ucfirst }}
 
