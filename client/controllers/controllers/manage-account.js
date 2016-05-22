@@ -9,7 +9,13 @@ filemanager.controller( 'filemanager.manageAccount', ['$scope', '$http', '$trans
         $http.get( 'users' ).then( function( res ) {
             $scope.users = res.data;
             $scope.user  = null;
-        }, function() {
+        }, function( res ) {
+            if( res.status == 403 ) {
+                return $translate( 'request.authorized' ).then( function( trad ) {
+                    $mdToast.showSimple( trad );
+                });
+            }
+
             $translate( 'request.failure' ).then( function( trad ) {
                 $mdToast.showSimple( trad );
             });
@@ -34,7 +40,13 @@ filemanager.controller( 'filemanager.manageAccount', ['$scope', '$http', '$trans
     $scope.remove = function( $index ) {
         $http.delete( 'users/' + $scope.users[$index]._id ).then( function() {
             $scope.getUsers();
-        }, function() {
+        }, function( res ) {
+            if( res.status == 403 ) {
+                return $translate( 'request.authorized' ).then( function( trad ) {
+                    $mdToast.showSimple( trad );
+                });
+            }
+
             $translate( 'request.failure' ).then( function( trad ) {
                 $mdToast.showSimple( trad );
             });
@@ -47,7 +59,13 @@ filemanager.controller( 'filemanager.manageAccount', ['$scope', '$http', '$trans
         if( $scope.user._id ) {
             $http.put( 'users', $scope.user ).then( function() {
                 $scope.getUsers();
-            }, function() {
+            }, function( res ) {
+                if( res.status == 403 ) {
+                    return $translate( 'request.authorized' ).then( function( trad ) {
+                        $mdToast.showSimple( trad );
+                    });
+                }
+
                 $translate( 'request.failure' ).then( function( trad ) {
                     $mdToast.showSimple( trad );
                 });
@@ -55,7 +73,13 @@ filemanager.controller( 'filemanager.manageAccount', ['$scope', '$http', '$trans
         } else {
             $http.post( 'users', $scope.user ).then( function() {
                 $scope.getUsers();
-            }, function() {
+            }, function( res ) {
+                if( res.status == 403 ) {
+                    return $translate( 'request.authorized' ).then( function( trad ) {
+                        $mdToast.showSimple( trad );
+                    });
+                }
+
                 $translate( 'request.failure' ).then( function( trad ) {
                     $mdToast.showSimple( trad );
                 });

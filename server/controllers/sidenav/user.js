@@ -5,7 +5,9 @@ const router = require( 'express' ).Router();
 // ----------------------------------------------------------------------------
 // routes
 router.route( '/sidenav/user' ).get(( req, res ) => {
-    let routes = [];
+    let routes = [
+        { icon: 'folder', name: 'navigation.fs', link: '#/fs' }
+    ];
 
     if( req.session.user.administrator ) {
         let routesAdministrator = [

@@ -4,7 +4,8 @@
     },
 
     "request": {
-        "failure": "An error has occured, please try later"
+        "failure": "An error has occured, please try later",
+        "authorized": "You are not authorized to do this action"
     },
 
     "login": {
@@ -23,7 +24,8 @@
     },
 
     "navigation": {
-        "manageAccount": "Manage account"
+        "manageAccount": "Manage account",
+        "fs": "File system"
     },
 
     "manageAccount": {

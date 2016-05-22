@@ -11,60 +11,76 @@ const logger = new Logger();
 // ----------------------------------------------------------------------------
 // routes
 router.route( '/users' ).get(( req, res ) => {
-    User.find({}, ( error, users ) => {
-       if( error ) {
-           logger.error( error.message );
+    if( req.session.user.adminisitrator ) {
+        return User.find({}, ( error, users ) => {
+            if( error ) {
+                logger.error( error.message );
 
-           return res.status( 500 ).end();
-       }
+                return res.status( 500 ).end();
+            }
 
-       res.json( users );
-    });
+            res.json( users );
+        });
+    }
+
+    res.status( 403 ).end();
 }).post(( req, res ) => {
-    let salt = uuid.v4();
-    let user = new User({
-        username: req.body.username,
-        password: sha512( `${ salt }:${ req.body.password }` ).toString( 'hex' ),
-        salt: salt,
-        email: req.body.email,
-        firstname: req.body.firstname,
-        lastname: req.body.lastname,
-        administrator: req.body.administrator
-    });
+    if( req.session.user.adminisitrator ) {
+        let salt = uuid.v4();
+        let user = new User({
+            username: req.body.username,
+            password: sha512( `${ salt }:${ req.body.password }` ).toString( 'hex' ),
+            salt: salt,
+            email: req.body.email,
+            firstname: req.body.firstname,
+            lastname: req.body.lastname,
+            administrator: req.body.administrator
+        });
 
-    user.save(( error ) => {
-        if( error ) {
-            logger.error( error.message );
+        return user.save(( error ) => {
+            if( error ) {
+                logger.error( error.message );
 
-            return res.status( 500 ).end();
-        }
+                return res.status( 500 ).end();
+            }
 
-        res.status( 200 ).end();
-    });
+            res.status( 200 ).end();
+        });
+    }
+
+    res.status( 403 ).end();
 }).put(( req, res ) => {
-    req.body.password = sha512( `${ req.body.salt }:${ req.body.password }` ).toString( 'hex' );
+    if( req.session.user.adminisitrator ) {
+        req.body.password = sha512( `${ req.body.salt }:${ req.body.password }` ).toString( 'hex' );
 
-    User.update({ _id: req.body._id }, req.body, ( error ) => {
-        if( error ) {
-            logger.error( error.message );
+        return User.update({ _id: req.body._id }, req.body, ( error ) => {
+            if( error ) {
+                logger.error( error.message );
 
-            return res.status( 500 ).end();
-        }
+                return res.status( 500 ).end();
+            }
 
-        res.status( 200 ).end();
-    });
+            res.status( 200 ).end();
+        });
+    }
+
+    res.status( 403 ).end();
 });
 
 router.route( '/users/:_id' ).delete(( req, res ) => {
-    User.remove({ _id: req.params._id }, ( error ) => {
-        if( error ) {
-            logger.error( error.message );
+    if( req.session.user.adminisitrator ) {
+        return User.remove({ _id: req.params._id }, ( error ) => {
+            if( error ) {
+                logger.error( error.message );
 
-            return res.status( 500 ).end();
-        }
+                return res.status( 500 ).end();
+            }
 
-        res.status( 200 ).end();
-    });
+            res.status( 200 ).end();
+        });
+    }
+
+    res.status( 403 ).end();
 });
 
 // ---------------------------------------------------------------------------
