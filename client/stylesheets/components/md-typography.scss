@@ -1,0 +1,5 @@
+@each $align in right, left, center, justify {
+    .md-text-#{$align} {
+        text-align: #{$align} !important;
+    }
+}

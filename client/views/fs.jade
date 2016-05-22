@@ -1,0 +1,79 @@
+md-content( flex layout="row" layout-align="center start" )
+    md-card( flex="35" )
+        md-toolbar.md-table-toolbar.md-default
+            div.md-toolbar-tools
+                span {{ 'fs.folder' | translate | ucfirst }}
+
+        md-table-container
+            table( md-table md-row-select="true" multiple="true" ng-model="foldersSelected" )
+                thead( md-head )
+                    tr( md-row )
+                        th( md-column )
+                            span {{ 'fs.name' | translate | ucfirst }}
+
+                        th( md-column )
+                            span {{ 'fs.right' | translate | ucfirst }}
+
+                        th.md-text-center( md-column )
+                            span {{ 'fs.action' | translate | ucfirst }}
+
+                tbody( md-body )
+                    tr( md-row md-select="folder" md-auto-select="true" ng-repeat="folder in folders" )
+                        td( md-cell ) {{ folder.name }}
+                        td( md-cell ) {{ folder.right }}
+                        td.md-text-center( md-cell )
+                            md-menu.md-secondary
+                                md-button.md-icon-button( ng-click="$mdOpenMenu( $event )" )
+                                    md-icon( md-menu-origin ) more_vert
+
+                                md-menu-content( width="3" )
+                                    md-menu-item
+                                        md-button
+                                            md-icon( md-menu-align-target ) folder_open
+                                            span {{ 'fs.open' | translate | ucfirst }}
+
+                                    md-menu-item
+                                        md-button
+                                            md-icon( md-menu-align-target ) file_download
+                                            span {{ 'fs.download' | translate | ucfirst }}
+
+    md-card( flex="65" )
+        md-toolbar.md-table-toolbar.md-default
+            div.md-toolbar-tools
+                span {{ 'fs.file' | translate | ucfirst }}
+
+        md-table-container
+            table( md-table md-row-select="true" multiple="true" ng-model="filesSelected" )
+                thead( md-head )
+                    tr( md-row )
+                        th( md-column )
+                            span {{ 'fs.name' | translate | ucfirst }}
+
+                        th( md-column )
+                            span {{ 'fs.size' | translate | ucfirst }}
+
+                        th( md-column )
+                            span {{ 'fs.right' | translate | ucfirst }}
+
+                        th( md-column )
+                            span {{ 'fs.mime' | translate | ucfirst }}
+
+                        th.md-text-center( md-column )
+                            span {{ 'fs.action' | translate | ucfirst }}
+
+                tbody( md-body )
+                    tr( md-row md-select="file" md-auto-select="true" ng-repeat="file in files" )
+                        td( md-cell ) {{ file.name }}
+                        td( md-cell ) {{ file.size }}
+                        td( md-cell ) {{ file.right }}
+                        td( md-cell ) {{ file.mime }}
+                        td.md-text-center( md-cell )
+                            md-menu.md-secondary
+                                md-button.md-icon-button( ng-click="$mdOpenMenu( $event )" )
+                                    md-icon( md-menu-origin ) more_vert
+
+                                md-menu-content( width="3" )
+                                    md-menu-item
+                                        md-button
+                                            md-icon( md-menu-align-target ) file_download
+                                            span {{ 'fs.download' | translate | ucfirst }}

@@ -42,5 +42,17 @@
             "required": "This is required.",
             "email": "This is not a correct email."
         }
+    },
+
+    "fs": {
+        "folder": "Folder",
+        "file": "File",
+        "download": "Download",
+        "open": "Open",
+        "name": "Name",
+        "right": "Right",
+        "action": "Action",
+        "mime": "Mime-type",
+        "size": "Size"
     }
 }

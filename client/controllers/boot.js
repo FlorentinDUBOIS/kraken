@@ -7,5 +7,6 @@ var filemanager = angular.module( 'florentindubois.filemanager', [
     'ngMessages',
     'ngRoute',
     'ngSanitize',
-    'pascalprecht.translate'
+    'pascalprecht.translate',
+    'md.data.table'
 ]);
