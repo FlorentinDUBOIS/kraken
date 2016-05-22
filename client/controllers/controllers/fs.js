@@ -4,11 +4,16 @@ filemanager.controller( 'filemanager.fs', ['$scope', '$http', '$translate', '$md
     $scope.foldersSelected = [];
     $scope.filesSelected   = [];
 
-    $scope.folders = [
-        { name: 'Grimm', right: 'drwxr-xr-x' },
-    ];
+    $scope.location = function( path ) {
+        $http.get( '/fs/info' + path ).then( function( res ) {
+            $scope.folders = res.data.folders;
+            $scope.files   = res.data.files;
+        }, function() {
+            $translate( 'request.failure' ).then( function( trad ) {
+                $mdToast.showSimple( trad );
+            });
+        });
+    };
 
-    $scope.files = [
-        { name: 'README.md', size: '16Ko', right: '-rwxr-xr-x', mime: 'text/markdown' }
-    ]
+    $scope.location( '/' );
 }]);

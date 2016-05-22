@@ -45,14 +45,15 @@
     },
 
     "fs": {
-        "folder": "Folder",
-        "file": "File",
+        "folder": "Folder(s)",
+        "file": "File(s)",
         "download": "Download",
         "open": "Open",
         "name": "Name",
         "right": "Right",
         "action": "Action",
         "mime": "Mime-type",
-        "size": "Size"
+        "size": "Size",
+        "lastModified": "Last modified"
     }
 }

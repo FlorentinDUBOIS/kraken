@@ -18,9 +18,10 @@ md-content( flex layout="row" layout-align="center start" )
                             span {{ 'fs.action' | translate | ucfirst }}
 
                 tbody( md-body )
-                    tr( md-row md-select="folder" md-auto-select="true" ng-repeat="folder in folders" )
+                    tr( md-row md-select="folder" md-auto-select="true" ng-repeat="folder in folders" ng-dblclick="location( '/' + folder.path + '/' +folder.name )" )
                         td( md-cell ) {{ folder.name }}
-                        td( md-cell ) {{ folder.right }}
+                        td( md-cell )
+                            pre {{ folder.right }}
                         td.md-text-center( md-cell )
                             md-menu.md-secondary
                                 md-button.md-icon-button( ng-click="$mdOpenMenu( $event )" )
@@ -28,7 +29,7 @@ md-content( flex layout="row" layout-align="center start" )
 
                                 md-menu-content( width="3" )
                                     md-menu-item
-                                        md-button
+                                        md-button( ng-click="location( '/' + folder.path + '/' + folder.name )" )
                                             md-icon( md-menu-align-target ) folder_open
                                             span {{ 'fs.open' | translate | ucfirst }}
 
@@ -56,17 +57,18 @@ md-content( flex layout="row" layout-align="center start" )
                             span {{ 'fs.right' | translate | ucfirst }}
 
                         th( md-column )
-                            span {{ 'fs.mime' | translate | ucfirst }}
+                            span {{ 'fs.lastModified' | translate | ucfirst }}
 
                         th.md-text-center( md-column )
                             span {{ 'fs.action' | translate | ucfirst }}
 
                 tbody( md-body )
                     tr( md-row md-select="file" md-auto-select="true" ng-repeat="file in files" )
-                        td( md-cell ) {{ file.name }}
-                        td( md-cell ) {{ file.size }}
-                        td( md-cell ) {{ file.right }}
-                        td( md-cell ) {{ file.mime }}
+                        td( md-cell ) {{ file.name | truncate }}
+                        td( md-cell ) {{ file.size | bytes }}
+                        td( md-cell )
+                            pre {{ file.right }}
+                        td( md-cell ) {{ file.mtime | date: 'medium' }}
                         td.md-text-center( md-cell )
                             md-menu.md-secondary
                                 md-button.md-icon-button( ng-click="$mdOpenMenu( $event )" )
