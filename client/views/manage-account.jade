@@ -49,7 +49,7 @@ md-content( layout="row" layout-align="center start" )
                     h4 {{ user.firstname | lower | ucfirst }} {{ user.lastname | upper }}
                     p {{ user.email | lower }}
 
-                md-button( ng-click="remove( $index )" ) {{ 'manageAccount.remove' | translate | ucfirst }}
+                md-button.md-raised.md-primary( ng-click="remove( $index )" ) {{ 'manageAccount.remove' | translate | ucfirst }}
 
             md-divider( ng-show="$last" )
 

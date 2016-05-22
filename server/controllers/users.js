@@ -42,6 +42,8 @@ router.route( '/users' ).get(( req, res ) => {
         res.status( 200 ).end();
     });
 }).put(( req, res ) => {
+    req.body.password = sha512( `${ req.body.salt }:${ req.body.password }` ).toString( 'hex' );
+
     User.update({ _id: req.body._id }, req.body, ( error ) => {
         if( error ) {
             logger.error( error.message );

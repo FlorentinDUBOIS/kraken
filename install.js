@@ -26,4 +26,6 @@ user.save(( error ) => {
     }
 
     logger.info( 'Default user created' );
+
+    process.exit( 0 );
 });
