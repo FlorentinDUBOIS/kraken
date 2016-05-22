@@ -26,8 +26,8 @@ gulp.task( 'build:js', () => {
         .pipe( plugins.concat( 'main.min.js' ))
         .pipe( gulp.dest( 'client/dist' ))
         .pipe( require( 'vinyl-named' )())
-        .pipe( require( 'webpack-stream' )())
-        .pipe( plugins.uglify({ compress: {}}))
+       .pipe( require( 'webpack-stream' )())
+      //  .pipe( plugins.uglify({ compress: {}}))
         .pipe( gulp.dest( 'client/dist' ));
 });
 

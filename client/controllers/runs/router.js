@@ -5,9 +5,9 @@ filemanager.run(['$rootScope', '$http', '$location', '$translate', '$mdToast', f
         '/manage-account'
     ];
 
-    $rootScope.$on( '$routeChangeStart', function( $event, $next, $current ) {
+    $rootScope.$on( '$routeChangeStart', function() {
         if( paths.indexOf( $location.path()) == -1 ) {
-            return next();
+            return;
         }
 
         $http.get( 'user' ).then( function( res ) {

@@ -27,7 +27,7 @@ function update( req, res ) {
 // ----------------------------------------------------------------------------
 // routes
 router.route( '/user' ).get(( req, res ) => {
-    User.find({ _id: req.session._id }, ( error, users ) => {
+    User.find({ _id: req.session.user._id }, ( error, users ) => {
         if( error ) {
             logger.error( error.message );
 
