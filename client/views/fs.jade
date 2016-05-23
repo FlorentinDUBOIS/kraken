@@ -1,5 +1,5 @@
-md-content( flex layout="row" layout-align="center start" )
-    md-card( flex="35" )
+md-content( flex layout="row" layout-xs="column" layout-sm="column" layout-align-md="center start" layout-align-gt="center start" layout-align-xl="center start" )
+    md-card( flex="35" flex-xs="100" flex-sm="100" )
         md-toolbar.md-table-toolbar.md-default( ng-show="!foldersSelected.length" )
             div.md-toolbar-tools
                 span {{ 'fs.folder' | translate | ucfirst }}
@@ -72,7 +72,7 @@ md-content( flex layout="row" layout-align="center start" )
                                             md-icon( md-menu-align-target ) delete
                                             span {{ 'fs.delete' | translate | ucfirst }}
 
-    md-card( flex="65" )
+    md-card( flex="65" flex-xs="100" flex-sm="100" )
         md-toolbar.md-table-toolbar.md-default( ng-show="!filesSelected.length" )
             div.md-toolbar-tools
                 span {{ 'fs.file' | translate | ucfirst }}
@@ -135,3 +135,12 @@ md-content( flex layout="row" layout-align="center start" )
                                         md-button
                                             md-icon( md-menu-align-target ) delete
                                             span {{ 'fs.delete' | translate | ucfirst }}
+
+    md-fab-speed-dial.md-scale.md-fixed.md-bottom-right( md-open="openFAB" md-direction="left" ng-mouseenter="openFAB = true" ng-mouseleave="openFAB = false" )
+        md-fab-trigger
+            md-button.md-fab.md-warn
+                md-icon dehaze
+
+        md-fab-actions
+            md-button.md-fab.md-raised.md-mini
+                md-icon refresh

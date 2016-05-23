@@ -19,6 +19,9 @@ html( ng-app="florentindubois.filemanager" )
     body( layout="column" )
         md-toolbar( ng-controller="filemanager.toolbar" )
             div.md-toolbar-tools
+                md-button.md-icon-button.hide-gt-xs.show-xs.show-sm.show-md( ng-click="$mdSidenav( 'left' ).toggle()" )
+                    md-icon dehaze
+
                 h1.md-headline {{ 'app.name' | translate | ucfirst }}
 
                 span( flex )

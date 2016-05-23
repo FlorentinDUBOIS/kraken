@@ -1,10 +1,13 @@
-@each $position in fixed, absolute {
+@each $position in fixed, absolute, relative {
     .md-#{$position} {
         position: #{$position};
 
-        @each $side in right, top, left, bottom {
-            &.md-#{$side} {
-                #{$side}: 7px;
+        @each $side in top, bottom {
+            @each $other-side in left, right {
+                &.md-#{$side}-#{$other-side} {
+                    #{$side}: 20px;
+                    #{$other-side}: 20px;
+                }
             }
         }
     }

@@ -1,5 +1,5 @@
-md-content( layout="row" layout-align="center start" )
-    md-card( flex="60" )
+md-content( layout="row" layout-xs="column" layout-sm="column" layout-md="column" layout-align-lg="center start" layout-align-xl="center start" )
+    md-card( flex="60" flex-xs="100" flex-sm="100" flex-md="100" )
         md-card-header
             md-card-header-text
                 h1.md-title {{ 'manageAccount.userInformation' | translate | ucfirst }}
@@ -13,14 +13,14 @@ md-content( layout="row" layout-align="center start" )
                     div( ng-messages="updateUser.username.$error" )
                         div( ng-message="required" ) {{ 'manageAccount.error.required' | translate | ucfirst }}
 
-                div( flex="100" layout="row" )
-                    md-input-container( flex="50" )
+                div( flex="100" layout="row" layout-xs="column" layout-sm="column" )
+                    md-input-container( flex="50" flex-xs="100" flex-sm="100" )
                         label {{ 'manageAccount.firstname' | translate | ucfirst }}
                         input( type="text" name="firstname" ng-model="user.firstname" required )
                         div( ng-messages="updateUser.firstname.$error" )
                             div( ng-message="required" ) {{ 'manageAccount.error.required' | translate | ucfirst }}
 
-                    md-input-container( flex="50" )
+                    md-input-container( flex="50" flex-xs="100" flex-sm="100" )
                         label {{ 'manageAccount.lastname' | translate | ucfirst }}
                         input( type="text" name="lastname" ng-model="user.lastname" required )
                         div( ng-messages="updateUser.lastname.$error" )
@@ -45,7 +45,7 @@ md-content( layout="row" layout-align="center start" )
                 div( flex="100" layout="row" layout-align="end center" )
                     md-button.md-raised.md-primary( type="submit" ) {{ 'manageAccount.submit' | translate | ucfirst }}
 
-    md-card( flex="40" ng-cloak )
+    md-card( flex="40" flex-xs="100" flex-sm="100" flex-md="100" ng-cloak )
         md-list
             md-subheader {{ 'manageAccount.selectUser' | translate | ucfirst }}
             md-list-item.md-3-line( ng-click="select( $index )" ng-repeat="user in users" )
@@ -58,5 +58,5 @@ md-content( layout="row" layout-align="center start" )
 
             md-divider( ng-show="$last" )
 
-md-button.md-fixed.md-bottom.md-right.md-fab( ng-click="add()" )
-    md-icon add
+    md-button.md-fab.md-fixed.md-bottom-right( ng-click="add()" )
+        md-icon add
