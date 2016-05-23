@@ -1,48 +1,53 @@
 md-content( layout="row" layout-align="center start" )
     md-card( flex="60" )
+        md-card-header
+            md-card-header-text
+                h1.md-title {{ 'manageAccount.userInformation' | translate | ucfirst }}
+                h2.md-subhead {{ 'manageAccount.userInformationComplete' | translate | ucfirst }}
+
         md-card-content
-            md-card-cotent
-                form( name="updateUser" accept-charset="utf-8" layout="column" ng-submit="save()" )
-                    md-input-container( flex="100" )
-                        label {{ 'manageAccount.username' | translate | ucfirst }}
-                        input( type="text" name="username" ng-model="user.username" required )
-                        div( ng-messages="updateUser.username.$error" )
+            form( name="updateUser" accept-charset="utf-8" layout="column" ng-submit="save()" )
+                md-input-container( flex="100" )
+                    label {{ 'manageAccount.username' | translate | ucfirst }}
+                    input( type="text" name="username" ng-model="user.username" required )
+                    div( ng-messages="updateUser.username.$error" )
+                        div( ng-message="required" ) {{ 'manageAccount.error.required' | translate | ucfirst }}
+
+                div( flex="100" layout="row" )
+                    md-input-container( flex="50" )
+                        label {{ 'manageAccount.firstname' | translate | ucfirst }}
+                        input( type="text" name="firstname" ng-model="user.firstname" required )
+                        div( ng-messages="updateUser.firstname.$error" )
                             div( ng-message="required" ) {{ 'manageAccount.error.required' | translate | ucfirst }}
 
-                    div( flex="100" layout="row" )
-                        md-input-container( flex="50" )
-                            label {{ 'manageAccount.firstname' | translate | ucfirst }}
-                            input( type="text" name="firstname" ng-model="user.firstname" required )
-                            div( ng-messages="updateUser.firstname.$error" )
-                                div( ng-message="required" ) {{ 'manageAccount.error.required' | translate | ucfirst }}
-
-                        md-input-container( flex="50" )
-                            label {{ 'manageAccount.lastname' | translate | ucfirst }}
-                            input( type="text" name="lastname" ng-model="user.lastname" required )
-                            div( ng-messages="updateUser.lastname.$error" )
-                                div( ng-message="required" ) {{ 'manageAccount.error.required' | translate | ucfirst }}
-
-                    md-input-container( flex="100" )
-                        label {{ 'manageAccount.password' | translate | ucfirst }}
-                        input( type="password" name="password" ng-model="user.password" required )
-                        div( ng-messages="updateUser.password.$error" )
+                    md-input-container( flex="50" )
+                        label {{ 'manageAccount.lastname' | translate | ucfirst }}
+                        input( type="text" name="lastname" ng-model="user.lastname" required )
+                        div( ng-messages="updateUser.lastname.$error" )
                             div( ng-message="required" ) {{ 'manageAccount.error.required' | translate | ucfirst }}
 
-                    md-input-container( flex="100" )
-                        label {{ 'manageAccount.email' | translate | ucfirst }}
-                        input( type="text" name="email" ng-model="user.email" required pattern="[\\\w\\\d\\\-\\\._]+@[\\\w\\\d\\\-_]+\\\.[\\\w]{2,}" )
-                        div( ng-messages="updateUser.email.$error" )
-                            div( ng-message="required" ) {{ 'manageAccount.error.required' | translate | ucfirst }}
-                            div( ng-message="pattern" ) {{ 'manageAccount.error.email' | translate | ucfirst }}
+                md-input-container( flex="100" )
+                    label {{ 'manageAccount.password' | translate | ucfirst }}
+                    input( type="password" name="password" ng-model="user.password" required )
+                    div( ng-messages="updateUser.password.$error" )
+                        div( ng-message="required" ) {{ 'manageAccount.error.required' | translate | ucfirst }}
 
-                    div( flex="100" )
-                        md-checkbox( ng-model="user.administrator" ) {{ 'manageAccount.administrator' | translate | ucfirst }}
+                md-input-container( flex="100" )
+                    label {{ 'manageAccount.email' | translate | ucfirst }}
+                    input( type="text" name="email" ng-model="user.email" required pattern="[\\\w\\\d\\\-\\\._]+@[\\\w\\\d\\\-_]+\\\.[\\\w]{2,}" )
+                    div( ng-messages="updateUser.email.$error" )
+                        div( ng-message="required" ) {{ 'manageAccount.error.required' | translate | ucfirst }}
+                        div( ng-message="pattern" ) {{ 'manageAccount.error.email' | translate | ucfirst }}
 
-                    div( flex="100" layout="row" layout-align="end center" )
-                        md-button.md-raised.md-primary( type="submit" ) {{ 'manageAccount.submit' | translate | ucfirst }}
+                div( flex="100" )
+                    md-checkbox( ng-model="user.administrator" ) {{ 'manageAccount.administrator' | translate | ucfirst }}
+
+                div( flex="100" layout="row" layout-align="end center" )
+                    md-button.md-raised.md-primary( type="submit" ) {{ 'manageAccount.submit' | translate | ucfirst }}
 
     md-card( flex="40" ng-cloak )
         md-list
+            md-subheader {{ 'manageAccount.selectUser' | translate | ucfirst }}
             md-list-item.md-3-line( ng-click="select( $index )" ng-repeat="user in users" )
                 div.md-list-item-text
                     h3 {{ user.username }}

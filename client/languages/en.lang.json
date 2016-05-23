@@ -37,6 +37,9 @@
         "administrator": "His an administrator ?",
         "submit": "Save",
         "remove": "Remove",
+        "userInformation": "User information",
+        "userInformationComplete": "Complete information about user",
+        "selectUser": "Select user to modify",
 
         "error": {
             "required": "This is required.",
@@ -56,6 +59,10 @@
         "size": "Size",
         "delete": "Delete",
         "lastModified": "Last modified",
-        "selected": "Item(s) selected"
+        "selected": "Item(s) selected",
+        "share": "Share",
+        "archive": "Archive",
+        "parent": "Parent",
+        "createNewFolder": "Create new folder"
     }
 }

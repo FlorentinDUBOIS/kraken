@@ -11,7 +11,9 @@ const logger = new Logger( path.basename( __filename ));
 // ----------------------------------------------------------------------------
 // functions
 function update( req, res ) {
-    req.body.password = sha512( `${ req.body.salt }:${ req.body.password }` ).toString( 'hex' );
+    if( req.body.password.length < 128 ) {
+        req.body.password = sha512( `${ req.body.salt }:${ req.body.password }` ).toString( 'hex' );
+    }
 
     User.update({ _id: req.session.user._id }, req.body, ( error ) => {
         if( error ) {

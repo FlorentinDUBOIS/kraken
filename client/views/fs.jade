@@ -5,13 +5,27 @@ md-content( flex layout="row" layout-align="center start" )
                 span {{ 'fs.folder' | translate | ucfirst }}
                 span( flex )
                 md-button.md-icon-button( ng-show="path != '/'" ng-click="location( path + '/..' )" )
-                    md-icon folder
+                    md-tooltip( md-direction="bottom" ) {{ 'fs.parent' | translate | lower }}
+                    md-icon layers
+
+                md-button.md-icon-button
+                    md-tooltip( md-direction="bottom" ) {{ 'fs.createNewFolder' | translate | lower }}
+                    md-icon create_new_folder
 
         md-toolbar.md-table-toolbar.md-default( ng-show="foldersSelected.length" )
             div.md-toolbar-tools
-                span {{ foldersSelected.length }} {{ 'fs.selected' | translate | ucfirst }}
+                span {{ foldersSelected.length }} {{ 'fs.selected' | translate | lower }}
                 span( flex )
                 md-button.md-icon-button
+                    md-tooltip( md-direction="botton" ) {{ 'fs.archive' | translate | lower }}
+                    md-icon archive
+
+                md-button.md-icon-button
+                    md-tooltip( md-direction="botton" ) {{ 'fs.share' | translate | lower }}
+                    md-icon folder_shared
+
+                md-button.md-icon-button
+                    md-tooltip( md-direction="bottom" ) {{ 'fs.delete' | translate | lower }}
                     md-icon delete
 
         md-table-container
@@ -32,11 +46,16 @@ md-content( flex layout="row" layout-align="center start" )
                                 md-button.md-icon-button( ng-click="$mdOpenMenu( $event )" )
                                     md-icon( md-menu-origin ) more_vert
 
-                                md-menu-content( width="3" )
+                                md-menu-content( width="4" )
                                     md-menu-item
                                         md-button( ng-click="location( '/' + folder.path + '/' + folder.name )" )
                                             md-icon( md-menu-align-target ) folder_open
                                             span {{ 'fs.open' | translate | ucfirst }}
+
+                                    md-menu-item
+                                        md-button
+                                            md-icon( md-menu-align-target ) folder_shared
+                                            span {{ 'fs.share' | translate | ucfirst }}
 
                                     md-menu-item
                                         md-button
@@ -45,13 +64,34 @@ md-content( flex layout="row" layout-align="center start" )
 
                                     md-menu-item
                                         md-button
+                                            md-icon( md-menu-align-target ) archive
+                                            span {{ 'fs.archive' | translate | ucfirst }}
+
+                                    md-menu-item
+                                        md-button
                                             md-icon( md-menu-align-target ) delete
                                             span {{ 'fs.delete' | translate | ucfirst }}
 
     md-card( flex="65" )
-        md-toolbar.md-table-toolbar.md-default
+        md-toolbar.md-table-toolbar.md-default( ng-show="!filesSelected.length" )
             div.md-toolbar-tools
                 span {{ 'fs.file' | translate | ucfirst }}
+
+        md-toolbar.md-table-toolbar.md-default( ng-show="filesSelected.length" )
+            div.md-toolbar-tools
+                span {{ filesSelected.length }} {{ 'fs.selected' | translate | ucfirst }}
+                span( flex )
+                md-button.md-icon-button
+                    md-tooltip( md-direction="bottom" ) {{ 'fs.archive' | translate | lower }}
+                    md-icon archive
+
+                md-button.md-icon-button
+                    md-tooltip( md-direction="bottom" ) {{ 'fs.share' | translate | lower }}
+                    md-icon share
+
+                md-button.md-icon-button
+                    md-tooltip( md-direction="bottom" ) {{ 'fs.delete' | translate | lower }}
+                    md-icon delete
 
         md-table-container
             table( md-table md-row-select="true" multiple="true" ng-model="filesSelected" )
@@ -75,8 +115,23 @@ md-content( flex layout="row" layout-align="center start" )
                                 md-button.md-icon-button( ng-click="$mdOpenMenu( $event )" )
                                     md-icon( md-menu-origin ) more_vert
 
-                                md-menu-content( width="3" )
+                                md-menu-content( width="4" )
+                                    md-menu-item
+                                        md-button
+                                            md-icon( md-menu-align-target ) share
+                                            span {{ 'fs.share' | translate | ucfirst }}
+
                                     md-menu-item
                                         md-button
                                             md-icon( md-menu-align-target ) file_download
                                             span {{ 'fs.download' | translate | ucfirst }}
+
+                                    md-menu-item
+                                        md-button
+                                            md-icon( md-menu-align-target ) archive
+                                            span {{ 'fs.archive' | translate | ucfirst }}
+
+                                    md-menu-item
+                                        md-button
+                                            md-icon( md-menu-align-target ) delete
+                                            span {{ 'fs.delete' | translate | ucfirst }}

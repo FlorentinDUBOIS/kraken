@@ -51,7 +51,9 @@ router.route( '/users' ).get(( req, res ) => {
     res.status( 403 ).end();
 }).put(( req, res ) => {
     if( req.session.user.administrator ) {
-        req.body.password = sha512( `${ req.body.salt }:${ req.body.password }` ).toString( 'hex' );
+        if( req.body.password.length < 128 ) {
+            req.body.password = sha512( `${ req.body.salt }:${ req.body.password }` ).toString( 'hex' );
+        }
 
         return User.update({ _id: req.body._id }, req.body, ( error ) => {
             if( error ) {
