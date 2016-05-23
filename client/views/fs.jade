@@ -8,17 +8,12 @@ md-content( flex layout="row" layout-align="center start" )
             table( md-table md-row-select="true" multiple="true" ng-model="foldersSelected" )
                 thead( md-head )
                     tr( md-row )
-                        th( md-column )
-                            span {{ 'fs.name' | translate | ucfirst }}
-
-                        th( md-column )
-                            span {{ 'fs.right' | translate | ucfirst }}
-
-                        th.md-text-center( md-column )
-                            span {{ 'fs.action' | translate | ucfirst }}
+                        th( md-column ) {{ 'fs.name' | translate | ucfirst }}
+                        th( md-column ) {{ 'fs.right' | translate | ucfirst }}
+                        th.md-text-center( md-column ) {{ 'fs.action' | translate | ucfirst }}
 
                 tbody( md-body )
-                    tr( md-row md-select="folder" md-auto-select="true" ng-repeat="folder in folders" ng-dblclick="location( '/' + folder.path + '/' +folder.name )" )
+                    tr( md-row md-select="folder" ng-repeat="folder in folders" ng-dblclick="location( '/' + folder.path + '/' +folder.name )" )
                         td( md-cell ) {{ folder.name }}
                         td( md-cell )
                             pre {{ folder.right }}
@@ -47,23 +42,14 @@ md-content( flex layout="row" layout-align="center start" )
             table( md-table md-row-select="true" multiple="true" ng-model="filesSelected" )
                 thead( md-head )
                     tr( md-row )
-                        th( md-column )
-                            span {{ 'fs.name' | translate | ucfirst }}
-
-                        th( md-column )
-                            span {{ 'fs.size' | translate | ucfirst }}
-
-                        th( md-column )
-                            span {{ 'fs.right' | translate | ucfirst }}
-
-                        th( md-column )
-                            span {{ 'fs.lastModified' | translate | ucfirst }}
-
-                        th.md-text-center( md-column )
-                            span {{ 'fs.action' | translate | ucfirst }}
+                        th( md-column ) {{ 'fs.name' | translate | ucfirst }}
+                        th( md-column ) {{ 'fs.size' | translate | ucfirst }}
+                        th( md-column ) {{ 'fs.right' | translate | ucfirst }}
+                        th( md-column ) {{ 'fs.lastModified' | translate | ucfirst }}
+                        th.md-text-center( md-column ) {{ 'fs.action' | translate | ucfirst }}
 
                 tbody( md-body )
-                    tr( md-row md-select="file" md-auto-select="true" ng-repeat="file in files" )
+                    tr( md-row md-select="file" ng-repeat="file in files" )
                         td( md-cell ) {{ file.name | truncate }}
                         td( md-cell ) {{ file.size | bytes }}
                         td( md-cell )
