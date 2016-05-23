@@ -54,6 +54,8 @@
         "action": "Action",
         "mime": "Mime-type",
         "size": "Size",
-        "lastModified": "Last modified"
+        "delete": "Delete",
+        "lastModified": "Last modified",
+        "selected": "Item(s) selected"
     }
 }

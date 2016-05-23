@@ -1,8 +1,18 @@
 md-content( flex layout="row" layout-align="center start" )
     md-card( flex="35" )
-        md-toolbar.md-table-toolbar.md-default
+        md-toolbar.md-table-toolbar.md-default( ng-show="!foldersSelected.length" )
             div.md-toolbar-tools
                 span {{ 'fs.folder' | translate | ucfirst }}
+                span( flex )
+                md-button.md-icon-button( ng-show="path != '/'" ng-click="location( path + '/..' )" )
+                    md-icon folder
+
+        md-toolbar.md-table-toolbar.md-default( ng-show="foldersSelected.length" )
+            div.md-toolbar-tools
+                span {{ foldersSelected.length }} {{ 'fs.selected' | translate | ucfirst }}
+                span( flex )
+                md-button.md-icon-button
+                    md-icon delete
 
         md-table-container
             table( md-table md-row-select="true" multiple="true" ng-model="foldersSelected" )
@@ -32,6 +42,11 @@ md-content( flex layout="row" layout-align="center start" )
                                         md-button
                                             md-icon( md-menu-align-target ) file_download
                                             span {{ 'fs.download' | translate | ucfirst }}
+
+                                    md-menu-item
+                                        md-button
+                                            md-icon( md-menu-align-target ) delete
+                                            span {{ 'fs.delete' | translate | ucfirst }}
 
     md-card( flex="65" )
         md-toolbar.md-table-toolbar.md-default
