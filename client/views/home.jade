@@ -16,10 +16,10 @@ html( ng-app="florentindubois.filemanager" )
         link( rel="stylesheet" type="text/css" href="angular/md-data-table.min.css" )
         link( rel="stylesheet" type="text/css" href="dist/imports.min.css" )
 
-    body( layout="column" )
-        md-toolbar( ng-controller="filemanager.toolbar" )
+    body( layout="column" ng-controller="filemanager.navigation" )
+        md-toolbar
             div.md-toolbar-tools
-                md-button.md-icon-button.hide-gt-xs.show-xs.show-sm.show-md
+                md-button.md-icon-button.hide-gt-xs.show-xs.show-sm.show-md( ng-click="openSidenav()" )
                     md-icon menu
 
                 h1.md-headline {{ 'app.name' | translate | ucfirst }}
@@ -31,7 +31,7 @@ html( ng-app="florentindubois.filemanager" )
         md-content( layout="column" ng-cloak flex )
             section( layout="row" flex )
                 md-sidenav.md-sidenav-left.md-whiteframe-z2( md-component-id="left" md-is-locked-open="$mdMedia( 'gt-md' )" )
-                    div( ng-controller="filemanager.sidenav" flex )
+                    div( flex )
                         md-list
                             md-list-item( md-ink-ripple ng-repeat="item in user" )
                                 a( ng-href="{{ item.link }}" )

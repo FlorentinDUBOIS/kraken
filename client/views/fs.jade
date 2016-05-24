@@ -8,10 +8,6 @@ md-content( flex layout="row" layout-xs="column" layout-sm="column" layout-align
                     md-tooltip( md-direction="bottom" ) {{ 'fs.parent' | translate | lower }}
                     md-icon layers
 
-                md-button.md-icon-button
-                    md-tooltip( md-direction="bottom" ) {{ 'fs.createNewFolder' | translate | lower }}
-                    md-icon create_new_folder
-
         md-toolbar.md-table-toolbar.md-default( ng-show="foldersSelected.length" )
             div.md-toolbar-tools
                 span {{ foldersSelected.length }} {{ 'fs.selected' | translate | lower }}
@@ -30,15 +26,15 @@ md-content( flex layout="row" layout-xs="column" layout-sm="column" layout-align
 
         md-table-container
             table( md-table md-row-select="true" multiple="true" ng-model="foldersSelected" )
-                thead( md-head )
+                thead( md-head md-order="foldersOrder" )
                     tr( md-row )
-                        th( md-column ) {{ 'fs.name' | translate | ucfirst }}
+                        th( md-column md-order-by="name" ) {{ 'fs.name' | translate | ucfirst }}
                         th( md-column ) {{ 'fs.right' | translate | ucfirst }}
                         th.md-text-center( md-column ) {{ 'fs.action' | translate | ucfirst }}
 
                 tbody( md-body )
-                    tr( md-row md-select="folder" ng-repeat="folder in folders" ng-dblclick="location( '/' + folder.path + '/' +folder.name )" )
-                        td( md-cell ) {{ folder.name }}
+                    tr( md-row md-select="folder" ng-repeat="folder in folders | orderBy: foldersOrder" ng-dblclick="location( '/' + folder.path + '/' +folder.name )" )
+                        td( md-cell ) {{ folder.name | truncate: 30 }}
                         td( md-cell )
                             pre {{ folder.right }}
                         td.md-text-center( md-cell )
@@ -110,17 +106,17 @@ md-content( flex layout="row" layout-xs="column" layout-sm="column" layout-align
 
         md-table-container
             table( md-table md-row-select="true" multiple="true" ng-model="filesSelected" )
-                thead( md-head )
+                thead( md-head md-order="filesOrder" )
                     tr( md-row )
-                        th( md-column ) {{ 'fs.name' | translate | ucfirst }}
-                        th( md-column ) {{ 'fs.size' | translate | ucfirst }}
+                        th( md-column md-order-by="name" ) {{ 'fs.name' | translate | ucfirst }}
+                        th( md-column md-order-by="size" ) {{ 'fs.size' | translate | ucfirst }}
                         th( md-column ) {{ 'fs.right' | translate | ucfirst }}
-                        th( md-column ) {{ 'fs.lastModified' | translate | ucfirst }}
+                        th( md-column md-order-by="mtime" ) {{ 'fs.lastModified' | translate | ucfirst }}
                         th.md-text-center( md-column ) {{ 'fs.action' | translate | ucfirst }}
 
                 tbody( md-body )
-                    tr( md-row md-select="file" ng-repeat="file in files" )
-                        td( md-cell ) {{ file.name | truncate }}
+                    tr( md-row md-select="file" ng-repeat="file in files | orderBy: filesOrder" )
+                        td( md-cell ) {{ file.name | truncate: 30 }}
                         td( md-cell ) {{ file.size | bytes }}
                         td( md-cell )
                             pre {{ file.right }}
