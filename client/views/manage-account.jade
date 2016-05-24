@@ -59,4 +59,5 @@ md-content( layout="row" layout-xs="column" layout-sm="column" layout-md="column
             md-divider( ng-show="$last" )
 
     md-button.md-fab.md-fixed.md-bottom-right( ng-click="add()" )
+        md-tooltip( md-direction="left" ) {{ 'manageAccount.addAdministrator' | translate | lower }}
         md-icon add

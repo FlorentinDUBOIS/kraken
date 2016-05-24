@@ -48,6 +48,11 @@ md-content( flex layout="row" layout-xs="column" layout-sm="column" layout-align
 
                                 md-menu-content( width="4" )
                                     md-menu-item
+                                        md-button
+                                            md-icon( md-menu-align-target ) add
+                                            span {{ 'fs.bookmarks' | translate | ucfirst }}
+
+                                    md-menu-item
                                         md-button( ng-click="location( '/' + folder.path + '/' + folder.name )" )
                                             md-icon( md-menu-align-target ) folder_open
                                             span {{ 'fs.open' | translate | ucfirst }}
@@ -59,6 +64,11 @@ md-content( flex layout="row" layout-xs="column" layout-sm="column" layout-align
 
                                     md-menu-item
                                         md-button
+                                            md-icon( md-menu-align-target ) create
+                                            span {{ 'fs.rename' | translate | ucfirst }}
+
+                                    md-menu-item
+                                        md-button
                                             md-icon( md-menu-align-target ) file_download
                                             span {{ 'fs.download' | translate | ucfirst }}
 
@@ -66,6 +76,11 @@ md-content( flex layout="row" layout-xs="column" layout-sm="column" layout-align
                                         md-button
                                             md-icon( md-menu-align-target ) archive
                                             span {{ 'fs.archive' | translate | ucfirst }}
+
+                                    md-menu-item
+                                        md-button
+                                            md-icon( md-menu-align-target ) unarchive
+                                            span {{ 'fs.unarchive' | translate | ucfirst }}
 
                                     md-menu-item
                                         md-button
@@ -123,6 +138,11 @@ md-content( flex layout="row" layout-xs="column" layout-sm="column" layout-align
 
                                     md-menu-item
                                         md-button
+                                            md-icon( md-menu-align-target ) create
+                                            span {{ 'fs.rename' | translate | ucfirst }}
+
+                                    md-menu-item
+                                        md-button
                                             md-icon( md-menu-align-target ) file_download
                                             span {{ 'fs.download' | translate | ucfirst }}
 
@@ -133,14 +153,21 @@ md-content( flex layout="row" layout-xs="column" layout-sm="column" layout-align
 
                                     md-menu-item
                                         md-button
+                                            md-icon( md-menu-align-target ) unarchive
+                                            span {{ 'fs.unarchive' | translate | ucfirst }}
+
+                                    md-menu-item
+                                        md-button
                                             md-icon( md-menu-align-target ) delete
                                             span {{ 'fs.delete' | translate | ucfirst }}
 
     md-fab-speed-dial.md-scale.md-fixed.md-bottom-right( md-open="openFAB" md-direction="left" ng-mouseenter="openFAB = true" ng-mouseleave="openFAB = false" )
         md-fab-trigger
             md-button.md-fab.md-warn
-                md-icon dehaze
+                md-tooltip( md-direction="top" ) {{ 'fs.moreOptions' | translate | lower }}
+                md-icon menu
 
         md-fab-actions
             md-button.md-fab.md-raised.md-mini
+                md-tooltip( md-direction="top" ) {{ 'fs.refresh' | translate | lower }}
                 md-icon refresh

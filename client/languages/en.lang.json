@@ -40,6 +40,7 @@
         "userInformation": "User information",
         "userInformationComplete": "Complete information about user",
         "selectUser": "Select user to modify",
+        "addAdministrator": "Create a new user",
 
         "error": {
             "required": "This is required.",
@@ -61,8 +62,13 @@
         "lastModified": "Last modified",
         "selected": "Item(s) selected",
         "share": "Share",
-        "archive": "Archive",
+        "archive": "Compress",
         "parent": "Parent",
-        "createNewFolder": "Create new folder"
+        "createNewFolder": "Create new folder",
+        "moreOptions": "More options",
+        "refresh": "Refresh",
+        "rename": "Rename",
+        "unarchive": "Decompress",
+        "bookmarks": "Bookmarks"
     }
 }
