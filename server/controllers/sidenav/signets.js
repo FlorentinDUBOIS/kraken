@@ -9,7 +9,7 @@ const logger = new Logger( path.basename( __filename ));
 // ----------------------------------------------------------------------------
 // routes
 router.route( '/sidenav/signet' ).get(( req, res ) => {
-    Signet.find({ username: req.session.user.username }, ( error, signets ) => {
+    Signet.find({ user: req.session.user._id }, ( error, signets ) => {
        if( error ) {
            logger.error( error.message );
 
