@@ -6,7 +6,8 @@
   "scripts": {
     "start": "node --use_strict --harmony server.js",
     "dev": "nodemon --use_strict --harmony server.js --ignore client",
-    "test": "gulp test"
+    "test": "gulp test",
+    "build": "gulp build"
   },
   "repository": {
     "type": "git",
