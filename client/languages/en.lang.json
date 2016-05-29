@@ -41,6 +41,7 @@
         "userInformationComplete": "Complete information about user",
         "selectUser": "Select user to modify",
         "addAdministrator": "Create a new user",
+        "success": "Successful save user",
 
         "error": {
             "required": "This is required.",

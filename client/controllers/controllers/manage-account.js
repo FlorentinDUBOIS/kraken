@@ -8,7 +8,10 @@ filemanager.controller( 'filemanager.manageAccount', ['$scope', '$http', '$trans
     $scope.getUsers = function() {
         $http.get( 'users' ).then( function( res ) {
             $scope.users = res.data;
-            $scope.user  = null;
+
+            $scope.updateUser.$setPristine();
+            $scope.updateUser.$setUntouched();
+            $scope.user = {};
         }, function( res ) {
             if( res.status === 403 ) {
                 return $translate( 'request.authorized' ).then( function( trad ) {
@@ -58,7 +61,10 @@ filemanager.controller( 'filemanager.manageAccount', ['$scope', '$http', '$trans
     $scope.save = function() {
         if( $scope.user._id ) {
             $http.put( 'users', $scope.user ).then( function() {
-                $scope.getUsers();
+                $translate( 'manageAccount.success' ).then( function( trad ) {
+                    $mdToast.showSimple( trad );
+                    $scope.getUsers();
+                });
             }, function( res ) {
                 if( res.status === 403 ) {
                     return $translate( 'request.authorized' ).then( function( trad ) {
