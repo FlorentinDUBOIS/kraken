@@ -7,7 +7,8 @@
     "start": "node --use_strict --harmony server.js",
     "dev": "nodemon --use_strict --harmony server.js --ignore client",
     "test": "gulp test",
-    "build": "gulp build"
+    "build": "gulp build",
+    "add-default-user": "node --use_strict --harmony install.js"
   },
   "repository": {
     "type": "git",

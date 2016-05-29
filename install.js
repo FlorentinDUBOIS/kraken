@@ -1,4 +1,22 @@
 // ----------------------------------------------------------------------------
+// rootpath
+require( 'rootpath' )();
+
+// ----------------------------------------------------------------------------
+// bind uncaught exception
+process.on( 'uncaughtException', ( e ) => {
+    if( e instanceof Array ) {
+        for( var i in e ) {
+            logger.error( e[i].message );
+        }
+    } else {
+        logger.error( e.message );
+    }
+
+    process.exit( 1 );
+});
+
+// ----------------------------------------------------------------------------
 // requirements
 const path   = require( 'path' );
 const uuid   = require( 'uuid' );
