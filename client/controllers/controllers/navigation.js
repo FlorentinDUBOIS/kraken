@@ -1,42 +1,38 @@
 // ----------------------------------------------------------------------------
 // filemanger's controller navigation
-filemanager.controller( 'filemanager.navigation', ['$scope', '$http', '$window', '$translate', '$mdToast', '$mdSidenav', function( $scope, $http, $window, $translate, $mdToast, $mdSidenav ) {
-    $scope.user    = [];
+filemanager.controller( 'filemanager.navigation', ['$scope', '$login', '$sidenav',  '$window', '$mdSidenav', function( $scope, $login, $sidenav, $window, $mdSidenav ) {
+    $scope.menu    = [];
     $scope.signets = [];
 
+    // ----------------------------------------------------------------------------
+    // open sidenav
     $scope.openSidenav = function() {
         $mdSidenav( 'left' ).toggle();
     };
 
+    // ----------------------------------------------------------------------------
+    // exit
     $scope.exit = function() {
-        $http.delete( 'log' ).then( function( res ) {
-            if( !res.data.success ) {
-                return $translate( 'request.failure' ).then( function( trad ) {
-                    $mdToast.showSimple( trad );
-                });
+        $login.logout( function( error, data ) {
+            if( !error && data.success ) {
+                $window.location.assign( data.redirect );
             }
-
-            $window.location.assign( res.data.redirect );
-        }, function() {
-            $translate( 'request.failure' ).then( function( trad ) {
-                $mdToast.showSimple( trad );
-            });
         });
-    }
+    };
 
-    $http.get( 'sidenav/user' ).then( function( res ) {
-        $scope.user = res.data;
-    }, function() {
-        $translate( 'request.failure' ).then( function( trad ) {
-            $mdToast.showSimple( trad );
-        });
-    })
+    // ----------------------------------------------------------------------------
+    // get user menu
+    $sidenav.getUserMenu( function( error, data ) {
+        if( !error ) {
+            $scope.menu = data;
+        }
+    });
 
-    $http.get( 'sidenav/signet' ).then( function( res ) {
-        $scope.signets = res.data;
-    }, function() {
-        $translate( 'request.failure' ).then( function( trad ) {
-            $mdToast.showSimple( trad );
-        });
+    // ----------------------------------------------------------------------------
+    // get use signet
+    $sidenav.getUserSignet( function( error, data ) {
+        if( !error ) {
+            $scope.signets = data;
+        }
     });
 }]);

@@ -50,8 +50,21 @@
     },
 
     "fs": {
-        "folder": "Folder(s)",
-        "file": "File(s)",
+        "folder": {
+            "singular": "Folder",
+            "plural": "Folders"
+        },
+
+        "file": {
+            "singular": "File",
+            "plural": "Files"
+        },
+
+        "selected": {
+            "singular": "Item selected",
+            "plural": "Items selected"
+        },
+
         "download": "Download",
         "open": "Open",
         "name": "Name",
@@ -61,7 +74,6 @@
         "size": "Size",
         "delete": "Delete",
         "lastModified": "Last modified",
-        "selected": "Item(s) selected",
         "share": "Share",
         "archive": "Compress",
         "parent": "Parent",

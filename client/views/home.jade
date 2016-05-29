@@ -33,7 +33,7 @@ html( ng-app="florentindubois.filemanager" )
                 md-sidenav.md-sidenav-left.md-whiteframe-z2( md-component-id="left" md-is-locked-open="$mdMedia( 'gt-md' )" )
                     div( flex )
                         md-list
-                            md-list-item( md-ink-ripple ng-repeat="item in user" )
+                            md-list-item( md-ink-ripple ng-repeat="item in menu" )
                                 a( ng-href="{{ item.link }}" )
                                     md-icon {{ item.icon }}
                                     span {{ item.name | translate | ucfirst }}
