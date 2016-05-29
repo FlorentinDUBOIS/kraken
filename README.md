@@ -60,6 +60,11 @@ Build the project :
 $ npm run-script build
 ```
 
+Add default user
+```bash
+$ node install.js
+```
+
 Launch the project, by default is in port 80 but if you set PORT environnement variable you can change the port of application listen to.
 
 ```bash
@@ -96,4 +101,9 @@ $ docker run --rm --name mongodb -p 27017:27017 mongodb:latest
 Run application
 ```bash
 $ docker run --rm --name kraken  -p 80:80 --link mongodb:mongo -e MONGODB_HOST=mongodb kraken
+```
+
+Add default user
+```bash
+$ docker exec -ti kraken node install.js
 ```
