@@ -6,7 +6,7 @@ filemanager.run(['$rootScope', '$http', '$location', '$translate', '$mdToast', f
     ];
 
     $rootScope.$on( '$routeChangeStart', function() {
-        if( paths.indexOf( $location.path()) == -1 ) {
+        if( paths.indexOf( $location.path()) === -1 ) {
             return;
         }
 
@@ -18,7 +18,7 @@ filemanager.run(['$rootScope', '$http', '$location', '$translate', '$mdToast', f
                 });
             }
         }, function( res ) {
-            if( res.status == 403 ) {
+            if( res.status === 403 ) {
                 return $translate( 'request.authorized' ).then( function( trad ) {
                     $mdToast.showSimple( trad );
                 });

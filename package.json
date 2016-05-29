@@ -5,7 +5,8 @@
   "main": "server.js",
   "scripts": {
     "start": "node --use_strict --harmony server.js",
-    "dev": "nodemon --use_strict --harmony server.js --ignore client"
+    "dev": "nodemon --use_strict --harmony server.js --ignore client",
+    "test": "gulp test"
   },
   "repository": {
     "type": "git",
@@ -49,10 +50,12 @@
     "angular-route": "^1.5.5",
     "angular-sanitize": ">=1.5.5",
     "angular-translate": ">=2.11.0",
+    "async": "^2.0.0-rc.5",
     "body-parser": ">=1.15.1",
     "compression": ">=1.6.2",
     "express": ">=5.0.0-alpha.2",
     "express-session": ">=1.13.0",
+    "gulp-eslint": "^2.0.0",
     "helmet": ">=2.1.0",
     "method-override": "^2.3.6",
     "mongoose": "^4.4.19",
@@ -60,6 +63,7 @@
     "multer": "^1.1.0",
     "printit": ">=0.1.20",
     "pug": ">=2.0.0-alpha7",
+    "rootpath": "^0.1.2",
     "sha512": "0.0.1",
     "uuid": ">=2.0.2",
     "walk": ">=2.3.9",

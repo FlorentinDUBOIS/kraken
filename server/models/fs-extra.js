@@ -38,7 +38,7 @@ function formatRight( nombre ) {
             return '--x';
         }
 
-        case 0: {
+        case 0: default: {
             return '---';
         }
     }

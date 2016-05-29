@@ -1,0 +1,15 @@
+language: node_js
+
+node_js:
+    - "6"
+    - "5"
+    - "4.4.4"
+
+services:
+    - mongodb
+
+after_success:
+    - export BUILD_RESULT="SUCCESS"
+
+after_failure:
+    - export BUILD_RESULT="ERRORED"

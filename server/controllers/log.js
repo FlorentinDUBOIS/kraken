@@ -3,8 +3,8 @@
 const router = require( 'express' ).Router();
 const sha512 = require( 'sha512' );
 const path   = require( 'path' );
-const User   = require( '../models/db' ).models.User;
-const Logger = require( '../models/logger' );
+const User   = require( 'server/models/db' ).models.User;
+const Logger = require( 'server/models/logger' );
 const logger = new Logger( path.basename( __filename ));
 
 // ----------------------------------------------------------------------------
@@ -30,7 +30,7 @@ router.route( '/log' ).post(( req, res ) => {
         }
 
         for( let user of users ) {
-            if( user.password == sha512( `${ user.salt }:${ req.body.password }` ).toString( 'hex' )) {
+            if( user.password === sha512( `${ user.salt }:${ req.body.password }` ).toString( 'hex' )) {
                 req.session.user = user;
 
                 return res.json({

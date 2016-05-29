@@ -2,9 +2,10 @@
 // requirements
 const router = require( 'express' ).Router();
 const path   = require( 'path' );
+const async  = require( 'async' );
 const fs     = require( 'fs' );
-const fse    = require( '../../models/fs-extra' );
-const Logger = require( '../../models/logger' );
+const fse    = require( 'server/models/fs-extra' );
+const Logger = require( 'server/models/logger' );
 const logger = new Logger( path.basename( __filename ));
 
 // ----------------------------------------------------------------------------
@@ -17,26 +18,40 @@ router.route( '/fs/info/*' ).get(( req, res ) => {
             return res.status( 500 ).end();
         }
 
-        let data = { files: [], folders: []};
-        for( let file of files ) {
-            let stats = fs.statSync( fse.rewrite( path.join( req.params['0'], file )));
-
-            let to = 'files';
-            if( stats.isDirectory()) {
-                to = 'folders';
-            }
-
-            data[to].push({
-                name: file,
-                size: stats.size,
-                path: req.params['0'],
-                right: fse.right( stats.mode ),
-                btime: stats.birthtime,
-                mtime: stats.mtime
-            });
+        for( let i in files ) {
+            files[i] = fse.rewrite( path.join( req.params['0'], files[i] ));
         }
 
-        res.json( data );
+        async.map( files, fs.stat, function( error, stats ) {
+            if( error ) {
+                logger.err( error.message );
+
+                return res.status( 500 ).end();
+            }
+
+            let data = {
+                files: [],
+                folders: []
+            };
+
+            for( let i in files ) {
+                let to = 'files';
+                if( stats[i].isDirectory()) {
+                    to = 'folders';
+                }
+
+                data[to].push({
+                    name: path.basename( files[i] ),
+                    size: stats[i].size,
+                    path: req.params['0'],
+                    right: fse.right( stats[i].mode ),
+                    btime: stats[i].birthtime,
+                    mtime: stats[i].mtime
+                });
+            }
+
+            res.json( data );
+        });
     });
 });
 

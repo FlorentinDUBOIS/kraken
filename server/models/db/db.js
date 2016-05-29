@@ -1,7 +1,7 @@
 // ----------------------------------------------------------------------------
 // requirements
 const mongoose = require( 'mongoose' );
-const Logger   = require( '../logger' );
+const Logger   = require( 'server/models/logger' );
 const path     = require( 'path' );
 const logger   = new Logger( path.basename( __filename ));
 

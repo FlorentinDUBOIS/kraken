@@ -2,8 +2,8 @@
 // requirements
 const router = require( 'express' ).Router();
 const path   = require( 'path' );
-const User   = require( '../models/db' ).models.User;
-const Logger = require( '../models/logger' );
+const User   = require( 'server/models/db' ).models.User;
+const Logger = require( 'server/models/logger' );
 const logger = new Logger( path.basename( __filename ));
 
 // ----------------------------------------------------------------------------
@@ -12,11 +12,11 @@ router.all( '*', ( req, res, next ) => {
     let get  = ['/'];
     let post = ['/log'];
 
-    if( req.method == 'GET'  && get.indexOf( req.params['0'] ) != -1 ) {
+    if( req.method === 'GET'  && get.indexOf( req.params['0'] ) !== -1 ) {
         return next();
     }
 
-    if( req.method == 'POST' && post.indexOf( req.params['0'] ) != -1 ) {
+    if( req.method === 'POST' && post.indexOf( req.params['0'] ) !== -1 ) {
         return next();
     }
 

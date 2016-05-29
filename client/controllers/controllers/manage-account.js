@@ -10,7 +10,7 @@ filemanager.controller( 'filemanager.manageAccount', ['$scope', '$http', '$trans
             $scope.users = res.data;
             $scope.user  = null;
         }, function( res ) {
-            if( res.status == 403 ) {
+            if( res.status === 403 ) {
                 return $translate( 'request.authorized' ).then( function( trad ) {
                     $mdToast.showSimple( trad );
                 });
@@ -41,7 +41,7 @@ filemanager.controller( 'filemanager.manageAccount', ['$scope', '$http', '$trans
         $http.delete( 'users/' + $scope.users[$index]._id ).then( function() {
             $scope.getUsers();
         }, function( res ) {
-            if( res.status == 403 ) {
+            if( res.status === 403 ) {
                 return $translate( 'request.authorized' ).then( function( trad ) {
                     $mdToast.showSimple( trad );
                 });
@@ -60,7 +60,7 @@ filemanager.controller( 'filemanager.manageAccount', ['$scope', '$http', '$trans
             $http.put( 'users', $scope.user ).then( function() {
                 $scope.getUsers();
             }, function( res ) {
-                if( res.status == 403 ) {
+                if( res.status === 403 ) {
                     return $translate( 'request.authorized' ).then( function( trad ) {
                         $mdToast.showSimple( trad );
                     });
@@ -74,7 +74,7 @@ filemanager.controller( 'filemanager.manageAccount', ['$scope', '$http', '$trans
             $http.post( 'users', $scope.user ).then( function() {
                 $scope.getUsers();
             }, function( res ) {
-                if( res.status == 403 ) {
+                if( res.status === 403 ) {
                     return $translate( 'request.authorized' ).then( function( trad ) {
                         $mdToast.showSimple( trad );
                     });

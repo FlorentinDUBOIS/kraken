@@ -11,7 +11,7 @@ filemanager.controller( 'filemanager.login', ['$scope', '$http', '$translate', '
 
             $window.location.assign( res.data.redirect );
         }, function( res ) {
-            if( res.status == 403 || !res.data.login ) {
+            if( res.status === 403 || !res.data.login ) {
                 return $translate( 'login.wrong' ).then( function( trad ) {
                     $mdToast.showSimple( trad );
                 });

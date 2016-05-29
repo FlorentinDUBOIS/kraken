@@ -3,8 +3,8 @@
 const router = require( 'express' ).Router();
 const path   = require( 'path' );
 const sha512 = require( 'sha512' );
-const User   = require( '../models/db' ).models.User;
-const Logger = require( '../models/logger' );
+const User   = require( 'server/models/db' ).models.User;
+const Logger = require( 'server/models/logger' );
 const logger = new Logger( path.basename( __filename ));
 
 

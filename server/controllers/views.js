@@ -7,7 +7,7 @@ const path   = require( 'path' );
 // functions
 function rewrite( file ) {
     return path.join( __dirname, '../..', 'client/views', file );
-};
+}
 
 // ----------------------------------------------------------------------------
 // routes

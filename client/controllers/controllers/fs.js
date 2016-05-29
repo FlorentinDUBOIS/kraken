@@ -12,12 +12,12 @@ filemanager.controller( 'filemanager.fs', ['$scope', '$http', '$translate', '$md
         var data = [];
         for( var i = 0; i < dirs.length; ++i ) {
             if( i +1 < dirs.length ) {
-                if( dirs[i+1] == '..' ) {
+                if( dirs[i+1] === '..' ) {
                     continue;
                 }
             }
 
-            if( dirs[i] == '..' ) {
+            if( dirs[i] === '..' ) {
                 continue;
             }
 
@@ -25,7 +25,7 @@ filemanager.controller( 'filemanager.fs', ['$scope', '$http', '$translate', '$md
         }
 
         path = data.join( '/' );
-        if( path == '' ) {
+        if( path === '' ) {
             path = '/';
         }
 

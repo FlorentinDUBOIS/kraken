@@ -1,9 +1,9 @@
 // ----------------------------------------------------------------------------
 // requirements
 const router = require( 'express' ).Router();
-const Signet = require( '../../models/db' ).models.Signet;
 const path   = require( 'path' );
-const Logger = require( '../../models/logger' );
+const Signet = require( 'server/models/db' ).models.Signet;
+const Logger = require( 'server/models/logger' );
 const logger = new Logger( path.basename( __filename ));
 
 // ----------------------------------------------------------------------------

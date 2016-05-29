@@ -1,4 +1,8 @@
 // ----------------------------------------------------------------------------
+// rootpath
+require( 'rootpath' )();
+
+// ----------------------------------------------------------------------------
 // requirements
 const express     = require( 'express' );
 const bparser     = require( 'body-parser' );
@@ -11,7 +15,7 @@ const pug         = require( 'pug' );
 const session     = require( 'express-session' );
 const uuid        = require( 'uuid' );
 const method      = require( 'method-override' );
-const Logger      = require( './server/models/logger' );
+const Logger      = require( 'server/models/logger' );
 const logger      = new Logger( path.basename( __filename ));
 
 // ----------------------------------------------------------------------------

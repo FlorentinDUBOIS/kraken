@@ -15,12 +15,43 @@ gulp.task( 'watch', ['build'], () => {
 });
 
 // ----------------------------------------------------------------------------
+// lint task
+gulp.task( 'lint', ['lint:js']);
+
+// ----------------------------------------------------------------------------
+// lint:js task
+gulp.task( 'lint:js', () => {
+    gulp.src(['server/**/*.js', 'client/controllers/**/*.js'])
+        .pipe( plugins.plumberNotifier())
+        .pipe( plugins.eslint( require( './.eslintrc' )))
+        .pipe( plugins.eslint.formatEach())
+        .pipe( plugins.eslint.failAfterError());
+});
+
+// ----------------------------------------------------------------------------
+// test task
+gulp.task( 'test', ['test:lint']);
+
+// ----------------------------------------------------------------------------
+// test:lint task
+gulp.task( 'test:lint', ['test:lint-js']);
+
+// ----------------------------------------------------------------------------
+// test:lint-js task
+gulp.task( 'test:lint-js', () => {
+     gulp.src(['server/**/*.js', 'client/controllers/**/*.js'])
+        .pipe( plugins.eslint( require( './.eslintrc' )))
+        .pipe( plugins.eslint.formatEach())
+        .pipe( plugins.eslint.failAfterError());
+});
+
+// ----------------------------------------------------------------------------
 // build
 gulp.task( 'build', ['build:js', 'build:css']);
 
 // ----------------------------------------------------------------------------
 // build:js
-gulp.task( 'build:js', () => {
+gulp.task( 'build:js', ['lint:js'], () => {
     gulp.src(['client/controllers/**/*.js'])
         .pipe( plugins.plumberNotifier())
         .pipe( plugins.concat( 'main.min.js' ))
