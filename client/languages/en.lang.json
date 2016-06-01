@@ -1,0 +1,15 @@
+{
+    "app": {
+        "name": "Kraken"
+    },
+
+    "login": {
+        "send": "Sign in",
+        "username": "Username",
+        "password": "Password",
+
+        "error": {
+            "required": "This field is required"
+        }
+    }
+}

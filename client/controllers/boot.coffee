@@ -3,7 +3,7 @@ kraken = angular.module 'florentindubois.kraken', [
     'ngAnimate'
     'ngMaterial'
     'ngMessages'
-    'ngRoutes'
+    'ngRoute'
     'ngSanitize'
     'pascalprecht.translate'
 ]

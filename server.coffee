@@ -57,7 +57,7 @@ else
 routes = require 'server/static'
 
 for i, route of routes
-    logger.info "bind route #{ route.real } to #{ route.syml }"
+    logger.info "bind route : #{ route.real } to #{ route.syml }"
 
     server.use route.syml, express.static path.join __dirname, route.real
 
