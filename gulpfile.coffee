@@ -31,6 +31,7 @@ gulp.task 'build:angular', ->
         .pipe gulp.dest 'client/dist'
         .pipe named()
         .pipe webpack()
+        .pipe gulp.dest 'client/dist'
         .pipe plugins.rename suffix: '.min'
         .pipe plugins.uglify compress: {}
         .pipe gulp.dest 'client/dist'

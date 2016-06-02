@@ -3,6 +3,12 @@
         "name": "Kraken"
     },
 
+    "request": {
+        "failure": "Request failure",
+        "notAuthorized": "Your are not authorized to perform this action",
+        "notFound": "Request document is not found"
+    },
+
     "login": {
         "send": "Sign in",
         "username": "Username",

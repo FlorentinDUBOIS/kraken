@@ -23,5 +23,8 @@ kraken.service '$user', ['$request', ( $request ) ->
     @logout = ( callback ) ->
         $request.delete '/log', callback
 
+    @isAdministrator = ( callback ) ->
+        $request.get '/administrator', callback
+
     return
 ]
