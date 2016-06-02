@@ -11,6 +11,9 @@ kraken.service '$user', ['$request', ( $request ) ->
     @getAll = ( callback ) ->
         $request.get '/users', callback
 
+    @isLog = ( callback ) ->
+        $request.get '/log', callback
+
     @login = ( username, password, callback ) ->
         $request.post '/log',
             username: username
@@ -19,4 +22,6 @@ kraken.service '$user', ['$request', ( $request ) ->
 
     @logout = ( callback ) ->
         $request.delete '/log', callback
+
+    return
 ]

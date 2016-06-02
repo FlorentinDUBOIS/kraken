@@ -24,7 +24,48 @@ kraken.config([
   }
 ]);
 
-kraken.controller('kraken.login', ['$scope', function($scope) {}]);
+kraken.controller('kraken.login', [
+  '$scope', '$user', '$logger', '$translate', '$window', function($scope, $user, $logger, $translate, $window) {
+    $scope.login = {};
+    $scope.submit = function() {
+      $user.login($scope.login.username, $scope.login.password, function(error, data) {
+        if (error != null) {
+          return $logger.error(error.mmessage);
+        }
+        if (data.connected) {
+          return $translate('login.success').then(function(trad) {
+            $logger.info(trad);
+            return $window.location.assign(data.redirect);
+          });
+        } else {
+          return $translate('login.wrong').then(function(trad) {
+            return $logger.error(trad);
+          });
+        }
+      });
+      return false;
+    };
+  }
+]);
+
+kraken.controller('kraken.navigation', [
+  '$scope', '$user', '$window', '$sidenav', '$mdSidenav', function($scope, $user, $window, $sidenav, $mdSidenav) {
+    $scope.menu = [];
+    $scope.signets = [];
+    $scope.openSidenav = function() {
+      return $mdSidenav('left').toggle();
+    };
+    $scope.exit = function() {
+      return $user.logout(function(error, data) {
+        if (error == null) {
+          if (data.redirect != null) {
+            return $window.location.assign(data.redirect);
+          }
+        }
+      });
+    };
+  }
+]);
 
 kraken.filter('bytes', [
   function() {
@@ -98,7 +139,7 @@ kraken.service('$logger', [
     this.warn = function(message) {
       return $mdToast.show($mdToast.simple().textContent(message));
     };
-    return this.error = function(message) {
+    this.error = function(message) {
       return $mdToast.show($mdToast.simple().textContent(message));
     };
   }
@@ -111,18 +152,18 @@ kraken.service('$request', [
       if (res.status === 403) {
         return $translate('request.notAuthorized').then(function(trad) {
           $logger.error(trad);
-          return callback(res);
+          return callback(new Error(trad));
         });
       }
       if (res.status === 404) {
         return $translate('request.notFound').then(function(trad) {
           $logger.error(trad);
-          return callback(res);
+          return callback(new Error(trad));
         });
       }
       return $translate('request.failure').then(function(trad) {
         $logger.error(trad);
-        return callback(res);
+        return callback(new Error(trad));
       });
     };
     this.get = function(url, callback) {
@@ -153,7 +194,7 @@ kraken.service('$request', [
         return errorHandler(res, callback);
       });
     };
-    return this["delete"] = function(url, callback) {
+    this["delete"] = function(url, callback) {
       return $http["delete"](url).then(function(res) {
         return callback(null, res.data);
       }, function(res) {
@@ -162,6 +203,8 @@ kraken.service('$request', [
     };
   }
 ]);
+
+kraken.service('$sidenav', ['$request', function($request) {}]);
 
 kraken.service('$user', [
   '$request', function($request) {
@@ -177,13 +220,16 @@ kraken.service('$user', [
     this.getAll = function(callback) {
       return $request.get('/users', callback);
     };
+    this.isLog = function(callback) {
+      return $request.get('/log', callback);
+    };
     this.login = function(username, password, callback) {
       return $request.post('/log', {
         username: username,
         password: password
       }, callback);
     };
-    return this.logout = function(callback) {
+    this.logout = function(callback) {
       return $request["delete"]('/log', callback);
     };
   }

@@ -15,33 +15,37 @@ html( ng-app="florentindubois.kraken" )
         link( rel="stylesheet" type="text/css" href="angular/angular-material.min.css" )
         link( rel="stylesheet" type="text/css" href="dist/imports.min.css" )
 
-    body( layout="column" )
+    body( layout="column" ng-controller="kraken.navigation" )
         md-toolbar
             div.md-toolbar-tools
+                md-button.md-icon-button.hide-gt-xs.show-xs.show-sm.show-md( ng-click="openSidenav()" )
+                    md-icon menu
+
                 h1.md-headline {{ 'app.name' | translate | ucfirst }}
 
-        md-content( layout="row" layout-align-md="center center" layout-align-lg="center center" layout-align-xl="center center" flex="100" )
-            md-card( flex="40" flex-md="60" flex-sm="100" flex-xs="100" )
-                md-toolbar
-                    div.md-toolbar-tools
-                        h2.md-headline {{ 'login.send' | translate | ucfirst }}
+                span( flex )
 
-                md-card-content
-                    form( name="formLogin" accept-charset="utf-8"  autocomplete="off" ng-controller="kraken.login" ng-submit="submit()" )
-                        md-input-container.md-block
-                            label {{ 'login.username' | translate | ucfirst }}
-                            input( type="text" name="username" ng-model="login.username" required )
-                            div( ng-messages="formLogin.username.$error" )
-                                div( ng-message="required" ) {{ 'login.error.required' | translate | ucfirst }}
+                md-button( ng-click="exit()" ) {{ 'toolbar.exit' | translate | ucfirst }}
 
-                        md-input-container.md-block
-                            label {{ 'login.password' | translate | ucfirst }}
-                            input( type="password" name="password" ng-model="login.password" required )
-                            div( ng-messages="formLogin.password.$error" )
-                                div( ng-message="required" ) {{ 'login.error.required' | translate | ucfirst }}
+        md-content( layout="column" ng-cloak flex )
+            section( layout="row" flex )
+                md-sidenav.md-sidenav-left.md-whiteframe-z2( md-component-id="left" md-is-locked-open="$mdMedia( 'gt-md' )" )
+                    div( flex )
+                        md-list
+                            md-list-item( md-ink-ripple ng-repeat="item in menu" )
+                                a( ng-href="{{ item.link }}" )
+                                    md-icon {{ item.icon }}
+                                    span {{ item.name | translate | ucfirst }}
 
-                        div( layout="row" layout-align="end center" )
-                            md-button( type="submit" ).md-raised.md-primary {{ 'login.send' | translate | ucfirst }}
+                            md-divider( ng-show="signets.length != 0 && user.length != 0" )
+
+                            md-list-item( md-ink-ripple ng-repeat="item in signets" )
+                                a( ng-href="{{ item.path }}" )
+                                    md-icon {{ item.icon }}
+                                    span {{ item.name | translate | ucfirst }}
+
+                md-content( flex layout-padding )
+                    div( flex ng-view )
 
         script( type="application/javascript" src="angular/angular.min.js" )
         script( type="application/javascript" src="angular/angular-animate.min.js" )

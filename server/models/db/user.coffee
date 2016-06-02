@@ -5,10 +5,30 @@ mongoose = require 'server/models/db/database'
 # -----------------------------------------------------------------------------
 # exports
 module.exports = mongoose.model 'user', new mongoose.Schema
-    username:      mongoose.Schema.Types.String
-    password:      mongoose.Schema.Types.String
-    firstname:     mongoose.Schema.Types.String
-    lastname:      mongoose.Schema.Types.String
-    salt:          mongoose.Schema.Types.String
-    email:         mongoose.Schema.Types.String
-    administrator: mongoose.Schema.Types.Boolean
+    username:
+        type: mongoose.Schema.Types.String
+        default: 'user'
+
+    password:
+        type: mongoose.Schema.Types.String
+        default: ''
+
+    firstname:
+        type: mongoose.Schema.Types.String
+        default: ''
+
+    lastname:
+        type: mongoose.Schema.Types.String
+        default: ''
+
+    salt:
+        type: mongoose.Schema.Types.String
+        default: ''
+
+    email:
+        type: mongoose.Schema.Types.String
+        default: ''
+
+    administrator:
+        type: mongoose.Schema.Types.Boolean
+        default: false

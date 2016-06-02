@@ -7,9 +7,15 @@
         "send": "Sign in",
         "username": "Username",
         "password": "Password",
+        "success": "Successfully connected",
+        "wrong": "Wrong password or username",
 
         "error": {
             "required": "This field is required"
         }
+    },
+
+    "toolbar": {
+        "exit": "Exit"
     }
 }

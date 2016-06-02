@@ -8,4 +8,5 @@ kraken.service '$logger', ['$mdToast', ( $mdToast ) ->
     @error = ( message ) ->
         $mdToast.show $mdToast.simple().textContent message
 
+    return
 ]

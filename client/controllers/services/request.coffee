@@ -6,18 +6,18 @@ kraken.service '$request', ['$http', '$logger', '$translate', ( $http, $logger, 
             return $translate( 'request.notAuthorized' ).then ( trad ) ->
                 $logger.error trad
 
-                callback res
+                callback new Error trad
 
         if res.status is 404
             return $translate( 'request.notFound' ).then ( trad ) ->
                 $logger.error trad
 
-                callback res
+                callback new Error trad
 
         $translate( 'request.failure' ).then ( trad ) ->
             $logger.error trad
 
-            callback res
+            callback new Error trad
 
     @get = ( url, callback ) ->
         $http.get( url ).then ( res ) ->
@@ -48,4 +48,6 @@ kraken.service '$request', ['$http', '$logger', '$translate', ( $http, $logger, 
             callback null, res.data
         , ( res ) ->
             errorHandler res, callback
+
+    return
 ]

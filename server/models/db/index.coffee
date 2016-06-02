@@ -1,4 +1,4 @@
 module.exports =
     db: require 'server/models/db/database'
-    schemas:
+    models:
         User: require 'server/models/db/user'
