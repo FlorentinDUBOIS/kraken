@@ -16,6 +16,23 @@ bparser     = require 'body-parser'
 compression = require 'compression'
 session     = require 'express-session'
 logger      = require 'server/models/logger'
+db          = require 'server/models/db'
+
+# -----------------------------------------------------------------------------
+# uncaughtException
+process.on 'uncaughtException', ( error ) ->
+    logger.error error.message
+
+# -----------------------------------------------------------------------------
+# exit
+process.on 'exit', ->
+    logger.info 'close connection to database'
+
+    db.mongoose.disconnect ( error ) ->
+        if error?
+            return logger.error error.message
+
+        logger.info 'connection closed'
 
 # -----------------------------------------------------------------------------
 # create server

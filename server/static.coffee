@@ -9,4 +9,5 @@ module.exports = [
     { syml: '/angular', real: 'node_modules/angular-translate/dist' },
 
     { syml: '/dist',    real: 'client/dist' }
+    { syml: '/assets',  real: 'client/assets' }
 ]
