@@ -1,6 +1,6 @@
 # -----------------------------------------------------------------------------
 # navigation controller
-kraken.controller 'kraken.navigation', ['$scope', '$user', '$window', '$sidenav', '$mdSidenav', ( $scope, $user, $window, $sidenav, $mdSidenav ) ->
+kraken.controller 'kraken.navigation', ['$scope', '$user', '$window', '$mdSidenav', '$menu', ( $scope, $user, $window, $mdSidenav, $menu ) ->
     $scope.menu    = []
     $scope.signets = []
 
@@ -14,6 +14,11 @@ kraken.controller 'kraken.navigation', ['$scope', '$user', '$window', '$sidenav'
     $scope.exit = ->
         $user.logout ( error, data ) ->
             $window.location.assign data.redirect if data.redirect? unless error?
+
+    # -----------------------------------------------------------------------------
+    # init
+    $menu.getItems ( error, items ) ->
+        $scope.menu = items unless error?
 
     return
 ]

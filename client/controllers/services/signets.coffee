@@ -1,5 +1,5 @@
 # -----------------------------------------------------------------------------
-# sidenav service
-kraken.service '$sidenav', ['$request', ( $request ) ->
+# signets service
+kraken.service '$signets', ['$request', ( $request ) ->
     return
 ]

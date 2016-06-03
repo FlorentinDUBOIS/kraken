@@ -3,6 +3,15 @@
         "name": "Kraken"
     },
 
+    "toolbar": {
+        "exit": "Exit"
+    },
+
+    "navigation": {
+        "fs": "File system",
+        "manageAccount": "Manage account"
+    },
+
     "request": {
         "failure": "Request failure",
         "notAuthorized": "Your are not authorized to perform this action",
@@ -21,7 +30,26 @@
         }
     },
 
-    "toolbar": {
-        "exit": "Exit"
+    "manageAccount": {
+        "username": "User name",
+        "password": "Password",
+        "firstname": "First name",
+        "lastname": "Last name",
+        "email": "Mail",
+        "administrator": "His an administrator ?",
+        "submit": "Save",
+        "remove": "Remove",
+        "userInformation": "User information",
+        "userInformationComplete": "Complete information about user",
+        "selectUser": "Select user to modify",
+        "addAdministrator": "Create a new user",
+        "removed": "Successfuly removed an user",
+        "updated": "Successfuly updated an user",
+        "created": "Successfuly created an user",
+
+        "error": {
+            "required": "This is required.",
+            "email": "This is not a correct email."
+        }
     }
 }

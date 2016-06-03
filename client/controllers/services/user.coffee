@@ -3,10 +3,13 @@ kraken.service '$user', ['$request', ( $request ) ->
         $request.get "/users/#{ _id }", callback
 
     @update = ( user, callback ) ->
-        $request.put "/users/#{ user._id }", data,  callback
+        $request.put "/users/#{ user._id }", user,  callback
 
-    @delete = ( _id, callback ) ->
+    @remove = ( _id, callback ) ->
         $request.delete "/users/#{ _id }", callback
+
+    @create = ( user, callback ) ->
+        $request.post '/users', user, callback
 
     @getAll = ( callback ) ->
         $request.get '/users', callback

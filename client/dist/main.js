@@ -82,8 +82,8 @@
 
 	kraken.config([
 	  '$mdThemingProvider', function($mdThemingProvider) {
-	    return $mdThemingProvider.theme('default').primaryPalette('blue-grey', {
-	      'default': '800'
+	    return $mdThemingProvider.theme('default').primaryPalette('blue', {
+	      'default': '900'
 	    }).accentPalette('pink').warnPalette('red');
 	  }
 	]);
@@ -130,10 +130,70 @@
 	  }
 	]);
 
-	kraken.controller('kraken.manageAccount', [function() {}]);
+	kraken.controller('kraken.manageAccount', [
+	  '$scope', '$user', '$translate', '$logger', function($scope, $user, $translate, $logger) {
+	    $scope.users = [];
+	    $scope.user = {};
+	    $scope.getUsers = function() {
+	      return $user.getAll(function(error, users) {
+	        if (error == null) {
+	          $scope.users = users;
+	          $scope.updateUser.$setPristine();
+	          $scope.updateUser.$setUntouched();
+	          return $scope.user = {};
+	        }
+	      });
+	    };
+	    $scope.select = function($index) {
+	      return $scope.user = $scope.users[$index];
+	    };
+	    $scope.add = function() {
+	      $scope.users.push({});
+	      return $scope.select($scope.users.length - 1);
+	    };
+	    $scope.remove = function($index) {
+	      return $user.remove($scope.users[$index]._id, function(error, data) {
+	        if (error == null) {
+	          if (data.removed === true) {
+	            return $translate('manageAccount.removed').then(function(trad) {
+	              $logger.info(trad);
+	              return $scope.getUsers();
+	            });
+	          }
+	        }
+	      });
+	    };
+	    $scope.save = function() {
+	      if ($scope.user._id != null) {
+	        return $user.update($scope.user, function(error, data) {
+	          if (error == null) {
+	            if (data.updated === true) {
+	              return $translate('manageAccount.updated').then(function(trad) {
+	                $logger.info(trad);
+	                return $scope.getUsers();
+	              });
+	            }
+	          }
+	        });
+	      } else {
+	        return $user.create($scope.user, function(error, data) {
+	          if (error == null) {
+	            if (data.created === true) {
+	              return $translate('manageAccount.created').then(function(trad) {
+	                $logger.info(trad);
+	                return $scope.getUsers();
+	              });
+	            }
+	          }
+	        });
+	      }
+	    };
+	    $scope.getUsers();
+	  }
+	]);
 
 	kraken.controller('kraken.navigation', [
-	  '$scope', '$user', '$window', '$sidenav', '$mdSidenav', function($scope, $user, $window, $sidenav, $mdSidenav) {
+	  '$scope', '$user', '$window', '$mdSidenav', '$menu', function($scope, $user, $window, $mdSidenav, $menu) {
 	    $scope.menu = [];
 	    $scope.signets = [];
 	    $scope.openSidenav = function() {
@@ -148,6 +208,11 @@
 	        }
 	      });
 	    };
+	    $menu.getItems(function(error, items) {
+	      if (error == null) {
+	        return $scope.menu = items;
+	      }
+	    });
 	  }
 	]);
 
@@ -251,6 +316,14 @@
 	  }
 	]);
 
+	kraken.service('$menu', [
+	  '$request', function($request) {
+	    this.getItems = function(callback) {
+	      return $request.get('/menu', callback);
+	    };
+	  }
+	]);
+
 	kraken.service('$request', [
 	  '$http', '$logger', '$translate', function($http, $logger, $translate) {
 	    var errorHandler;
@@ -310,7 +383,7 @@
 	  }
 	]);
 
-	kraken.service('$sidenav', ['$request', function($request) {}]);
+	kraken.service('$signets', ['$request', function($request) {}]);
 
 	kraken.service('$user', [
 	  '$request', function($request) {
@@ -318,10 +391,13 @@
 	      return $request.get("/users/" + _id, callback);
 	    };
 	    this.update = function(user, callback) {
-	      return $request.put("/users/" + user._id, data, callback);
+	      return $request.put("/users/" + user._id, user, callback);
 	    };
-	    this["delete"] = function(_id, callback) {
+	    this.remove = function(_id, callback) {
 	      return $request["delete"]("/users/" + _id, callback);
+	    };
+	    this.create = function(user, callback) {
+	      return $request.post('/users', user, callback);
 	    };
 	    this.getAll = function(callback) {
 	      return $request.get('/users', callback);
@@ -374,6 +450,13 @@
 		"app": {
 			"name": "Kraken"
 		},
+		"toolbar": {
+			"exit": "Exit"
+		},
+		"navigation": {
+			"fs": "File system",
+			"manageAccount": "Manage account"
+		},
 		"request": {
 			"failure": "Request failure",
 			"notAuthorized": "Your are not authorized to perform this action",
@@ -389,8 +472,26 @@
 				"required": "This field is required"
 			}
 		},
-		"toolbar": {
-			"exit": "Exit"
+		"manageAccount": {
+			"username": "User name",
+			"password": "Password",
+			"firstname": "First name",
+			"lastname": "Last name",
+			"email": "Mail",
+			"administrator": "His an administrator ?",
+			"submit": "Save",
+			"remove": "Remove",
+			"userInformation": "User information",
+			"userInformationComplete": "Complete information about user",
+			"selectUser": "Select user to modify",
+			"addAdministrator": "Create a new user",
+			"removed": "Successfuly removed an user",
+			"updated": "Successfuly updated an user",
+			"created": "Successfuly created an user",
+			"error": {
+				"required": "This is required.",
+				"email": "This is not a correct email."
+			}
 		}
 	};
 
