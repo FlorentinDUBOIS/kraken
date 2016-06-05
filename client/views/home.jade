@@ -39,7 +39,7 @@ html( ng-app="florentindubois.kraken" )
                                     span {{ item.name | translate | ucfirst }}
 
                             md-divider( ng-show="bookmarks.length != 0 && user.length != 0" )
-                            md-subheader( ng-show="bookmarks.length <= 1" ) {{ 'navigation.bookmark.singular' | translate | ucfirst }}
+                            md-subheader( ng-show="bookmarks.length == 1" ) {{ 'navigation.bookmark.singular' | translate | ucfirst }}
                             md-subheader( ng-show="bookmarks.length >  1" ) {{ 'navigation.bookmark.plural' | translate | ucfirst }}
                             md-list-item( md-ink-ripple ng-repeat="item in bookmarks" )
                                 a( ng-href="#/fs/{{ item.path }}" )
