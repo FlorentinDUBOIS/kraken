@@ -9,7 +9,13 @@
 
     "navigation": {
         "fs": "File system",
-        "manageAccount": "Manage account"
+        "manageAccount": "Manage account",
+        "menu": "Menu",
+        "removeBookmark": "Successfuly removed bookmark",
+        "bookmark": {
+            "singular": "Bookmark",
+            "plural": "Bookmarks"
+        }
     },
 
     "request": {

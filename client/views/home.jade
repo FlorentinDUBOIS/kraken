@@ -32,17 +32,20 @@ html( ng-app="florentindubois.kraken" )
                 md-sidenav.md-sidenav-left.md-whiteframe-z2( md-component-id="left" md-is-locked-open="$mdMedia( 'gt-md' )" )
                     div( flex )
                         md-list
+                            md-subheader {{ 'navigation.menu' | translate | ucfirst }}
                             md-list-item( md-ink-ripple ng-repeat="item in menu" )
                                 a( ng-href="{{ item.link }}" )
                                     md-icon {{ item.icon }}
                                     span {{ item.name | translate | ucfirst }}
 
-                            md-divider( ng-show="signets.length != 0 && user.length != 0" )
-
-                            md-list-item( md-ink-ripple ng-repeat="item in signets" )
-                                a( ng-href="{{ item.path }}" )
+                            md-divider( ng-show="bookmarks.length != 0 && user.length != 0" )
+                            md-subheader( ng-show="bookmarks.length <= 1" ) {{ 'navigation.bookmark.singular' | translate | ucfirst }}
+                            md-subheader( ng-show="bookmarks.length >  1" ) {{ 'navigation.bookmark.plural' | translate | ucfirst }}
+                            md-list-item( md-ink-ripple ng-repeat="item in bookmarks" )
+                                a( ng-href="#/fs/{{ item.path }}" )
                                     md-icon {{ item.icon }}
-                                    span {{ item.name | translate | ucfirst }}
+                                    span( style="width: 172px" ) {{ item.name | translate | ucfirst }}
+                                    md-icon( ng-click="removeBookmark( item._id )" ) delete
 
                 md-content( flex layout-padding )
                     div( flex ng-view )

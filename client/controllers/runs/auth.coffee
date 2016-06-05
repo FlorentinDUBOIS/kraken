@@ -1,7 +1,7 @@
 # -----------------------------------------------------------------------------
 # verify if is administrator
 kraken.run ['$rootScope', '$location', '$user', '$translate', '$logger', ( $rootScope, $location, $user, $translate, $logger ) ->
-    paths = []
+    paths = ['/manage-account']
 
     $rootScope.$on '$routeChangeStart', ->
         return if -1 is paths.indexOf $location.path()

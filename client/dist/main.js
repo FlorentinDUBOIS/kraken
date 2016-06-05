@@ -64,6 +64,10 @@
 	        controller: 'fs',
 	        templateUrl: 'views/fs.jade'
 	      }, {
+	        path: '/fs/:path',
+	        controller: 'fs',
+	        templateUrl: 'views/fs.jade'
+	      }, {
 	        path: '/manage-account',
 	        controller: 'manageAccount',
 	        templateUrl: 'views/manage-account.jade'
@@ -102,7 +106,16 @@
 	  }
 	]);
 
-	kraken.controller('kraken.fs', [function() {}]);
+	kraken.controller('kraken.fs', [
+	  '$routeParams', function($routeParams) {
+	    var path;
+	    if ($routeParams.path != null) {
+	      path = $routeParams.path;
+	    } else {
+	      path = '/';
+	    }
+	  }
+	]);
 
 	kraken.controller('kraken.login', [
 	  '$scope', '$user', '$logger', '$translate', '$window', '$timeout', function($scope, $user, $logger, $translate, $window, $timeout) {
@@ -193,9 +206,9 @@
 	]);
 
 	kraken.controller('kraken.navigation', [
-	  '$scope', '$user', '$window', '$mdSidenav', '$menu', function($scope, $user, $window, $mdSidenav, $menu) {
+	  '$scope', '$user', '$window', '$mdSidenav', '$menu', '$bookmarks', '$translate', '$logger', function($scope, $user, $window, $mdSidenav, $menu, $bookmarks, $translate, $logger) {
 	    $scope.menu = [];
-	    $scope.signets = [];
+	    $scope.bookmarks = [];
 	    $scope.openSidenav = function() {
 	      return $mdSidenav('left').toggle();
 	    };
@@ -208,6 +221,26 @@
 	        }
 	      });
 	    };
+	    $scope.removeBookmark = function(_id) {
+	      return $bookmarks.remove(_id, function(error, data) {
+	        if (error == null) {
+	          if (data.removed) {
+	            return $translate('navigation.removeBookmark').then(function(trad) {
+	              $logger.info(trad);
+	              return $scope.getBookmarks();
+	            });
+	          }
+	        }
+	      });
+	    };
+	    $scope.getBookmarks = function() {
+	      return $bookmarks.getAll(function(error, bookmarks) {
+	        if (error == null) {
+	          return $scope.bookmarks = bookmarks;
+	        }
+	      });
+	    };
+	    $scope.getBookmarks();
 	    $menu.getItems(function(error, items) {
 	      if (error == null) {
 	        return $scope.menu = items;
@@ -276,6 +309,55 @@
 	        input = input.toUpperCase();
 	      }
 	      return input;
+	    };
+	  }
+	]);
+
+	kraken.run([
+	  '$rootScope', '$location', '$user', '$translate', '$logger', function($rootScope, $location, $user, $translate, $logger) {
+	    var paths;
+	    paths = ['/manage-account'];
+	    $rootScope.$on('$routeChangeStart', function() {
+	      if (-1 === paths.indexOf($location.path())) {
+	        return;
+	      }
+	      return $user.isAdministrator(function(error, data) {
+	        if (error == null) {
+	          if (!data.administrator) {
+	            return $translate('request.notAuthorized').then(function(trad) {
+	              $logger.error(trad);
+	              return $location.path('/fs');
+	            });
+	          }
+	        }
+	      });
+	    });
+	  }
+	]);
+
+	kraken.service('$bookmarks', [
+	  '$request', function($request) {
+	    this.get = function(_id, callback) {
+	      return $request.get("/bookmarks/" + _id, callback);
+	    };
+	    this.getAll = function(callback) {
+	      return $request.get('/bookmarks', callback);
+	    };
+	    this.create = function(path, callback) {
+	      return $request.post('/bookmarks', {
+	        path: path
+	      }, callback);
+	    };
+	    this.update = function(_id, path, callback) {
+	      return $request.put("/bookmarks/" + _id, {
+	        path: path
+	      }, callback);
+	    };
+	    this.remove = function(_id, callback) {
+	      return $request["delete"]("/bookmarks/" + _id, callback);
+	    };
+	    this.removeAll = function(callback) {
+	      return $request["delete"]('/bookmarks', callback);
 	    };
 	  }
 	]);
@@ -363,8 +445,6 @@
 	  }
 	]);
 
-	kraken.service('$signets', ['$request', function($request) {}]);
-
 	kraken.service('$user', [
 	  '$request', function($request) {
 	    this.get = function(_id, callback) {
@@ -397,28 +477,6 @@
 	    this.isAdministrator = function(callback) {
 	      return $request.get('/administrator', callback);
 	    };
-	  }
-	]);
-
-	kraken.run([
-	  '$rootScope', '$location', '$user', '$translate', '$logger', function($rootScope, $location, $user, $translate, $logger) {
-	    var paths;
-	    paths = [];
-	    $rootScope.$on('$routeChangeStart', function() {
-	      if (-1 === paths.indexOf($location.path())) {
-	        return;
-	      }
-	      return $user.isAdministrator(function(error, data) {
-	        if (error == null) {
-	          if (!data.administrator) {
-	            return $translate('request.notAuthorized').then(function(trad) {
-	              $logger.error(trad);
-	              return $location.path('/fs');
-	            });
-	          }
-	        }
-	      });
-	    });
 	  }
 	]);
 
@@ -457,7 +515,13 @@
 		},
 		"navigation": {
 			"fs": "File system",
-			"manageAccount": "Manage account"
+			"manageAccount": "Manage account",
+			"menu": "Menu",
+			"removeBookmark": "Successfuly removed bookmark",
+			"bookmark": {
+				"singular": "Bookmark",
+				"plural": "Bookmarks"
+			}
 		},
 		"request": {
 			"failure": "Request failure",

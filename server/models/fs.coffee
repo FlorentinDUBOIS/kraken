@@ -1,16 +1,13 @@
 # -----------------------------------------------------------------------------
 # requirements
-router = require( 'express' ).Router()
+path = require 'path'
 
 # -----------------------------------------------------------------------------
-# router
-router
-    .route '/administrator'
-    .get ( req, res ) ->
-        return res.status( 500 ).end() unless req.session.user?
-
-        res.json administrator: req.session.user.administrator
+# function
+rewrite = ( filename ) ->
+    path.join __dirname, '../..', 'mount', filename
 
 # -----------------------------------------------------------------------------
 # exports
-module.exports = router
+module.exports =
+    rewrite: rewrite
