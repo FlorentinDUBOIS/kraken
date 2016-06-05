@@ -16,6 +16,7 @@ user = new User
     username: 'default'
     password: sha512( "#{ salt }:password" ).toString 'hex'
     salt: salt
+    administrator: true
 
 user.save ( error ) ->
     if error
