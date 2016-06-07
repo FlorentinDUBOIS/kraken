@@ -5,6 +5,7 @@ fs     = require 'fs'
 pfs    = require 'server/models/fs'
 async  = require 'async'
 path   = require 'path'
+logger = require 'server/models/logger'
 
 # -----------------------------------------------------------------------------
 # router

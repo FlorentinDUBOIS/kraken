@@ -83,6 +83,8 @@
         "rename": "Rename",
         "unarchive": "Decompress",
         "bookmarks": "Bookmarks",
-        "bookmarkCreated": "Bookmark created"
+        "bookmarkCreated": "Bookmark created",
+        "removeFile": "Successfuly removed file",
+        "removeFolder": "Successfuly removed folder"
     }
 }

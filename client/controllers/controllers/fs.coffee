@@ -1,4 +1,4 @@
-kraken.controller 'kraken.fs', ['$scope', '$routeParams', '$fileSystem', '$bookmarks', '$logger', ( $scope, $routeParams, $fileSystem, $bookmarks, $logger ) ->
+kraken.controller 'kraken.fs', ['$scope', '$routeParams', '$fileSystem', '$bookmarks', '$logger', '$translate', ( $scope, $routeParams, $fileSystem, $bookmarks, $logger, $translate ) ->
     # -----------------------------------------------------------------------------
     # get path
     $scope.path     = if $routeParams.path? then $routeParams.path else '/'
@@ -71,6 +71,26 @@ kraken.controller 'kraken.fs', ['$scope', '$routeParams', '$fileSystem', '$bookm
                 if data.created
                     $translate( 'fs.bookmarkCreated' ).then ( trad ) ->
                         $logger.info trad
+
+    # -----------------------------------------------------------------------------
+    # remove file
+    $scope.removeFile = ( filename ) ->
+        $fileSystem.removeFile $scope.realpath( "#{ $scope.path }/#{ filename }" ), ( error, data ) ->
+            unless error?
+                if data.removed is true
+                    $translate( 'fs.removeFile' ).then ( trad ) ->
+                        $logger.info trad
+                        $scope.open $scope.path
+
+    # -----------------------------------------------------------------------------
+    # remove file
+    $scope.removeFolder = ( filename ) ->
+        $fileSystem.removeFolder $scope.realpath( "#{ $scope.path }/#{ filename }" ), ( error, data ) ->
+            unless error?
+                if data.removed is true
+                    $translate( 'fs.removeFolder' ).then ( trad ) ->
+                        $logger.info trad
+                        $scope.open $scope.path
 
     # -----------------------------------------------------------------------------
     # init

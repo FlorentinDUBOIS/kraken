@@ -59,7 +59,7 @@ md-content( flex="100" layout="column" )
                                         span {{ 'fs.unarchive' | translate | ucfirst }}
 
                                 md-menu-item
-                                    md-button
+                                    md-button( ng-click="removeFolder( folder.name )" )
                                         md-icon( md-menu-align-target ) delete
                                         span {{ 'fs.delete' | translate | ucfirst }}
 
@@ -102,7 +102,7 @@ md-content( flex="100" layout="column" )
                                         span {{ 'fs.unarchive' | translate | ucfirst }}
 
                                 md-menu-item
-                                    md-button
+                                    md-button( ng-click="removeFile( file.name )" )
                                         md-icon( md-menu-align-target ) delete
                                         span {{ 'fs.delete' | translate | ucfirst }}
 

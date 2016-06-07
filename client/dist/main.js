@@ -107,7 +107,7 @@
 	]);
 
 	kraken.controller('kraken.fs', [
-	  '$scope', '$routeParams', '$fileSystem', '$bookmarks', '$logger', function($scope, $routeParams, $fileSystem, $bookmarks, $logger) {
+	  '$scope', '$routeParams', '$fileSystem', '$bookmarks', '$logger', '$translate', function($scope, $routeParams, $fileSystem, $bookmarks, $logger, $translate) {
 	    $scope.path = $routeParams.path != null ? $routeParams.path : '/';
 	    $scope.dirnames = $scope.path.split('/');
 	    $scope.removeUseless = function(dirnames) {
@@ -175,6 +175,30 @@
 	          if (data.created) {
 	            return $translate('fs.bookmarkCreated').then(function(trad) {
 	              return $logger.info(trad);
+	            });
+	          }
+	        }
+	      });
+	    };
+	    $scope.removeFile = function(filename) {
+	      return $fileSystem.removeFile($scope.realpath($scope.path + "/" + filename), function(error, data) {
+	        if (error == null) {
+	          if (data.removed === true) {
+	            return $translate('fs.removeFile').then(function(trad) {
+	              $logger.info(trad);
+	              return $scope.open($scope.path);
+	            });
+	          }
+	        }
+	      });
+	    };
+	    $scope.removeFolder = function(filename) {
+	      return $fileSystem.removeFolder($scope.realpath($scope.path + "/" + filename), function(error, data) {
+	        if (error == null) {
+	          if (data.removed === true) {
+	            return $translate('fs.removeFolder').then(function(trad) {
+	              $logger.info(trad);
+	              return $scope.open($scope.path);
 	            });
 	          }
 	        }
@@ -430,9 +454,15 @@
 	]);
 
 	kraken.service('$fileSystem', [
-	  '$request', function($request) {
+	  '$request', '$window', '$timeout', function($request, $window, $timeout) {
 	    this.get = function(path, callback) {
 	      return $request.get("/file-system/root/" + path, callback);
+	    };
+	    this.removeFile = function(path, callback) {
+	      return $request["delete"]("/file-system/file-menu/" + path, callback);
+	    };
+	    this.removeFolder = function(path, callback) {
+	      return $request["delete"]("/file-system/folder-menu/" + path, callback);
 	    };
 	  }
 	]);
@@ -656,7 +686,9 @@
 			"rename": "Rename",
 			"unarchive": "Decompress",
 			"bookmarks": "Bookmarks",
-			"bookmarkCreated": "Bookmark created"
+			"bookmarkCreated": "Bookmark created",
+			"removeFile": "Successfuly removed file",
+			"removeFolder": "Successfuly removed folder"
 		}
 	};
 
