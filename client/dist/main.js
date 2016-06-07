@@ -107,13 +107,24 @@
 	]);
 
 	kraken.controller('kraken.fs', [
-	  '$routeParams', function($routeParams) {
+	  '$routeParams', '$fileSystem', function($routeParams, $fileSystem) {
 	    var path;
+	    $scope.files = [];
+	    $scope.folders = [];
 	    if ($routeParams.path != null) {
 	      path = $routeParams.path;
 	    } else {
 	      path = '/';
 	    }
+	    $scope.open = function(path) {
+	      return $fileSystem.get(path, function(error, data) {
+	        if (error == null) {
+	          $scope.files = data.files;
+	          return $scope.folders = data.folders;
+	        }
+	      });
+	    };
+	    $scope.open(path);
 	  }
 	]);
 
@@ -249,6 +260,28 @@
 	  }
 	]);
 
+	kraken.run([
+	  '$rootScope', '$location', '$user', '$translate', '$logger', function($rootScope, $location, $user, $translate, $logger) {
+	    var paths;
+	    paths = ['/manage-account'];
+	    $rootScope.$on('$routeChangeStart', function() {
+	      if (-1 === paths.indexOf($location.path())) {
+	        return;
+	      }
+	      return $user.isAdministrator(function(error, data) {
+	        if (error == null) {
+	          if (!data.administrator) {
+	            return $translate('request.notAuthorized').then(function(trad) {
+	              $logger.error(trad);
+	              return $location.path('/fs');
+	            });
+	          }
+	        }
+	      });
+	    });
+	  }
+	]);
+
 	kraken.filter('bytes', [
 	  function() {
 	    return function(input, precision) {
@@ -313,28 +346,6 @@
 	  }
 	]);
 
-	kraken.run([
-	  '$rootScope', '$location', '$user', '$translate', '$logger', function($rootScope, $location, $user, $translate, $logger) {
-	    var paths;
-	    paths = ['/manage-account'];
-	    $rootScope.$on('$routeChangeStart', function() {
-	      if (-1 === paths.indexOf($location.path())) {
-	        return;
-	      }
-	      return $user.isAdministrator(function(error, data) {
-	        if (error == null) {
-	          if (!data.administrator) {
-	            return $translate('request.notAuthorized').then(function(trad) {
-	              $logger.error(trad);
-	              return $location.path('/fs');
-	            });
-	          }
-	        }
-	      });
-	    });
-	  }
-	]);
-
 	kraken.service('$bookmarks', [
 	  '$request', function($request) {
 	    this.get = function(_id, callback) {
@@ -362,7 +373,13 @@
 	  }
 	]);
 
-	kraken.service('$fileSystem', ['$request', function($request) {}]);
+	kraken.service('$fileSystem', [
+	  '$request', function($request) {
+	    this.get = function(path, callback) {
+	      return $request.get("/file-system/info/" + path, callback);
+	    };
+	  }
+	]);
 
 	kraken.service('$logger', [
 	  '$mdToast', function($mdToast) {
