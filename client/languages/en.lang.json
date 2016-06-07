@@ -57,5 +57,32 @@
             "required": "This is required.",
             "email": "This is not a correct email."
         }
+    },
+
+    "fs": {
+        "goToRoot": "Go to root folder",
+        "root": "Root",
+        "folder": "Folder(s)",
+        "file": "File(s)",
+        "download": "Download",
+        "open": "Open",
+        "name": "Name",
+        "right": "Right",
+        "action": "Action",
+        "mime": "Mime-type",
+        "size": "Size",
+        "delete": "Delete",
+        "lastModified": "Last modified",
+        "selected": "Item(s) selected",
+        "share": "Share",
+        "archive": "Compress",
+        "parent": "Parent",
+        "createNewFolder": "Create new folder",
+        "moreOptions": "More options",
+        "refresh": "Refresh",
+        "rename": "Rename",
+        "unarchive": "Decompress",
+        "bookmarks": "Bookmarks",
+        "bookmarkCreated": "Bookmark created"
     }
 }

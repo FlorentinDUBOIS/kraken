@@ -12,3 +12,17 @@
         }
     }
 }
+
+@each $position in right, left {
+    .md-float-#{$position} {
+        float: #{$position};
+    }
+
+    .md-clear-#{$position} {
+        clear: #{$position};
+    }
+}
+
+.md-clear-both {
+    clear: both;
+}

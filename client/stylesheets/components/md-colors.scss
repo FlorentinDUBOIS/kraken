@@ -387,10 +387,10 @@ $colors: (
 
 // Shade classes
 @each $color, $color_value in $shades {
-  .#{$color} {
+  .md-#{$color} {
     background-color: $color_value !important;
   }
-  .#{$color}-text {
+  .md-#{$color}-text {
     color: $color_value !important;
   }
 }

@@ -5,7 +5,52 @@ md-content( flex="100" layout="column" )
                 md-tooltip( md-direction="bottom" ) {{ folder.name }}
                 md-card-content( flex="100" layout="row" )
                     md-icon( flex="20" ) folder
-                    span( flex="80" ) {{ folder.name | truncate: 25 }}
+                    span.md-text-center( flex="60" ) {{ folder.name | truncate: 15 }}
+                    div( flex="20" )
+                        md-menu.md-secondary( flex="100" )
+                            md-button.md-icon-button( ng-click="$mdOpenMenu( $event )" )
+                                md-icon( md-menu-origin ) more_vert
+
+                            md-menu-content( width="4" )
+                                md-menu-item
+                                    md-button( ng-click="bookmark( folder.name )" )
+                                        md-icon( md-menu-align-target ) add
+                                        span {{ 'fs.bookmarks' | translate | ucfirst }}
+
+                                md-menu-item
+                                    md-button( ng-click="location( folder.name )" )
+                                        md-icon( md-menu-align-target ) folder_open
+                                        span {{ 'fs.open' | translate | ucfirst }}
+
+                                md-menu-item
+                                    md-button
+                                        md-icon( md-menu-align-target ) folder_shared
+                                        span {{ 'fs.share' | translate | ucfirst }}
+
+                                md-menu-item
+                                    md-button
+                                        md-icon( md-menu-align-target ) create
+                                        span {{ 'fs.rename' | translate | ucfirst }}
+
+                                md-menu-item
+                                    md-button
+                                        md-icon( md-menu-align-target ) file_download
+                                        span {{ 'fs.download' | translate | ucfirst }}
+
+                                md-menu-item
+                                    md-button
+                                        md-icon( md-menu-align-target ) archive
+                                        span {{ 'fs.archive' | translate | ucfirst }}
+
+                                md-menu-item
+                                    md-button
+                                        md-icon( md-menu-align-target ) unarchive
+                                        span {{ 'fs.unarchive' | translate | ucfirst }}
+
+                                md-menu-item
+                                    md-button
+                                        md-icon( md-menu-align-target ) delete
+                                        span {{ 'fs.delete' | translate | ucfirst }}
 
     md-content( flex="100" layout="row" layout-align="start start" layout-wrap )
         div( flex="20" ng-repeat="file in files" )
@@ -13,4 +58,54 @@ md-content( flex="100" layout="column" )
             md-card( flex="100" )
                 md-card-content( flex="100" layout="row" )
                     md-icon( flex="20" ) insert_drive_file
-                    span( flex="80" ) {{ file.name | truncate: 25 }}
+                    span.md-text-center( flex="60" ) {{ file.name | truncate: 15 }}
+                    div( flex="20" )
+                        md-menu.md-secondary
+                            md-button.md-icon-button( ng-click="$mdOpenMenu( $event )" )
+                                md-icon( md-menu-origin ) more_vert
+
+                            md-menu-content( width="4" )
+                                md-menu-item
+                                    md-button
+                                        md-icon( md-menu-align-target ) share
+                                        span {{ 'fs.share' | translate | ucfirst }}
+
+                                md-menu-item
+                                    md-button
+                                        md-icon( md-menu-align-target ) create
+                                        span {{ 'fs.rename' | translate | ucfirst }}
+
+                                md-menu-item
+                                    md-button
+                                        md-icon( md-menu-align-target ) file_download
+                                        span {{ 'fs.download' | translate | ucfirst }}
+
+                                md-menu-item
+                                    md-button
+                                        md-icon( md-menu-align-target ) archive
+                                        span {{ 'fs.archive' | translate | ucfirst }}
+
+                                md-menu-item
+                                    md-button
+                                        md-icon( md-menu-align-target ) unarchive
+                                        span {{ 'fs.unarchive' | translate | ucfirst }}
+
+                                md-menu-item
+                                    md-button
+                                        md-icon( md-menu-align-target ) delete
+                                        span {{ 'fs.delete' | translate | ucfirst }}
+
+    md-fab-speed-dial.md-scale.md-fixed.md-bottom-right( md-open="openFAB" md-direction="left" ng-mouseenter="openFAB = true" ng-mouseleave="openFAB = false" )
+        md-fab-trigger
+            md-button.md-fab.md-warn
+                md-tooltip( md-direction="top" ) {{ 'fs.moreOptions' | translate | lower }}
+                md-icon menu
+
+        md-fab-actions
+            md-button.md-fab.md-raised.md-mini( ng-click="open( path )" )
+                md-tooltip( md-direction="top" ) {{ 'fs.refresh' | translate | lower }}
+                md-icon refresh
+
+            md-button.md-fab.md-raised.md-mini( ng-click="open( '/' )" )
+                md-tooltip( md-direction="top" ) {{ 'fs.goToRoot' | translate | lower }}
+                md-icon folder

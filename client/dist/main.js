@@ -107,13 +107,68 @@
 	]);
 
 	kraken.controller('kraken.fs', [
-	  '$scope', '$routeParams', '$fileSystem', function($scope, $routeParams, $fileSystem) {
+	  '$scope', '$routeParams', '$fileSystem', '$bookmarks', '$logger', function($scope, $routeParams, $fileSystem, $bookmarks, $logger) {
 	    $scope.path = $routeParams.path != null ? $routeParams.path : '/';
+	    $scope.dirnames = $scope.path.split('/');
+	    $scope.realpath = function(path) {
+	      var dirname, dirnames, fpath, i;
+	      path = path.replace(/\/\//gi, '/');
+	      dirnames = path.split('/');
+	      fpath = [];
+	      for (i in dirnames) {
+	        dirname = dirnames[i];
+	        if (i + 1 < dirnames.length && dirnames[i + 1] === '..') {
+	          continue;
+	        }
+	        if (dirname === '..') {
+	          continue;
+	        }
+	        fpath.push(dirname);
+	      }
+	      if (fpath.length === 0) {
+	        return '/';
+	      } else {
+	        return fpath.join('/');
+	      }
+	    };
+	    $scope.level = function(path, level) {
+	      var dirname, dirnames, i, lpath;
+	      dirnames = path.split('/');
+	      lpath = [];
+	      for (i in dirnames) {
+	        dirname = dirnames[i];
+	        if (i < level) {
+	          lpath.push(dirname);
+	        } else {
+	          if (0 === lpath.length) {
+	            return '/';
+	          } else {
+	            return lfpath.join('/');
+	          }
+	        }
+	      }
+	    };
 	    $scope.open = function(path) {
+	      $scope.path = path;
+	      $scope.dirnames = path.split('/');
 	      return $fileSystem.get(path, function(error, data) {
 	        if (error == null) {
 	          $scope.files = data.files;
 	          return $scope.folders = data.folders;
+	        }
+	      });
+	    };
+	    $scope.location = function(filename) {
+	      return $scope.open($scope.realpath($scope.path + "/" + filename));
+	    };
+	    $scope.bookmark = function(filename) {
+	      return $bookmarks.create($scope.realpath($scope.path + "/" + filename), function(error, data) {
+	        if (error == null) {
+	          if (data.created) {
+	            return $translate('fs.bookmarkCreated').then(function(trad) {
+	              return $logger.info(trad);
+	            });
+	          }
 	        }
 	      });
 	    };
@@ -568,6 +623,32 @@
 				"required": "This is required.",
 				"email": "This is not a correct email."
 			}
+		},
+		"fs": {
+			"goToRoot": "Go to root folder",
+			"root": "Root",
+			"folder": "Folder(s)",
+			"file": "File(s)",
+			"download": "Download",
+			"open": "Open",
+			"name": "Name",
+			"right": "Right",
+			"action": "Action",
+			"mime": "Mime-type",
+			"size": "Size",
+			"delete": "Delete",
+			"lastModified": "Last modified",
+			"selected": "Item(s) selected",
+			"share": "Share",
+			"archive": "Compress",
+			"parent": "Parent",
+			"createNewFolder": "Create new folder",
+			"moreOptions": "More options",
+			"refresh": "Refresh",
+			"rename": "Rename",
+			"unarchive": "Decompress",
+			"bookmarks": "Bookmarks",
+			"bookmarkCreated": "Bookmark created"
 		}
 	};
 

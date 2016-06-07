@@ -24,6 +24,7 @@ router
                 data.push
                     _id: signet._id
                     name: if '' isnt path.basename signet.path then path.basename signet.path  else '/'
+                    path: signet.path
                     icon: 'folder'
 
             res.json data
