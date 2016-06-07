@@ -86,7 +86,7 @@
 
 	kraken.config([
 	  '$mdThemingProvider', function($mdThemingProvider) {
-	    return $mdThemingProvider.theme('default').primaryPalette('blue', {
+	    $mdThemingProvider.theme('default').primaryPalette('blue', {
 	      'default': '900'
 	    }).accentPalette('pink').warnPalette('red');
 	  }
@@ -102,18 +102,22 @@
 	    }
 	    $translateProvider.useSanitizeValueStrategy(null);
 	    $translateProvider.preferredLanguage('en');
-	    return $translateProvider.fallbackLanguage('en');
+	    $translateProvider.fallbackLanguage('en');
 	  }
 	]);
 
 	kraken.controller('kraken.fs', [
-	  '$routeParams', function($routeParams) {
-	    var path;
-	    if ($routeParams.path != null) {
-	      path = $routeParams.path;
-	    } else {
-	      path = '/';
-	    }
+	  '$scope', '$routeParams', '$fileSystem', function($scope, $routeParams, $fileSystem) {
+	    $scope.path = $routeParams.path != null ? $routeParams.path : '/';
+	    $scope.open = function(path) {
+	      return $fileSystem.get(path, function(error, data) {
+	        if (error == null) {
+	          $scope.files = data.files;
+	          return $scope.folders = data.folders;
+	        }
+	      });
+	    };
+	    $scope.open($scope.path);
 	  }
 	]);
 
@@ -362,7 +366,13 @@
 	  }
 	]);
 
-	kraken.service('$fileSystem', ['$request', function($request) {}]);
+	kraken.service('$fileSystem', [
+	  '$request', function($request) {
+	    this.get = function(path, callback) {
+	      return $request.get("/file-system/info/" + path, callback);
+	    };
+	  }
+	]);
 
 	kraken.service('$logger', [
 	  '$mdToast', function($mdToast) {
