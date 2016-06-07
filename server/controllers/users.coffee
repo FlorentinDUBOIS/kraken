@@ -66,11 +66,11 @@ router
     .delete ( req, res ) ->
         User.remove _id: req.params._id, ( error ) ->
             if error?
-                    logger.error error.message
+                logger.error error.message
 
-                    return res.status( 500 ).end()
+                return res.status( 500 ).end()
 
-                res.json removed: true
+            res.json removed: true
 
 # -----------------------------------------------------------------------------
 # exports

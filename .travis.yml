@@ -1,0 +1,15 @@
+language: node_js
+
+node_js:
+    - "6"
+    - "5"
+    - "4"
+
+script:
+    - npm run-script lint
+
+after_success:
+    - export BUILD_RESULT="SUCCESS"
+
+after_failure:
+    - export BUILD_RESULT="ERRORED"

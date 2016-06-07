@@ -47,3 +47,15 @@ gulp.task 'build:stylesheets', ->
         .pipe plugins.rename suffix: '.min'
         .pipe plugins.cssnano()
         .pipe gulp.dest 'client/dist'
+
+# -----------------------------------------------------------------------------
+# lint task
+gulp.task 'lint', ['lint:coffee']
+
+# -----------------------------------------------------------------------------
+# lint:coffee task
+gulp.task 'lint:coffee', ->
+    gulp.src ['client/**/*.coffee', 'server/**/*.coffee', 'server.coffee', 'install.coffee', 'gulpfile.coffee']
+        .pipe plugins.coffeelint 'coffeelint.json'
+        .pipe plugins.coffeelint.reporter 'coffeelint-stylish'
+        .pipe plugins.coffeelint.reporter 'fail'

@@ -9,7 +9,7 @@ kraken.controller 'kraken.manageAccount', ['$scope', '$user', '$translate', '$lo
     $scope.getUsers = ->
         $user.getAll ( error, users ) ->
             unless error?
-                $scope.users = users;
+                $scope.users = users
 
                 $scope.updateUser.$setPristine()
                 $scope.updateUser.$setUntouched()

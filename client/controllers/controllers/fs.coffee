@@ -1,20 +1,10 @@
-# -----------------------------------------------------------------------------
-# fs controller
-kraken.controller 'kraken.fs', ['$routeParams', '$fileSystem', ( $routeParams, $fileSystem ) ->
-    # -----------------------------------------------------------------------------
-    # init var
-    $scope.files   = []
-    $scope.folders = []
-
+kraken.controller 'kraken.fs', ['$scope', '$routeParams', '$fileSystem', ( $scope, $routeParams, $fileSystem ) ->
     # -----------------------------------------------------------------------------
     # get path
-    if $routeParams.path?
-        path = $routeParams.path
-    else
-        path = '/'
+    $scope.path = if $routeParams.path? then $routeParams.path else '/'
 
     # -----------------------------------------------------------------------------
-    # open
+    # open folder
     $scope.open = ( path ) ->
         $fileSystem.get path, ( error, data ) ->
             unless error?
@@ -23,7 +13,7 @@ kraken.controller 'kraken.fs', ['$routeParams', '$fileSystem', ( $routeParams, $
 
     # -----------------------------------------------------------------------------
     # init
-    $scope.open path
+    $scope.open $scope.path
 
     return
 ]

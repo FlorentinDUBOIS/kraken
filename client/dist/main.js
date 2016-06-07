@@ -86,7 +86,7 @@
 
 	kraken.config([
 	  '$mdThemingProvider', function($mdThemingProvider) {
-	    return $mdThemingProvider.theme('default').primaryPalette('blue', {
+	    $mdThemingProvider.theme('default').primaryPalette('blue', {
 	      'default': '900'
 	    }).accentPalette('pink').warnPalette('red');
 	  }
@@ -102,20 +102,13 @@
 	    }
 	    $translateProvider.useSanitizeValueStrategy(null);
 	    $translateProvider.preferredLanguage('en');
-	    return $translateProvider.fallbackLanguage('en');
+	    $translateProvider.fallbackLanguage('en');
 	  }
 	]);
 
 	kraken.controller('kraken.fs', [
-	  '$routeParams', '$fileSystem', function($routeParams, $fileSystem) {
-	    var path;
-	    $scope.files = [];
-	    $scope.folders = [];
-	    if ($routeParams.path != null) {
-	      path = $routeParams.path;
-	    } else {
-	      path = '/';
-	    }
+	  '$scope', '$routeParams', '$fileSystem', function($scope, $routeParams, $fileSystem) {
+	    $scope.path = $routeParams.path != null ? $routeParams.path : '/';
 	    $scope.open = function(path) {
 	      return $fileSystem.get(path, function(error, data) {
 	        if (error == null) {
@@ -124,7 +117,7 @@
 	        }
 	      });
 	    };
-	    $scope.open(path);
+	    $scope.open($scope.path);
 	  }
 	]);
 
@@ -260,28 +253,6 @@
 	  }
 	]);
 
-	kraken.run([
-	  '$rootScope', '$location', '$user', '$translate', '$logger', function($rootScope, $location, $user, $translate, $logger) {
-	    var paths;
-	    paths = ['/manage-account'];
-	    $rootScope.$on('$routeChangeStart', function() {
-	      if (-1 === paths.indexOf($location.path())) {
-	        return;
-	      }
-	      return $user.isAdministrator(function(error, data) {
-	        if (error == null) {
-	          if (!data.administrator) {
-	            return $translate('request.notAuthorized').then(function(trad) {
-	              $logger.error(trad);
-	              return $location.path('/fs');
-	            });
-	          }
-	        }
-	      });
-	    });
-	  }
-	]);
-
 	kraken.filter('bytes', [
 	  function() {
 	    return function(input, precision) {
@@ -343,6 +314,28 @@
 	      }
 	      return input;
 	    };
+	  }
+	]);
+
+	kraken.run([
+	  '$rootScope', '$location', '$user', '$translate', '$logger', function($rootScope, $location, $user, $translate, $logger) {
+	    var paths;
+	    paths = ['/manage-account'];
+	    $rootScope.$on('$routeChangeStart', function() {
+	      if (-1 === paths.indexOf($location.path())) {
+	        return;
+	      }
+	      return $user.isAdministrator(function(error, data) {
+	        if (error == null) {
+	          if (!data.administrator) {
+	            return $translate('request.notAuthorized').then(function(trad) {
+	              $logger.error(trad);
+	              return $location.path('/fs');
+	            });
+	          }
+	        }
+	      });
+	    });
 	  }
 	]);
 
