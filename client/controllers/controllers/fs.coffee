@@ -5,6 +5,12 @@ kraken.controller 'kraken.fs', ['$scope', '$routeParams', '$fileSystem', '$bookm
     $scope.dirnames = $scope.path.split '/'
 
     # -----------------------------------------------------------------------------
+    # remove useless element in dirnames
+    $scope.removeUseless = ( dirnames ) ->
+        dirnames.filter ( element ) ->
+            element isnt ""
+
+    # -----------------------------------------------------------------------------
     # remove ..
     $scope.realpath = ( path ) ->
         path     = path.replace /\/\//gi, '/'
@@ -17,19 +23,29 @@ kraken.controller 'kraken.fs', ['$scope', '$routeParams', '$fileSystem', '$bookm
 
             fpath.push dirname
 
-        if fpath.length is 0 then '/' else fpath.join '/'
+        if fpath.length is 0
+            return '/'
+
+        if fpath.length is 1
+            return fpath.join( '/' ).substring 1
+
+        fpath.join '/'
 
     # ----------------------------------------------------------------------------
     # level
-    $scope.level = ( path, level ) ->
-        dirnames = path.split '/'
+    $scope.level = ( dirnames, level ) ->
         lpath    = []
 
         for i, dirname of dirnames
-            if i < level
+            console.log dirname
+
+            # level+1 to /
+            # level+1 to guard folder clicked
+            if i < level+2
                 lpath.push dirname
             else
-                return if 0 is lpath.length then '/' else lfpath.join '/'
+                console.log if 0 is lpath.length then '/' else lpath.join '/'
+                return if 0 is lpath.length then '/' else lpath.join '/'
 
     # -----------------------------------------------------------------------------
     # open folder

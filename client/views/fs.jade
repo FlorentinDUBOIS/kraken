@@ -1,4 +1,15 @@
 md-content( flex="100" layout="column" )
+    md-toolbar
+        div.md-toolbar-tools.md-white.md-black-text
+            div.md-breadcrumb
+                span.md-breadcrumb-item( ng-click="open( '/' )" )
+                    span {{ 'fs.root' | translate | ucfirst }}
+                    md-icon.md-black-text( ng-show="removeUseless( dirnames ).length" ) keyboard_arrow_right
+
+                span.md-breadcrumb-item( ng-click="open( level( dirnames, $index ))" ng-repeat="dirname in removeUseless( dirnames ) track by $index" )
+                    span( ng-show="dirname != ''" ) {{ dirname }}
+                    md-icon.md-black-text( ng-show="!$last" ) keyboard_arrow_right
+
     md-content( flex="100" layout="row" layout-align="start start" layout-wrap )
         div( flex="20" ng-repeat="folder in folders" )
             md-card( flex="100" )

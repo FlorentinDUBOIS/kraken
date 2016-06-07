@@ -9,7 +9,7 @@ path   = require 'path'
 # -----------------------------------------------------------------------------
 # router
 router
-    .route '/file-system/info/*'
+    .route '/file-system/root/*'
     .get ( req, res ) ->
         fs.readdir pfs.rewrite( req.params['0'] ), ( error, files ) ->
             if error?

@@ -1,6 +1,6 @@
 kraken.config ['$mdThemingProvider', ( $mdThemingProvider ) ->
     $mdThemingProvider.theme 'default'
-        .primaryPalette 'blue', 'default': '900'
+        .primaryPalette 'blue-grey', 'default': '800'
         .accentPalette 'pink'
         .warnPalette 'red'
 

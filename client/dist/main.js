@@ -86,8 +86,8 @@
 
 	kraken.config([
 	  '$mdThemingProvider', function($mdThemingProvider) {
-	    $mdThemingProvider.theme('default').primaryPalette('blue', {
-	      'default': '900'
+	    $mdThemingProvider.theme('default').primaryPalette('blue-grey', {
+	      'default': '800'
 	    }).accentPalette('pink').warnPalette('red');
 	  }
 	]);
@@ -110,6 +110,11 @@
 	  '$scope', '$routeParams', '$fileSystem', '$bookmarks', '$logger', function($scope, $routeParams, $fileSystem, $bookmarks, $logger) {
 	    $scope.path = $routeParams.path != null ? $routeParams.path : '/';
 	    $scope.dirnames = $scope.path.split('/');
+	    $scope.removeUseless = function(dirnames) {
+	      return dirnames.filter(function(element) {
+	        return element !== "";
+	      });
+	    };
 	    $scope.realpath = function(path) {
 	      var dirname, dirnames, fpath, i;
 	      path = path.replace(/\/\//gi, '/');
@@ -127,23 +132,26 @@
 	      }
 	      if (fpath.length === 0) {
 	        return '/';
-	      } else {
-	        return fpath.join('/');
 	      }
+	      if (fpath.length === 1) {
+	        return fpath.join('/').substring(1);
+	      }
+	      return fpath.join('/');
 	    };
-	    $scope.level = function(path, level) {
-	      var dirname, dirnames, i, lpath;
-	      dirnames = path.split('/');
+	    $scope.level = function(dirnames, level) {
+	      var dirname, i, lpath;
 	      lpath = [];
 	      for (i in dirnames) {
 	        dirname = dirnames[i];
-	        if (i < level) {
+	        console.log(dirname);
+	        if (i < level + 2) {
 	          lpath.push(dirname);
 	        } else {
+	          console.log(0 === lpath.length ? '/' : lpath.join('/'));
 	          if (0 === lpath.length) {
 	            return '/';
 	          } else {
-	            return lfpath.join('/');
+	            return lpath.join('/');
 	          }
 	        }
 	      }
@@ -424,7 +432,7 @@
 	kraken.service('$fileSystem', [
 	  '$request', function($request) {
 	    this.get = function(path, callback) {
-	      return $request.get("/file-system/info/" + path, callback);
+	      return $request.get("/file-system/root/" + path, callback);
 	    };
 	  }
 	]);

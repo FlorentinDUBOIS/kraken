@@ -40,18 +40,18 @@ html( ng-app="florentindubois.kraken" )
                                     span {{ item.name | translate | ucfirst }}
 
                             md-divider( ng-show="bookmarks.length != 0 && user.length != 0" )
-                            md-subheader( ng-show="bookmarks.length == 1" ) 
+                            md-subheader( ng-show="bookmarks.length == 1" )
                                 span {{ 'navigation.bookmark.singular' | translate | ucfirst }}
                                 md-icon.md-float-right( ng-click="getBookmarks()" ) refresh
-                            
-                            md-subheader( ng-show="bookmarks.length >  1" ) 
+
+                            md-subheader( ng-show="bookmarks.length >  1" )
                                 span {{ 'navigation.bookmark.plural' | translate | ucfirst }}
                                 md-icon.md-float-right( ng-click="getBookmarks()" ) refresh
 
                             md-list-item( md-ink-ripple ng-repeat="item in bookmarks" )
                                 a( ng-href="#/fs{{ item.path }}" flex="100" )
                                     md-icon( flex="20" ) {{ item.icon }}
-                                    span( flex="65" ) {{ item.name | translate | ucfirst }}
+                                    span( flex="65" ) {{ item.name }}
                                     md-icon( ng-click="removeBookmark( item._id )" ) delete
 
                 md-content( flex layout-padding )
