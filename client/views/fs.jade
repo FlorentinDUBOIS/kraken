@@ -1,6 +1,16 @@
-md-content( flex="100" layout="row" layout-align="start start" layout-wrap )
-    md-card( flex="15" ng-repeat="folder in folders" )
-        span {{ folder.name }}
+md-content( flex="100" layout="column" )
+    md-content( flex="100" layout="row" layout-align="start start" layout-wrap )
+        div( flex="20" ng-repeat="folder in folders" )
+            md-card( flex="100" )
+                md-tooltip( md-direction="bottom" ) {{ folder.name }}
+                md-card-content( flex="100" layout="row" )
+                    md-icon( flex="20" ) folder
+                    span( flex="80" ) {{ folder.name | truncate: 25 }}
 
-    md-card( flex="15" ng-repeat="file in files" )
-        span {{ file.name }}
+    md-content( flex="100" layout="row" layout-align="start start" layout-wrap )
+        div( flex="20" ng-repeat="file in files" )
+            md-tooltip( md-direction="bottom" ) {{ file.name }}
+            md-card( flex="100" )
+                md-card-content( flex="100" layout="row" )
+                    md-icon( flex="20" ) insert_drive_file
+                    span( flex="80" ) {{ file.name | truncate: 25 }}

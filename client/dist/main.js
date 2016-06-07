@@ -287,7 +287,7 @@
 	      if (at == null) {
 	        at = 40;
 	      }
-	      if (input != null) {
+	      if ((input != null) && at < input.length) {
 	        input = (input.substring(0, at - 3)) + "...";
 	      }
 	      return input;
