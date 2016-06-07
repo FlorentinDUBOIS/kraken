@@ -7,7 +7,7 @@ kraken.controller 'kraken.fs', ['$scope', '$routeParams', '$fileSystem', '$bookm
     # -----------------------------------------------------------------------------
     # remove ..
     $scope.realpath = ( path ) ->
-        path     = path.replace /\/\//gi, '/'         
+        path     = path.replace /\/\//gi, '/'
         dirnames = path.split '/'
         fpath    = []
 
@@ -28,8 +28,8 @@ kraken.controller 'kraken.fs', ['$scope', '$routeParams', '$fileSystem', '$bookm
         for i, dirname of dirnames
             if i < level
                 lpath.push dirname
-            else 
-                return if 0 is lpath.length then '/' else lfpath.join '/' 
+            else
+                return if 0 is lpath.length then '/' else lfpath.join '/'
 
     # -----------------------------------------------------------------------------
     # open folder
