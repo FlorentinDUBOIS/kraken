@@ -23,7 +23,7 @@ gulp.task 'build', ['build:angular', 'build:stylesheets']
 
 # -----------------------------------------------------------------------------
 # build:angular task
-gulp.task 'build:angular', ->
+gulp.task 'build:angular', ['devlint:coffee'], ->
     gulp.src ['client/controllers/**/*.coffee']
         .pipe plugins.plumberNotifier()
         .pipe plugins.concat 'main.js'
@@ -47,6 +47,19 @@ gulp.task 'build:stylesheets', ->
         .pipe plugins.rename suffix: '.min'
         .pipe plugins.cssnano()
         .pipe gulp.dest 'client/dist'
+
+# -----------------------------------------------------------------------------
+# devlint task
+gulp.task 'devlint', ['devlint:coffee']
+
+# -----------------------------------------------------------------------------
+# devlint:coffee task
+gulp.task 'devlint:coffee', ->
+    gulp.src ['client/**/*.coffee', 'server/**/*.coffee', 'server.coffee', 'install.coffee', 'gulpfile.coffee']
+        .pipe plugins.plumberNotifier()
+        .pipe plugins.coffeelint 'coffeelint.json'
+        .pipe plugins.coffeelint.reporter 'coffeelint-stylish'
+        .pipe plugins.coffeelint.reporter 'fail'
 
 # -----------------------------------------------------------------------------
 # lint task
