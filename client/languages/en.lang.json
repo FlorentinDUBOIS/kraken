@@ -85,6 +85,7 @@
         "bookmarkCreated": "Bookmark created",
         "removeFile": "Successfuly removed file",
         "removeFolder": "Successfuly removed folder",
+        "search": "Search",
         "rename": {
             "base": "Rename",
             "title": "Rename a file or folder",

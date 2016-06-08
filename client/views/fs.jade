@@ -10,8 +10,15 @@ md-content( flex="100" layout="column" )
                     span( ng-show="dirname != ''" ) {{ dirname }}
                     md-icon.md-black-text( ng-show="!$last" ) keyboard_arrow_right
 
+            span( flex )
+
+            md-input-container
+                md-icon.md-black-text search
+                label {{ 'fs.search' | translate | ucfirst }}
+                input( name="search" type="text" ng-model="order.name" )
+
     md-content( flex="100" layout="row" layout-align="start start" layout-wrap )
-        div( flex="20" ng-repeat="folder in folders" )
+        div( flex="20" ng-repeat="folder in folders | filter: order" )
             md-card( flex="100" )
                 md-tooltip( md-direction="bottom" ) {{ folder.name }}
                 md-card-content( flex="100" layout="row" )
@@ -48,15 +55,10 @@ md-content( flex="100" layout="column" )
                                         md-icon( md-menu-align-target ) file_download
                                         span {{ 'fs.download' | translate | ucfirst }}
 
-                                md-menu-item
+                                md-menu-item( ng-show="!isArchive( folder.name )" )
                                     md-button
                                         md-icon( md-menu-align-target ) archive
                                         span {{ 'fs.archive' | translate | ucfirst }}
-
-                                md-menu-item
-                                    md-button
-                                        md-icon( md-menu-align-target ) unarchive
-                                        span {{ 'fs.unarchive' | translate | ucfirst }}
 
                                 md-menu-item
                                     md-button( ng-click="removeFolder( folder.name )" )
@@ -64,10 +66,10 @@ md-content( flex="100" layout="column" )
                                         span {{ 'fs.delete' | translate | ucfirst }}
 
     md-content( flex="100" layout="row" layout-align="start start" layout-wrap )
-        div( flex="20" ng-repeat="file in files" )
+        div( flex="20" ng-repeat="file in files | filter: order" )
             md-tooltip( md-direction="bottom" ) {{ file.name }}
             md-card( flex="100" )
-                img.md-card-content( ng-src="" )
+                img.md-card-content( ng-if="isImage( file.name )" ng-src="{{ link( file.name ) }}" )
                 md-card-content( flex="100" layout="row" )
                     md-icon( flex="20" ) insert_drive_file
                     span.md-text-center( flex="60" ) {{ file.name | truncate: 15 }}
@@ -87,17 +89,18 @@ md-content( flex="100" layout="column" )
                                         md-icon( md-menu-align-target ) create
                                         span {{ 'fs.rename.base' | translate | ucfirst }}
 
-                                md-menu-item
-                                    md-button
-                                        md-icon( md-menu-align-target ) file_download
-                                        span {{ 'fs.download' | translate | ucfirst }}
+                                a.md-font-inherit( ng-href="{{ link( file.name ) }}" download="{{ file.name }}" )
+                                    md-menu-item
+                                        md-button
+                                                md-icon( md-menu-align-target ) file_download
+                                                span {{ 'fs.download' | translate | ucfirst }}
 
-                                md-menu-item
+                                md-menu-item( ng-show="!isArchive( file.name )" )
                                     md-button
                                         md-icon( md-menu-align-target ) archive
                                         span {{ 'fs.archive' | translate | ucfirst }}
 
-                                md-menu-item
+                                md-menu-item( ng-show="isArchive( file.name )" )
                                     md-button
                                         md-icon( md-menu-align-target ) unarchive
                                         span {{ 'fs.unarchive' | translate | ucfirst }}

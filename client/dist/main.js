@@ -108,6 +108,17 @@
 
 	kraken.controller('kraken.fs', [
 	  '$scope', '$routeParams', '$fileSystem', '$bookmarks', '$logger', '$translate', '$mdDialog', function($scope, $routeParams, $fileSystem, $bookmarks, $logger, $translate, $mdDialog) {
+	    var checkFilenameExts;
+	    checkFilenameExts = function(filename, exts) {
+	      var ext, j, len;
+	      for (j = 0, len = exts.length; j < len; j++) {
+	        ext = exts[j];
+	        if ((new RegExp("\." + ext + "$", 'gi')).test(filename)) {
+	          return true;
+	        }
+	      }
+	      return false;
+	    };
 	    $scope.path = $routeParams.path != null ? $routeParams.path : '/';
 	    $scope.dirnames = $scope.path.split('/');
 	    $scope.removeUseless = function(dirnames) {
@@ -204,6 +215,19 @@
 	        }
 	      });
 	    };
+	    $scope.link = function(filename) {
+	      return $fileSystem.file($scope.realpath($scope.path + "/" + filename).substring(1));
+	    };
+	    $scope.isImage = function(filename) {
+	      var exts;
+	      exts = ['png', 'jpeg', 'jpg', 'gif', 'svg'];
+	      return checkFilenameExts(filename, exts);
+	    };
+	    $scope.isArchive = function(filename) {
+	      var exts;
+	      exts = ['zip', 'gz', 'tar', '7z'];
+	      return checkFilenameExts(filename, exts);
+	    };
 	    $scope.rename = function(filename, $event) {
 	      return $translate('fs.rename.title').then(function(title) {
 	        return $translate('fs.rename.text').then(function(text) {
@@ -211,7 +235,7 @@
 	            return $translate('fs.rename.cancel').then(function(cancel) {
 	              return $translate('fs.rename.placeholder').then(function(placeholder) {
 	                var prompt;
-	                prompt = $mdDialog.prompt().title(title).textContent(text).ariaLabel(placeholder).placeholder(placeholder).targetEvent($event).ok(ok).cancel(cancel);
+	                prompt = $mdDialog.prompt().title(title).textContent(text).placeholder(placeholder).ariaLabel(placeholder).targetEvent($event).ok(ok).cancel(cancel);
 	                return $mdDialog.show(prompt).then(function(path) {
 	                  return $fileSystem.rename($scope.realpath($scope.path + "/" + filename), $scope.realpath($scope.path + "/" + path), function(error, data) {
 	                    if (error == null) {
@@ -489,6 +513,9 @@
 	        path: newPath
 	      }, callback);
 	    };
+	    this.file = function(filename) {
+	      return "/file-system/root/" + filename;
+	    };
 	    this.removeFile = function(path, callback) {
 	      return $request["delete"]("/file-system/file-menu/" + path, callback);
 	    };
@@ -719,6 +746,7 @@
 			"bookmarkCreated": "Bookmark created",
 			"removeFile": "Successfuly removed file",
 			"removeFolder": "Successfuly removed folder",
+			"search": "Search",
 			"rename": {
 				"base": "Rename",
 				"title": "Rename a file or folder",

@@ -1633,6 +1633,12 @@
 .md-text-justify {
   text-align: justify !important; }
 
+.md-font-inherit {
+  color: inherit;
+  font-family: inherit;
+  text-decoration: inherit;
+  font-style: inherit; }
+
 body {
   font-family: "Roboto";
   -webkit-font-smoothing: subpixel-antialiased;

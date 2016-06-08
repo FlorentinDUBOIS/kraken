@@ -1,5 +1,14 @@
 kraken.controller 'kraken.fs', ['$scope', '$routeParams', '$fileSystem', '$bookmarks', '$logger', '$translate', '$mdDialog', ( $scope, $routeParams, $fileSystem, $bookmarks, $logger, $translate, $mdDialog ) ->
     # -----------------------------------------------------------------------------
+    # functions utils
+    checkFilenameExts = ( filename, exts ) ->
+        for ext in exts
+            if (new RegExp "\.#{ ext }$", 'gi' ).test filename
+                return true
+
+        false
+
+    # -----------------------------------------------------------------------------
     # get path
     $scope.path     = if $routeParams.path? then $routeParams.path else '/'
     $scope.dirnames = $scope.path.split '/'
@@ -93,6 +102,25 @@ kraken.controller 'kraken.fs', ['$scope', '$routeParams', '$fileSystem', '$bookm
                         $scope.open $scope.path
 
     # -----------------------------------------------------------------------------
+    # link
+    $scope.link = ( filename ) ->
+        $fileSystem.file $scope.realpath( "#{ $scope.path }/#{ filename }" ).substring 1
+
+    # -----------------------------------------------------------------------------
+    # is an image
+    $scope.isImage = ( filename ) ->
+        exts = ['png', 'jpeg', 'jpg', 'gif', 'svg']
+
+        checkFilenameExts filename, exts
+
+    # -----------------------------------------------------------------------------
+    # is archive
+    $scope.isArchive = ( filename ) ->
+        exts = ['zip', 'gz', 'tar', '7z']
+
+        checkFilenameExts filename, exts
+
+    # -----------------------------------------------------------------------------
     # rename file or folder
     $scope.rename = ( filename, $event ) ->
         $translate( 'fs.rename.title' ).then ( title ) ->
@@ -103,8 +131,8 @@ kraken.controller 'kraken.fs', ['$scope', '$routeParams', '$fileSystem', '$bookm
                             prompt = $mdDialog.prompt()
                                 .title title
                                 .textContent text
-                                .ariaLabel placeholder
                                 .placeholder placeholder
+                                .ariaLabel placeholder
                                 .targetEvent $event
                                 .ok ok
                                 .cancel cancel
