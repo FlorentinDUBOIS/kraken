@@ -1,4 +1,4 @@
-kraken.controller 'kraken.fs', ['$scope', '$routeParams', '$fileSystem', '$bookmarks', '$logger', '$translate', ( $scope, $routeParams, $fileSystem, $bookmarks, $logger, $translate ) ->
+kraken.controller 'kraken.fs', ['$scope', '$routeParams', '$fileSystem', '$bookmarks', '$logger', '$translate', '$mdDialog', ( $scope, $routeParams, $fileSystem, $bookmarks, $logger, $translate, $mdDialog ) ->
     # -----------------------------------------------------------------------------
     # get path
     $scope.path     = if $routeParams.path? then $routeParams.path else '/'
@@ -91,6 +91,32 @@ kraken.controller 'kraken.fs', ['$scope', '$routeParams', '$fileSystem', '$bookm
                     $translate( 'fs.removeFolder' ).then ( trad ) ->
                         $logger.info trad
                         $scope.open $scope.path
+
+    # -----------------------------------------------------------------------------
+    # rename file or folder
+    $scope.rename = ( filename, $event ) ->
+        $translate( 'fs.rename.title' ).then ( title ) ->
+            $translate( 'fs.rename.text' ).then ( text ) ->
+                $translate( 'fs.rename.ok' ).then ( ok ) ->
+                    $translate( 'fs.rename.cancel' ).then ( cancel ) ->
+                        $translate( 'fs.rename.placeholder' ).then ( placeholder ) ->
+                            prompt = $mdDialog.prompt()
+                                .title title
+                                .textContent text
+                                .ariaLabel placeholder
+                                .placeholder placeholder
+                                .targetEvent $event
+                                .ok ok
+                                .cancel cancel
+
+                            $mdDialog.show( prompt ).then ( path ) ->
+                                $fileSystem.rename $scope.realpath( "#{ $scope.path }/#{ filename }" ), $scope.realpath( "#{ $scope.path }/#{ path }" ), ( error, data ) ->
+                                    unless error?
+                                        if data.renamed is true
+                                            $translate( 'fs.rename.success' ).then ( success ) ->
+                                                $logger.info success
+                                                $scope.open $scope.path
+                            , ->
 
     # -----------------------------------------------------------------------------
     # init

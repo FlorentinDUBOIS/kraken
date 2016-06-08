@@ -86,7 +86,7 @@
 
 	kraken.config([
 	  '$mdThemingProvider', function($mdThemingProvider) {
-	    $mdThemingProvider.theme('default').primaryPalette('blue-grey', {
+	    $mdThemingProvider.theme('default').primaryPalette('indigo', {
 	      'default': '800'
 	    }).accentPalette('pink').warnPalette('red');
 	  }
@@ -107,7 +107,7 @@
 	]);
 
 	kraken.controller('kraken.fs', [
-	  '$scope', '$routeParams', '$fileSystem', '$bookmarks', '$logger', '$translate', function($scope, $routeParams, $fileSystem, $bookmarks, $logger, $translate) {
+	  '$scope', '$routeParams', '$fileSystem', '$bookmarks', '$logger', '$translate', '$mdDialog', function($scope, $routeParams, $fileSystem, $bookmarks, $logger, $translate, $mdDialog) {
 	    $scope.path = $routeParams.path != null ? $routeParams.path : '/';
 	    $scope.dirnames = $scope.path.split('/');
 	    $scope.removeUseless = function(dirnames) {
@@ -202,6 +202,32 @@
 	            });
 	          }
 	        }
+	      });
+	    };
+	    $scope.rename = function(filename, $event) {
+	      return $translate('fs.rename.title').then(function(title) {
+	        return $translate('fs.rename.text').then(function(text) {
+	          return $translate('fs.rename.ok').then(function(ok) {
+	            return $translate('fs.rename.cancel').then(function(cancel) {
+	              return $translate('fs.rename.placeholder').then(function(placeholder) {
+	                var prompt;
+	                prompt = $mdDialog.prompt().title(title).textContent(text).ariaLabel(placeholder).placeholder(placeholder).targetEvent($event).ok(ok).cancel(cancel);
+	                return $mdDialog.show(prompt).then(function(path) {
+	                  return $fileSystem.rename($scope.realpath($scope.path + "/" + filename), $scope.realpath($scope.path + "/" + path), function(error, data) {
+	                    if (error == null) {
+	                      if (data.renamed === true) {
+	                        return $translate('fs.rename.success').then(function(success) {
+	                          $logger.info(success);
+	                          return $scope.open($scope.path);
+	                        });
+	                      }
+	                    }
+	                  });
+	                }, function() {});
+	              });
+	            });
+	          });
+	        });
 	      });
 	    };
 	    $scope.open($scope.path);
@@ -347,7 +373,7 @@
 	      if (precision == null) {
 	        precision = 1;
 	      }
-	      if (input) {
+	      if (input != null) {
 	        units = ['o', 'Ko', 'Mo', 'Go', 'To', 'Po'];
 	        number = Math.floor(Math.log(input) / Math.log(1024));
 	        input = ((input / Math.pow(1024, Math.floor(number))).toFixed(precision)) + " " + units[number];
@@ -456,7 +482,12 @@
 	kraken.service('$fileSystem', [
 	  '$request', '$window', '$timeout', function($request, $window, $timeout) {
 	    this.get = function(path, callback) {
-	      return $request.get("/file-system/root/" + path, callback);
+	      return $request.get("/file-system/info/" + path, callback);
+	    };
+	    this.rename = function(oldPath, newPath, callback) {
+	      return $request.put("/file-system/info/" + oldPath, {
+	        path: newPath
+	      }, callback);
 	    };
 	    this.removeFile = function(path, callback) {
 	      return $request["delete"]("/file-system/file-menu/" + path, callback);
@@ -683,12 +714,20 @@
 			"createNewFolder": "Create new folder",
 			"moreOptions": "More options",
 			"refresh": "Refresh",
-			"rename": "Rename",
 			"unarchive": "Decompress",
 			"bookmarks": "Bookmarks",
 			"bookmarkCreated": "Bookmark created",
 			"removeFile": "Successfuly removed file",
-			"removeFolder": "Successfuly removed folder"
+			"removeFolder": "Successfuly removed folder",
+			"rename": {
+				"base": "Rename",
+				"title": "Rename a file or folder",
+				"text": "Enter the new name of the file or folder to rename",
+				"ok": "Rename",
+				"cancel": "Cancel",
+				"placeholder": "New name",
+				"success": "Successfuly rename file or folder"
+			}
 		}
 	};
 

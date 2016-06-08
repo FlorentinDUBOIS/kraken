@@ -2,7 +2,10 @@
 # file system service
 kraken.service '$fileSystem', ['$request', '$window', '$timeout', ( $request, $window, $timeout ) ->
     @get = ( path, callback ) ->
-        $request.get "/file-system/root/#{ path }", callback
+        $request.get "/file-system/info/#{ path }", callback
+
+    @rename = ( oldPath, newPath, callback ) ->
+        $request.put "/file-system/info/#{ oldPath }", path: newPath, callback
 
     @removeFile = ( path, callback ) ->
         $request.delete "/file-system/file-menu/#{ path }", callback

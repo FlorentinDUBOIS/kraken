@@ -80,11 +80,19 @@
         "createNewFolder": "Create new folder",
         "moreOptions": "More options",
         "refresh": "Refresh",
-        "rename": "Rename",
         "unarchive": "Decompress",
         "bookmarks": "Bookmarks",
         "bookmarkCreated": "Bookmark created",
         "removeFile": "Successfuly removed file",
-        "removeFolder": "Successfuly removed folder"
+        "removeFolder": "Successfuly removed folder",
+        "rename": {
+            "base": "Rename",
+            "title": "Rename a file or folder",
+            "text": "Enter the new name of the file or folder to rename",
+            "ok": "Rename",
+            "cancel": "Cancel",
+            "placeholder": "New name",
+            "success": "Successfuly rename file or folder"
+        }
     }
 }
