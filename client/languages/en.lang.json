@@ -60,41 +60,27 @@
     },
 
     "fs": {
-        "goToRoot": "Go to root folder",
-        "root": "Root",
-        "folder": "Folder(s)",
-        "file": "File(s)",
-        "download": "Download",
-        "open": "Open",
-        "name": "Name",
-        "right": "Right",
-        "action": "Action",
-        "mime": "Mime-type",
-        "size": "Size",
-        "delete": "Delete",
-        "lastModified": "Last modified",
-        "selected": "Item(s) selected",
-        "share": "Share",
-        "archive": "Compress",
-        "parent": "Parent",
-        "createNewFolder": "Create new folder",
-        "moreOptions": "More options",
-        "refresh": "Refresh",
-        "unarchive": "Decompress",
-        "bookmarks": "Bookmarks",
-        "bookmarkCreated": "Bookmark created",
-        "removeFile": "Successfuly removed file",
-        "removeFolder": "Successfuly removed folder",
-        "search": "Search",
-        "changeForm": "Card view",
-        "rename": {
-            "base": "Rename",
-            "title": "Rename a file or folder",
-            "text": "Enter the new name of the file or folder to rename",
-            "ok": "Rename",
-            "cancel": "Cancel",
-            "placeholder": "New name",
-            "success": "Successfuly rename file or folder"
+        "table": {
+            "name": "Name",
+            "size": "Size",
+            "mtime": "Last modified"
+        },
+
+        "options": {
+            "bookmarks": "Bookmarks",
+            "open": "Open",
+            "share": "Share",
+            "rename": "Rename",
+            "download": "Download",
+            "archive": "Compress",
+            "unarchive": "Uncompress",
+            "delete": "Delete"
+        },
+
+        "fab": {
+            "menu": "Menu",
+            "refresh": "Refresh",
+            "root": "Go to root"
         }
     }
 }

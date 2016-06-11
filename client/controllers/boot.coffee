@@ -6,4 +6,5 @@ kraken = angular.module 'florentindubois.kraken', [
     'ngRoute'
     'ngSanitize'
     'pascalprecht.translate'
+    'md.data.table'
 ]

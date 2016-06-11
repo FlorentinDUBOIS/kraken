@@ -1,0 +1,112 @@
+md-content( layout="column" layout-padding flex )
+    md-table-container.list-files
+        table( md-table md-row-select="true" multiple="true" ng-model="selecteds" )
+            thead( md-head )
+                tr( md-row )
+                    th( md-column ) {{ 'fs.table.name' | translate | ucfirst }}
+                    th( md-column )
+                    th( md-column md-numeric="true" ) {{ 'fs.table.size'  | translate | ucfirst }}
+                    th( md-column md-numeric="true" ) {{ 'fs.table.mtime' | translate | ucfirst }}
+
+            tbody( md-body )
+                tr( md-row md-select="folder" md-auto-select="true" ng-repeat="folder in folders" )
+                    td( md-cell ) {{ folder.name }}
+                    td( md-cell )
+                        md-menu.md-secondary( flex="100" )
+                            md-button.md-icon-button( ng-click="$mdOpenMenu( $event )" )
+                                md-icon( md-menu-origin ) more_horiz
+
+                            md-menu-content( width="4" )
+                                md-menu-item
+                                    md-button
+                                        md-icon( md-menu-align-target ) add
+                                        span {{ 'fs.options.bookmarks' | translate | ucfirst }}
+
+                                md-menu-item
+                                    md-button
+                                        md-icon( md-menu-align-target ) folder_open
+                                        span {{ 'fs.options.open' | translate | ucfirst }}
+
+                                md-menu-item
+                                    md-button
+                                        md-icon( md-menu-align-target ) folder_shared
+                                        span {{ 'fs.options.share' | translate | ucfirst }}
+
+                                md-menu-item
+                                    md-button
+                                        md-icon( md-menu-align-target ) create
+                                        span {{ 'fs.options.rename' | translate | ucfirst }}
+
+                                md-menu-item
+                                    md-button
+                                        md-icon( md-menu-align-target ) file_download
+                                        span {{ 'fs.options.download' | translate | ucfirst }}
+
+                                md-menu-item
+                                    md-button
+                                        md-icon( md-menu-align-target ) archive
+                                        span {{ 'fs.options.archive' | translate | ucfirst }}
+
+                                md-menu-item
+                                    md-button
+                                        md-icon( md-menu-align-target ) delete
+                                        span {{ 'fs.options.delete' | translate | ucfirst }}
+
+                    td( md-cell ) {{ folder.size  | bytes }}
+                    td( md-cell ) {{ folder.mtime | date }}
+
+                tr( md-row md-select="file" md-select-id="name" md-auto-select="true" ng-repeat="file in files" )
+                    td( md-cell ) {{ file.name }}
+                    td( md-cell )
+                        md-menu.md-secondary
+                            md-button.md-icon-button( ng-click="$mdOpenMenu( $event )" )
+                                md-icon( md-menu-origin ) more_horiz
+
+                            md-menu-content( width="4" )
+                                md-menu-item
+                                    md-button
+                                        md-icon( md-menu-align-target ) share
+                                        span {{ 'fs.options.share' | translate | ucfirst }}
+
+                                md-menu-item
+                                    md-button( ng-click="rename( file.name, $event )" )
+                                        md-icon( md-menu-align-target ) create
+                                        span {{ 'fs.options.rename' | translate | ucfirst }}
+
+                                md-menu-item
+                                    md-button
+                                        md-icon( md-menu-align-target ) file_download
+                                        span {{ 'fs.options.download' | translate | ucfirst }}
+
+                                md-menu-item
+                                    md-button
+                                        md-icon( md-menu-align-target ) archive
+                                        span {{ 'fs.options.archive' | translate | ucfirst }}
+
+                                md-menu-item
+                                    md-button
+                                        md-icon( md-menu-align-target ) unarchive
+                                        span {{ 'fs.options.unarchive' | translate | ucfirst }}
+
+                                md-menu-item
+                                    md-button
+                                        md-icon( md-menu-align-target ) delete
+                                        span {{ 'fs.options.delete' | translate | ucfirst }}
+
+                    td( md-cell ) {{ file.size  | bytes }}
+                    td( md-cell ) {{ file.mtime | date }}
+
+    md-fab-speed-dial.md-scale.md-fixed.md-bottom-right( md-open="openFAB" md-direction="left" ng-mouseenter="openFAB = true" ng-mouseleave="openFAB = false" )
+        md-fab-trigger
+            md-button.md-fab.md-warn
+                md-tooltip( md-direction="top" ) {{ 'fs.fab.menu' | translate | lower }}
+                md-icon menu
+
+        md-fab-actions
+            md-button.md-fab.md-raised.md-mini( ng-click="open( path )" )
+                md-tooltip( md-direction="top" ) {{ 'fs.fab.refresh' | translate | lower }}
+                md-icon refresh
+
+            md-button.md-fab.md-raised.md-mini( ng-click="open( '/' )" )
+                md-tooltip( md-direction="top" ) {{ 'fs.fab.root' | translate | lower }}
+                md-icon folder
