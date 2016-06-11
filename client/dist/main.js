@@ -504,7 +504,7 @@
 	]);
 
 	kraken.service('$fileSystem', [
-	  '$request', '$window', '$timeout', function($request, $window, $timeout) {
+	  '$request', function($request) {
 	    this.get = function(path, callback) {
 	      return $request.get("/file-system/info/" + path, callback);
 	    };
@@ -747,6 +747,7 @@
 			"removeFile": "Successfuly removed file",
 			"removeFolder": "Successfuly removed folder",
 			"search": "Search",
+			"changeForm": "Card view",
 			"rename": {
 				"base": "Rename",
 				"title": "Rename a file or folder",

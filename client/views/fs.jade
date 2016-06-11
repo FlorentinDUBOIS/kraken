@@ -17,6 +17,7 @@ md-content( flex="100" layout="column" )
                 label {{ 'fs.search' | translate | ucfirst }}
                 input( name="search" type="text" ng-model="order.name" )
 
+
     md-content( flex="100" layout="row" layout-align="start start" layout-wrap )
         div( flex="20" ng-repeat="folder in folders | filter: order" )
             md-card( flex="100" )

@@ -1,7 +1,7 @@
 # -----------------------------------------------------------------------------
 # navigation controller
 kraken.controller 'kraken.navigation', ['$scope', '$user', '$window', '$mdSidenav', '$menu', '$bookmarks', '$translate', '$logger', ( $scope, $user, $window, $mdSidenav, $menu, $bookmarks, $translate, $logger ) ->
-    $scope.menu    = []
+    $scope.menu      = []
     $scope.bookmarks = []
 
     # -----------------------------------------------------------------------------

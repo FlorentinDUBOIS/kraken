@@ -1,6 +1,6 @@
 # -----------------------------------------------------------------------------
 # file system service
-kraken.service '$fileSystem', ['$request', '$window', '$timeout', ( $request, $window, $timeout ) ->
+kraken.service '$fileSystem', ['$request', ( $request ) ->
     @get = ( path, callback ) ->
         $request.get "/file-system/info/#{ path }", callback
 
