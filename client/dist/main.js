@@ -251,28 +251,6 @@
 	  }
 	]);
 
-	kraken.run([
-	  '$rootScope', '$location', '$user', '$translate', '$logger', function($rootScope, $location, $user, $translate, $logger) {
-	    var paths;
-	    paths = ['/manage-account'];
-	    $rootScope.$on('$routeChangeStart', function() {
-	      if (-1 === paths.indexOf($location.path())) {
-	        return;
-	      }
-	      return $user.isAdministrator(function(error, data) {
-	        if (error == null) {
-	          if (!data.administrator) {
-	            return $translate('request.notAuthorized').then(function(trad) {
-	              $logger.error(trad);
-	              return $location.path('/fs');
-	            });
-	          }
-	        }
-	      });
-	    });
-	  }
-	]);
-
 	kraken.filter('bytes', [
 	  function() {
 	    return function(input, precision) {
@@ -281,9 +259,13 @@
 	        precision = 1;
 	      }
 	      if (input != null) {
-	        units = ['o', 'Ko', 'Mo', 'Go', 'To', 'Po'];
-	        number = Math.floor(Math.log(input) / Math.log(1024));
-	        input = ((input / Math.pow(1024, Math.floor(number))).toFixed(precision)) + " " + units[number];
+	        if (input !== 0) {
+	          units = ['o', 'Ko', 'Mo', 'Go', 'To', 'Po'];
+	          number = Math.floor(Math.log(input) / Math.log(1024));
+	          input = ((input / Math.pow(1024, Math.floor(number))).toFixed(precision)) + " " + units[number];
+	        } else {
+	          input = '0 o';
+	        }
 	      }
 	      return input;
 	    };
@@ -334,6 +316,28 @@
 	      }
 	      return input;
 	    };
+	  }
+	]);
+
+	kraken.run([
+	  '$rootScope', '$location', '$user', '$translate', '$logger', function($rootScope, $location, $user, $translate, $logger) {
+	    var paths;
+	    paths = ['/manage-account'];
+	    $rootScope.$on('$routeChangeStart', function() {
+	      if (-1 === paths.indexOf($location.path())) {
+	        return;
+	      }
+	      return $user.isAdministrator(function(error, data) {
+	        if (error == null) {
+	          if (!data.administrator) {
+	            return $translate('request.notAuthorized').then(function(trad) {
+	              $logger.error(trad);
+	              return $location.path('/fs');
+	            });
+	          }
+	        }
+	      });
+	    });
 	  }
 	]);
 
