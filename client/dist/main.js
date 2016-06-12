@@ -107,10 +107,16 @@
 	]);
 
 	kraken.controller('kraken.fs', [
-	  '$scope', function($scope) {
+	  '$scope', '$fs', function($scope, $fs) {
 	    $scope.selecteds = [];
-	    $scope.folders = [];
-	    return $scope.files = [];
+	    $scope.files = [];
+	    $scope.path = '/';
+	    $scope.order = function(item) {};
+	    $fs.list($scope.path, function(error, files) {
+	      if (error == null) {
+	        return $scope.files = files;
+	      }
+	    });
 	  }
 	]);
 
@@ -119,20 +125,19 @@
 	    $scope.login = {};
 	    $scope.submit = function() {
 	      $user.login($scope.login.username, $scope.login.password, function(error, data) {
-	        if (error != null) {
-	          return $logger.error(error.mmessage);
-	        }
-	        if (data.connected) {
-	          return $translate('login.success').then(function(trad) {
-	            $logger.info(trad);
-	            return $timeout(function() {
-	              return $window.location.assign(data.redirect);
-	            }, 1000);
-	          });
-	        } else {
-	          return $translate('login.wrong').then(function(trad) {
-	            return $logger.error(trad);
-	          });
+	        if (error == null) {
+	          if (data.connected) {
+	            return $translate('login.success').then(function(trad) {
+	              $logger.info(trad);
+	              return $timeout(function() {
+	                return $window.location.assign(data.redirect);
+	              }, 1000);
+	            });
+	          } else {
+	            return $translate('login.wrong').then(function(trad) {
+	              return $logger.error(trad);
+	            });
+	          }
 	        }
 	      });
 	      return false;
@@ -246,6 +251,28 @@
 	  }
 	]);
 
+	kraken.run([
+	  '$rootScope', '$location', '$user', '$translate', '$logger', function($rootScope, $location, $user, $translate, $logger) {
+	    var paths;
+	    paths = ['/manage-account'];
+	    $rootScope.$on('$routeChangeStart', function() {
+	      if (-1 === paths.indexOf($location.path())) {
+	        return;
+	      }
+	      return $user.isAdministrator(function(error, data) {
+	        if (error == null) {
+	          if (!data.administrator) {
+	            return $translate('request.notAuthorized').then(function(trad) {
+	              $logger.error(trad);
+	              return $location.path('/fs');
+	            });
+	          }
+	        }
+	      });
+	    });
+	  }
+	]);
+
 	kraken.filter('bytes', [
 	  function() {
 	    return function(input, precision) {
@@ -310,51 +337,40 @@
 	  }
 	]);
 
-	kraken.run([
-	  '$rootScope', '$location', '$user', '$translate', '$logger', function($rootScope, $location, $user, $translate, $logger) {
-	    var paths;
-	    paths = ['/manage-account'];
-	    $rootScope.$on('$routeChangeStart', function() {
-	      if (-1 === paths.indexOf($location.path())) {
-	        return;
-	      }
-	      return $user.isAdministrator(function(error, data) {
-	        if (error == null) {
-	          if (!data.administrator) {
-	            return $translate('request.notAuthorized').then(function(trad) {
-	              $logger.error(trad);
-	              return $location.path('/fs');
-	            });
-	          }
-	        }
-	      });
-	    });
-	  }
-	]);
-
 	kraken.service('$bookmarks', [
 	  '$request', function($request) {
 	    this.get = function(_id, callback) {
-	      return $request.get("/bookmarks/" + _id, callback);
+	      return $request.get("bookmarks/" + _id, callback);
 	    };
 	    this.getAll = function(callback) {
-	      return $request.get('/bookmarks', callback);
+	      return $request.get('bookmarks', callback);
 	    };
 	    this.create = function(path, callback) {
-	      return $request.post('/bookmarks', {
+	      return $request.post('bookmarks', {
 	        path: path
 	      }, callback);
 	    };
 	    this.update = function(_id, path, callback) {
-	      return $request.put("/bookmarks/" + _id, {
+	      return $request.put("bookmarks/" + _id, {
 	        path: path
 	      }, callback);
 	    };
 	    this.remove = function(_id, callback) {
-	      return $request["delete"]("/bookmarks/" + _id, callback);
+	      return $request["delete"]("bookmarks/" + _id, callback);
 	    };
 	    this.removeAll = function(callback) {
-	      return $request["delete"]('/bookmarks', callback);
+	      return $request["delete"]('bookmarks', callback);
+	    };
+	  }
+	]);
+
+	kraken.service('$fs', [
+	  '$request', function($request) {
+	    this.list = function(path, callback) {
+	      if ('/' === path.charAt(0)) {
+	        path = path.substring(1);
+	      }
+	      return $request.get("/fs/" + path, callback);
 	    };
 	  }
 	]);
@@ -376,7 +392,7 @@
 	kraken.service('$menu', [
 	  '$request', function($request) {
 	    this.getItems = function(callback) {
-	      return $request.get('/menu', callback);
+	      return $request.get('menu', callback);
 	    };
 	  }
 	]);
@@ -385,7 +401,7 @@
 	  '$http', '$logger', '$translate', function($http, $logger, $translate) {
 	    var errorHandler;
 	    errorHandler = function(res, callback) {
-	      if (res.status === 403) {
+	      if (res.status === 403 || res.status === 401) {
 	        return $translate('request.notAuthorized').then(function(trad) {
 	          $logger.error(trad);
 	          return callback(new Error(trad));
@@ -443,34 +459,34 @@
 	kraken.service('$user', [
 	  '$request', function($request) {
 	    this.get = function(_id, callback) {
-	      return $request.get("/users/" + _id, callback);
+	      return $request.get("users/" + _id, callback);
 	    };
 	    this.update = function(user, callback) {
-	      return $request.put("/users/" + user._id, user, callback);
+	      return $request.put("users/" + user._id, user, callback);
 	    };
 	    this.remove = function(_id, callback) {
-	      return $request["delete"]("/users/" + _id, callback);
+	      return $request["delete"]("users/" + _id, callback);
 	    };
 	    this.create = function(user, callback) {
-	      return $request.post('/users', user, callback);
+	      return $request.post('users', user, callback);
 	    };
 	    this.getAll = function(callback) {
-	      return $request.get('/users', callback);
+	      return $request.get('users', callback);
 	    };
 	    this.isLog = function(callback) {
-	      return $request.get('/log', callback);
+	      return $request.get('log', callback);
 	    };
 	    this.login = function(username, password, callback) {
-	      return $request.post('/log', {
+	      return $request.post('log', {
 	        username: username,
 	        password: password
 	      }, callback);
 	    };
 	    this.logout = function(callback) {
-	      return $request["delete"]('/log', callback);
+	      return $request["delete"]('log', callback);
 	    };
 	    this.isAdministrator = function(callback) {
-	      return $request.get('/administrator', callback);
+	      return $request.get('administrator', callback);
 	    };
 	  }
 	]);
@@ -527,7 +543,7 @@
 			"send": "Sign in",
 			"username": "Username",
 			"password": "Password",
-			"success": "Successfully connected",
+			"success": "Successfuly connected",
 			"wrong": "Wrong password or username",
 			"error": {
 				"required": "This field is required"

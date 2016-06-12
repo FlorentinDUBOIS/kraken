@@ -2,7 +2,7 @@
 # request service
 kraken.service '$request', ['$http', '$logger', '$translate', ( $http, $logger, $translate ) ->
     errorHandler = ( res, callback ) ->
-        if res.status is 403
+        if res.status is 403 or res.status is 401
             return $translate( 'request.notAuthorized' ).then ( trad ) ->
                 $logger.error trad
 

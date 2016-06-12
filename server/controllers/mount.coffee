@@ -1,14 +1,15 @@
 # -----------------------------------------------------------------------------
 # requirements
 router = require( 'express' ).Router()
+pfs    = require 'server/models/fs'
 
 # -----------------------------------------------------------------------------
-# router
+# routes
 router
-    .route '/home'
+    .route '/mount/*'
     .get ( req, res ) ->
-        res.render 'home.jade'
+        res.sendFile pfs.rewrite req.params['0']
 
 # -----------------------------------------------------------------------------
-# exports
+# export
 module.exports = router

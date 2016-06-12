@@ -1,10 +1,9 @@
 # -----------------------------------------------------------------------------
 # requirements
-router = require( 'express' ).Router()
-User   = require( 'server/models/db' ).models.User
-logger = require 'server/models/logger'
-sha512 = require 'sha512'
-uuid   = require 'uuid'
+router   = require( 'express' ).Router()
+User     = require( 'server/models/db' ).models.User
+logger   = require 'server/models/logger'
+passport = require 'passport'
 
 # -----------------------------------------------------------------------------
 # router
@@ -20,13 +19,13 @@ router
             res.json users
 
     .post ( req, res ) ->
-        salt = uuid.v4()
+        password = req.body.password
+        data     = {}
+        for i in req.body
+            if i isnt 'password'
+                data[i] = req.body[i]
 
-        req.body.salt     = salt
-        req.body.password = sha512( "#{ salt }:#{ req.body.password }" ).toString 'hex'
-
-        user = new User req.body
-        user.save ( error ) ->
+        User.register new User( data ), password, ( error, user ) ->
             if error?
                 logger.error error.message
 
@@ -37,25 +36,22 @@ router
 router
     .route '/users/:_id'
     .get ( req, res ) ->
-        User.find _id: req.params._id, ( error, users ) ->
+        User.findOne _id: req.params._id, ( error, user ) ->
             if error?
                 logger.error error.message
 
                 return res.status( 500 ).end()
 
-            res.json users[0]
+            res.json user
 
     .put ( req, res ) ->
-        User.find _id: req.params._id, ( error, users ) ->
+        User.findOne _id: req.params._id, ( error, user ) ->
             if error?
                 logger.error error.message
 
                 return res.status( 500 ).end()
 
-            if users[0].password isnt req.body.password
-                req.body.password = sha512( "#{ users[0].salt }:#{ req.body.password }" ).toString 'hex'
-
-            User.update _id: req.params._id, req.body, ( error ) ->
+            user.update req.body, ( error ) ->
                 if error?
                     logger.error error.message
 
@@ -64,7 +60,7 @@ router
                 res.json updated: true
 
     .delete ( req, res ) ->
-        User.remove _id: req.params._id, ( error ) ->
+        User.removeOne _id: req.params._id, ( error ) ->
             if error?
                 logger.error error.message
 

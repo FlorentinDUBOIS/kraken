@@ -7,9 +7,9 @@ router = require( 'express' ).Router()
 router
     .route '/administrator'
     .get ( req, res ) ->
-        return res.status( 500 ).end() unless req.session.user?
+        return res.status( 500 ).end() unless req.user?
 
-        res.json administrator: req.session.user.administrator
+        res.json administrator: req.user.administrator
 
 # -----------------------------------------------------------------------------
 # exports

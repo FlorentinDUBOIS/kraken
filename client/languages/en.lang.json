@@ -28,7 +28,7 @@
         "send": "Sign in",
         "username": "Username",
         "password": "Password",
-        "success": "Successfully connected",
+        "success": "Successfuly connected",
         "wrong": "Wrong password or username",
 
         "error": {

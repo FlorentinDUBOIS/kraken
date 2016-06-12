@@ -4,8 +4,10 @@ router = require( 'express' ).Router()
 
 # -----------------------------------------------------------------------------
 # router
-router.route( '/' ).get ( req, res ) ->
-    res.render 'index.jade'
+router
+    .route '/'
+    .get ( req, res ) ->
+        res.render 'index.jade'
 
 # -----------------------------------------------------------------------------
 # exports

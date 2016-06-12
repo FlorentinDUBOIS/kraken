@@ -17,6 +17,8 @@ compression = require 'compression'
 session     = require 'express-session'
 logger      = require 'server/models/logger'
 db          = require 'server/models/db'
+passport    = require 'passport'
+Strategy    = require( 'passport-local' ).Strategy
 
 # -----------------------------------------------------------------------------
 # uncaughtException
@@ -64,10 +66,19 @@ server.use session
     resave: false
     saveUninitialized: true
 
+server.use passport.initialize()
+server.use passport.session()
+
 if 'production' isnt server.get 'env'
-    server.use morgan 'dev', skip: ( req, res ) -> req.statusCode < 400
+    server.use morgan 'dev'
 else
     server.use morgan 'common'
+
+# -----------------------------------------------------------------------------
+# passport config
+passport.use new Strategy db.models.User.authenticate()
+passport.serializeUser db.models.User.serializeUser()
+passport.deserializeUser db.models.User.deserializeUser()
 
 # -----------------------------------------------------------------------------
 # Load static routes
@@ -81,10 +92,10 @@ for i, route of routes
 # -----------------------------------------------------------------------------
 # walk over controllers
 walker = walk.walk path.join __dirname, 'server', 'controllers'
-walker.on 'file', ( root, fileStats, next ) ->
-    logger.info "Load controller : #{ path.join( root, fileStats.name ).replace __dirname, '' }"
+walker.on 'file', ( root, stat, next ) ->
+    logger.info "Load controller : #{ path.join( root, stat.name ).replace __dirname, '' }"
 
-    server.use require path.join root, fileStats.name
+    server.use require path.join root, stat.name
 
     next()
 

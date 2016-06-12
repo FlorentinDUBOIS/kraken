@@ -13,7 +13,7 @@ path   = require 'path'
 router
     .route '/bookmarks'
     .get ( req, res ) ->
-        Signet.find user: req.session.user._id, ( error, signets ) ->
+        Signet.find user: req.user._id, ( error, signets ) ->
             if error?
                 logger.error error.message
 
@@ -31,7 +31,7 @@ router
 
     .post ( req, res ) ->
         signet = new Signet
-            user: req.session.user._id
+            user: req.user._id
             path: req.body.path
 
         signet.save ( error ) ->
@@ -43,7 +43,7 @@ router
             res.json inserted: true
 
     .delete ( req, res ) ->
-        Signet.remove user: req.session.user._id, ( error ) ->
+        Signet.remove user: req.user._id, ( error ) ->
             if error?
                 logger.error error.message
 
