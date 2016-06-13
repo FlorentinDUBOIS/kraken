@@ -60,6 +60,8 @@
     },
 
     "fs": {
+        "remove": "Successfuly removed",
+
         "table": {
             "name": "Name",
             "size": "Size",

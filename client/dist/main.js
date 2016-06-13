@@ -107,11 +107,19 @@
 	]);
 
 	kraken.controller('kraken.fs', [
-	  '$scope', '$fs', function($scope, $fs) {
+	  '$scope', '$fs', '$translate', '$logger', function($scope, $fs, $translate, $logger) {
 	    $scope.selecteds = [];
 	    $scope.files = [];
 	    $scope.path = '/';
-	    $scope.order = function(item) {};
+	    $scope.remove = function(name) {
+	      return $fs.remove($scope.path + "/" + name, function(error, data) {
+	        if (error == null) {
+	          return $translate('fs.remove').then(function(trad) {
+	            return $logger.info(trad);
+	          });
+	        }
+	      });
+	    };
 	    $fs.list($scope.path, function(error, files) {
 	      if (error == null) {
 	        return $scope.files = files;
@@ -370,12 +378,25 @@
 
 	kraken.service('$fs', [
 	  '$request', function($request) {
-	    this.list = function(path, callback) {
-	      if ('/' === path.charAt(0)) {
-	        path = path.substring(1);
+	    this.slach = function(path) {
+	      while (true) {
+	        if (/\/\//gi.test(path)) {
+	          path = path.replace(/\/\//gi, '/');
+	        } else {
+	          return path;
+	        }
 	      }
-	      return $request.get("/fs/" + path, callback);
 	    };
+	    this.list = (function(_this) {
+	      return function(path, callback) {
+	        return $request.get(_this.slach("/fs/" + path), callback);
+	      };
+	    })(this);
+	    this.remove = (function(_this) {
+	      return function(path, callback) {
+	        return $request["delete"](_this.slach("/fs/" + path), callback);
+	      };
+	    })(this);
 	  }
 	]);
 
@@ -575,6 +596,7 @@
 			}
 		},
 		"fs": {
+			"remove": "Successfuly removed",
 			"table": {
 				"name": "Name",
 				"size": "Size",

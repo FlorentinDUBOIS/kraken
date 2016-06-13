@@ -1740,7 +1740,9 @@ md-menu-content {
 [ng-click] {
   cursor: pointer; }
 
-md-table-container.list-files > table > thead > tr > th:nth-child(n+3),
+md-table-container.list-files > table > thead > tr > th:nth-child(n+3) {
+  width: 40px; }
+
 md-table-container.list-files > table > thead > tr > th:nth-child(n+4),
 md-table-container.list-files > table > thead > tr > th:nth-child(n+5) {
   width: 80px; }

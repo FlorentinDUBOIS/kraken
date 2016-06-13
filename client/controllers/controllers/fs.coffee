@@ -1,13 +1,23 @@
 # -----------------------------------------------------------------------------
 # create kraken fs controller
-kraken.controller 'kraken.fs', ['$scope', '$fs', ( $scope, $fs ) ->
+kraken.controller 'kraken.fs', ['$scope', '$fs', '$translate', '$logger', ( $scope, $fs, $translate, $logger ) ->
     # -----------------------------------------------------------------------------
     # init variables
     $scope.selecteds = []
     $scope.files     = []
     $scope.path      = '/'
-    $scope.order     = ( item ) ->
 
+
+    # -----------------------------------------------------------------------------
+    # remove file
+    $scope.remove = ( name ) ->
+        $fs.remove "#{ $scope.path }/#{ name }", ( error, data ) ->
+            unless error?
+                $translate( 'fs.remove' ).then ( trad ) ->
+                    $logger.info trad
+
+    # -----------------------------------------------------------------------------
+    # init
 
     # -----------------------------------------------------------------------------
     # get list

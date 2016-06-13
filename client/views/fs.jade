@@ -9,72 +9,35 @@ md-content( layout="column" layout-padding flex )
                     th( md-column md-numeric="true" ) {{ 'fs.table.mtime' | translate | ucfirst }}
 
             tbody( md-body )
-                tr( md-row md-select="file" md-select-id="name" md-auto-select="true" ng-repeat="file in files | orderBy: order" )
+                tr( md-row md-select="file" md-select-id="name" ng-repeat="file in files | orderBy: 'directory': true" ng-cloak )
                     td( md-cell ) {{ file.name }}
-                    td( md-cell ng-if="!file.directory" )
+                    td( md-cell )
                         md-menu.md-secondary
                             md-button.md-icon-button( ng-click="$mdOpenMenu( $event )" )
                                 md-icon( md-menu-origin ) more_horiz
 
                             md-menu-content( width="4" )
-                                md-menu-item
-                                    md-button
-                                        md-icon( md-menu-align-target ) share
-                                        span {{ 'fs.options.share' | translate | ucfirst }}
-
-                                md-menu-item
-                                    md-button( ng-click="rename( file.name, $event )" )
-                                        md-icon( md-menu-align-target ) create
-                                        span {{ 'fs.options.rename' | translate | ucfirst }}
-
-                                md-menu-item
-                                    md-button
-                                        md-icon( md-menu-align-target ) file_download
-                                        span {{ 'fs.options.download' | translate | ucfirst }}
-
-                                md-menu-item
-                                    md-button
-                                        md-icon( md-menu-align-target ) archive
-                                        span {{ 'fs.options.archive' | translate | ucfirst }}
-
-                                md-menu-item
-                                    md-button
-                                        md-icon( md-menu-align-target ) unarchive
-                                        span {{ 'fs.options.unarchive' | translate | ucfirst }}
-
-                                md-menu-item
-                                    md-button
-                                        md-icon( md-menu-align-target ) delete
-                                        span {{ 'fs.options.delete' | translate | ucfirst }}
-
-
-                    td( md-cell ng-if="file.directory" )
-                        md-menu.md-secondary( flex="100" )
-                            md-button.md-icon-button( ng-click="$mdOpenMenu( $event )" )
-                                md-icon( md-menu-origin ) more_horiz
-
-                            md-menu-content( width="4" )
-                                md-menu-item
+                                md-menu-item(  ng-if="file.directory" )
                                     md-button
                                         md-icon( md-menu-align-target ) add
                                         span {{ 'fs.options.bookmarks' | translate | ucfirst }}
 
                                 md-menu-item
                                     md-button
+                                        md-icon( md-menu-align-target ) share
+                                        span {{ 'fs.options.share' | translate | ucfirst }}
+
+                                md-menu-item(  ng-if="file.directory" )
+                                    md-button
                                         md-icon( md-menu-align-target ) folder_open
                                         span {{ 'fs.options.open' | translate | ucfirst }}
 
                                 md-menu-item
-                                    md-button
-                                        md-icon( md-menu-align-target ) folder_shared
-                                        span {{ 'fs.options.share' | translate | ucfirst }}
-
-                                md-menu-item
-                                    md-button
+                                    md-button( ng-click="rename( file.name, $event )" )
                                         md-icon( md-menu-align-target ) create
                                         span {{ 'fs.options.rename' | translate | ucfirst }}
 
-                                md-menu-item
+                                md-menu-item(  ng-if="!file.directory" )
                                     md-button
                                         md-icon( md-menu-align-target ) file_download
                                         span {{ 'fs.options.download' | translate | ucfirst }}
@@ -84,8 +47,13 @@ md-content( layout="column" layout-padding flex )
                                         md-icon( md-menu-align-target ) archive
                                         span {{ 'fs.options.archive' | translate | ucfirst }}
 
-                                md-menu-item
+                                md-menu-item(  ng-if="!file.directory" )
                                     md-button
+                                        md-icon( md-menu-align-target ) unarchive
+                                        span {{ 'fs.options.unarchive' | translate | ucfirst }}
+
+                                md-menu-item
+                                    md-button( ng-click="remove( file.name )" )
                                         md-icon( md-menu-align-target ) delete
                                         span {{ 'fs.options.delete' | translate | ucfirst }}
 

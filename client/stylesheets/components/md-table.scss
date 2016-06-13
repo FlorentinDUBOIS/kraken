@@ -3,7 +3,10 @@ md-table-container {
         & > table {
             & > thead {
                 & > tr {
-                    & > th:nth-child(n+3),
+                    & > th:nth-child(n+3) {
+                        width: 40px;
+                    }
+
                     & > th:nth-child(n+4),
                     & > th:nth-child(n+5) {
                         width: 80px;
