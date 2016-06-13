@@ -111,20 +111,35 @@
 	    $scope.selecteds = [];
 	    $scope.files = [];
 	    $scope.path = '/';
+	    $scope.list = function(path) {
+	      $scope.path = path;
+	      return $fs.list(path, function(error, files) {
+	        if (error == null) {
+	          return $scope.files = files;
+	        }
+	      });
+	    };
 	    $scope.remove = function(name) {
 	      return $fs.remove($scope.path + "/" + name, function(error, data) {
 	        if (error == null) {
 	          return $translate('fs.remove').then(function(trad) {
-	            return $logger.info(trad);
+	            $scope.list($scope.path);
+	            return $logger.info(trad + " : " + name);
 	          });
 	        }
 	      });
 	    };
-	    $fs.list($scope.path, function(error, files) {
-	      if (error == null) {
-	        return $scope.files = files;
+	    $scope.removeSelecteds = function() {
+	      var file, j, len, ref, results;
+	      ref = $scope.selecteds;
+	      results = [];
+	      for (j = 0, len = ref.length; j < len; j++) {
+	        file = ref[j];
+	        results.push($scope.remove(file.name));
 	      }
-	    });
+	      return results;
+	    };
+	    $scope.list($scope.path);
 	  }
 	]);
 
@@ -616,6 +631,14 @@
 				"menu": "Menu",
 				"refresh": "Refresh",
 				"root": "Go to root"
+			},
+			"toolbar": {
+				"filter": "Filter",
+				"list": "List",
+				"item": {
+					"singular": "item selected",
+					"plural": "items selecteds"
+				}
 			}
 		}
 	};

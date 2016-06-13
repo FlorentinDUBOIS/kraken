@@ -83,6 +83,15 @@
             "menu": "Menu",
             "refresh": "Refresh",
             "root": "Go to root"
+        },
+
+        "toolbar" : {
+            "filter": "Filter",
+            "list": "List",
+            "item": {
+                "singular": "item selected",
+                "plural": "items selecteds"
+            }
         }
     }
 }

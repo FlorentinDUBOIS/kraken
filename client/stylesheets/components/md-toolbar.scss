@@ -1,0 +1,8 @@
+md-toolbar {
+    & > .md-toolbar-tools {
+        & md-input-container.md-toolbar-input {
+            margin: 0;
+            height: 30px;
+        }
+    }
+}

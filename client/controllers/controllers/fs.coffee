@@ -7,6 +7,13 @@ kraken.controller 'kraken.fs', ['$scope', '$fs', '$translate', '$logger', ( $sco
     $scope.files     = []
     $scope.path      = '/'
 
+    # -----------------------------------------------------------------------------
+    # list
+    $scope.list = ( path ) ->
+        $scope.path = path
+
+        $fs.list path, ( error, files ) ->
+            $scope.files = files unless error?
 
     # -----------------------------------------------------------------------------
     # remove file
@@ -14,15 +21,18 @@ kraken.controller 'kraken.fs', ['$scope', '$fs', '$translate', '$logger', ( $sco
         $fs.remove "#{ $scope.path }/#{ name }", ( error, data ) ->
             unless error?
                 $translate( 'fs.remove' ).then ( trad ) ->
-                    $logger.info trad
+                    $scope.list $scope.path
+                    $logger.info "#{ trad } : #{ name }"
+
+    # -----------------------------------------------------------------------------
+    # remove selecteds files
+    $scope.removeSelecteds = ->
+        for file in $scope.selecteds
+            $scope.remove file.name
 
     # -----------------------------------------------------------------------------
     # init
-
-    # -----------------------------------------------------------------------------
-    # get list
-    $fs.list $scope.path, ( error, files ) ->
-        $scope.files = files unless error?
+    $scope.list $scope.path
 
     return
 ]
