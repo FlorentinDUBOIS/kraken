@@ -62,6 +62,15 @@
     "fs": {
         "remove": "Successfuly removed",
 
+        "renameDialog": {
+            "title": "Rename",
+            "text": "Rename a file or folder",
+            "placeholder": "New name",
+            "ok": "Ok",
+            "cancel": "Cancel",
+            "success": "Successfuly renamed"
+        },
+
         "table": {
             "name": "Name",
             "size": "Size",

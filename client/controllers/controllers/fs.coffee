@@ -19,6 +19,11 @@ kraken.controller 'kraken.fs', ['$scope', '$fs', '$translate', '$logger', '$mdDi
             $scope.files = files unless error?
 
     # -----------------------------------------------------------------------------
+    # open
+    $scope.open = ( name ) ->
+        $scope.list "#{ $scope.path }/#{ name }"
+
+    # -----------------------------------------------------------------------------
     # rename
     $scope.rename = ( name, $event ) ->
         $translate( 'fs.renameDialog.title' ).then ( title ) ->
@@ -36,8 +41,16 @@ kraken.controller 'kraken.fs', ['$scope', '$fs', '$translate', '$logger', '$mdDi
                                 .ok ok
                                 .cancel cancel
 
-                            $mdDialog.show( prompt ).then(  )
+                            $mdDialog.show( prompt ).then ( rename ) ->
+                                $scope.load = true
 
+                                $fs.rename "#{ $scope.path }/#{ name }", "#{ $scope.path }/#{ rename }", ( error, data ) ->
+                                     unless error?
+                                        if data.renamed is true
+                                            $translate( 'fs.renameDialog.success' ).then ( trad ) ->
+                                                $scope.list $scope.path
+                                                $logger.info trad
+                            , ->
 
     # -----------------------------------------------------------------------------
     # remove file

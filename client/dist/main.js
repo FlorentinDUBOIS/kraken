@@ -122,6 +122,9 @@
 	        }
 	      });
 	    };
+	    $scope.open = function(name) {
+	      return $scope.list($scope.path + "/" + name);
+	    };
 	    $scope.rename = function(name, $event) {
 	      return $translate('fs.renameDialog.title').then(function(title) {
 	        return $translate('fs.renameDialog.text').then(function(text) {
@@ -131,7 +134,19 @@
 	                var prompt;
 	                prompt = $mdDialog.prompt();
 	                prompt.title(title).textContent(text).placeholder(placeholder).ariaLabel(placeholder).targetEvent($event).ok(ok).cancel(cancel);
-	                return $mdDialog.show(prompt).then();
+	                return $mdDialog.show(prompt).then(function(rename) {
+	                  $scope.load = true;
+	                  return $fs.rename($scope.path + "/" + name, $scope.path + "/" + rename, function(error, data) {
+	                    if (error == null) {
+	                      if (data.renamed === true) {
+	                        return $translate('fs.renameDialog.success').then(function(trad) {
+	                          $scope.list($scope.path);
+	                          return $logger.info(trad);
+	                        });
+	                      }
+	                    }
+	                  });
+	                }, function() {});
 	              });
 	            });
 	          });
@@ -421,14 +436,46 @@
 	        }
 	      }
 	    };
+	    this.realpath = (function(_this) {
+	      return function(path) {
+	        var dirname, dirnames, fpath, i;
+	        path = _this.slach(path);
+	        dirnames = path.split('/');
+	        fpath = [];
+	        for (i in dirnames) {
+	          dirname = dirnames[i];
+	          if (i + 1 < dirnames.length && dirnames[i + 1] === '..') {
+	            continue;
+	          }
+	          if (dirname === '..') {
+	            continue;
+	          }
+	          fpath.push(dirname);
+	        }
+	        if (fpath.length === 0) {
+	          return '/';
+	        }
+	        if (fpath.length === 1) {
+	          return fpath.join('/').substring(1);
+	        }
+	        return fpath.join('/');
+	      };
+	    })(this);
 	    this.list = (function(_this) {
 	      return function(path, callback) {
-	        return $request.get(_this.slach("/fs/" + path), callback);
+	        return $request.get(_this.slach("/fs/" + (_this.realpath(path))), callback);
 	      };
 	    })(this);
 	    this.remove = (function(_this) {
 	      return function(path, callback) {
-	        return $request["delete"](_this.slach("/fs/" + path), callback);
+	        return $request["delete"](_this.slach("/fs/" + (_this.realpath(path))), callback);
+	      };
+	    })(this);
+	    this.rename = (function(_this) {
+	      return function(oldpath, newpath, callback) {
+	        return $request.patch(_this.slach("/fs/" + (_this.realpath(oldpath))), {
+	          path: _this.slach(_this.realpath(newpath))
+	        }, callback);
 	      };
 	    })(this);
 	  }
@@ -631,6 +678,14 @@
 		},
 		"fs": {
 			"remove": "Successfuly removed",
+			"renameDialog": {
+				"title": "Rename",
+				"text": "Rename a file or folder",
+				"placeholder": "New name",
+				"ok": "Ok",
+				"cancel": "Cancel",
+				"success": "Successfuly renamed"
+			},
 			"table": {
 				"name": "Name",
 				"size": "Size",

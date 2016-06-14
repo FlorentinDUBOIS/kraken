@@ -1,5 +1,5 @@
 md-content( layout="column" layout-align="center center" flex ng-show="load" )
-    md-progress-circular( md-diameter="100" )
+    md-progress-circular( md-diameter="100" md-mode="indeterminate" )
 
 md-content( layout="column" flex ng-show="!load" )
     md-card
@@ -8,6 +8,9 @@ md-content( layout="column" flex ng-show="!load" )
                 h2.md-title {{ 'fs.toolbar.list' | translate | ucfirst }}
 
                 div( flex )
+
+                md-button.md-icon-button( ng-click="open( '..' )" ng-show="path != '/'" )
+                    md-icon layers
 
                 md-button.md-icon-button( ng-click="showFilter = true" )
                     md-icon filter_list
@@ -63,12 +66,7 @@ md-content( layout="column" flex ng-show="!load" )
                                             md-icon( md-menu-align-target ) add
                                             span {{ 'fs.options.bookmarks' | translate | ucfirst }}
 
-                                    md-menu-item
-                                        md-button
-                                            md-icon( md-menu-align-target ) share
-                                            span {{ 'fs.options.share' | translate | ucfirst }}
-
-                                    md-menu-item(  ng-if="file.directory" )
+                                    md-menu-item( ng-if="file.directory" ng-click="open( file.name )" )
                                         md-button
                                             md-icon( md-menu-align-target ) folder_open
                                             span {{ 'fs.options.open' | translate | ucfirst }}

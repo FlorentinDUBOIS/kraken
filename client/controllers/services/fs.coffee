@@ -8,11 +8,32 @@ kraken.service '$fs', ['$request', ( $request ) ->
             else
                 return path
 
+    @realpath = ( path ) =>
+        path     = @slach path
+        dirnames = path.split '/'
+        fpath    = []
+
+        # bug .. here
+        for i, dirname of dirnames
+            continue if i+1 < dirnames.length && dirnames[i+1] is '..'
+            continue if dirname is '..'
+
+            fpath.push dirname
+        # to here
+
+        return '/' if fpath.length is 0
+        return fpath.join( '/' ).substring 1 if fpath.length is 1
+
+        fpath.join '/'
+
     @list = ( path, callback ) =>
-        $request.get @slach( "/fs/#{ path }" ), callback
+        $request.get @slach( "/fs/#{ @realpath path }" ), callback
 
     @remove = ( path, callback ) =>
-        $request.delete @slach( "/fs/#{ path }" ), callback
+        $request.delete @slach( "/fs/#{ @realpath path }" ), callback
+
+    @rename = ( oldpath, newpath, callback ) =>
+        $request.patch @slach( "/fs/#{ @realpath oldpath }" ), path: @slach( @realpath newpath ), callback
 
     return
 ]

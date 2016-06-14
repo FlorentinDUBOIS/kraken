@@ -20,7 +20,7 @@ router
                 return res.status( 500 ).end()
 
             for i, file of files
-                files[i] = pfs.rewrite file
+                files[i] = pfs.rewrite path.join req.params['0'], file
 
             async.map files, fs.stat, ( error, stats ) ->
                 if error?
@@ -37,6 +37,15 @@ router
                         directory: stats[i].isDirectory()
 
                 res.json data
+
+    .patch ( req, res ) ->
+        fs.rename pfs.rewrite( req.params['0'] ), pfs.rewrite( req.body.path ), ( error ) ->
+            if error?
+                logger.error error.message
+
+                return res.status( 500 ).end()
+
+            res.json renamed: true
 
     .delete ( req, res ) ->
         fs.stat pfs.rewrite( req.params['0'] ), ( error, stat ) ->
