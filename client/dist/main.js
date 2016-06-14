@@ -107,16 +107,35 @@
 	]);
 
 	kraken.controller('kraken.fs', [
-	  '$scope', '$fs', '$translate', '$logger', function($scope, $fs, $translate, $logger) {
+	  '$scope', '$fs', '$translate', '$logger', '$mdDialog', function($scope, $fs, $translate, $logger, $mdDialog) {
 	    $scope.selecteds = [];
 	    $scope.files = [];
+	    $scope.load = true;
 	    $scope.path = '/';
 	    $scope.list = function(path) {
+	      $scope.load = true;
 	      $scope.path = path;
 	      return $fs.list(path, function(error, files) {
+	        $scope.load = false;
 	        if (error == null) {
 	          return $scope.files = files;
 	        }
+	      });
+	    };
+	    $scope.rename = function(name, $event) {
+	      return $translate('fs.renameDialog.title').then(function(title) {
+	        return $translate('fs.renameDialog.text').then(function(text) {
+	          return $translate('fs.renameDialog.placeholder').then(function(placeholder) {
+	            return $translate('fs.renameDialog.ok').then(function(ok) {
+	              return $translate('fs.renameDialog.cancel').then(function(cancel) {
+	                var prompt;
+	                prompt = $mdDialog.prompt();
+	                prompt.title(title).textContent(text).placeholder(placeholder).ariaLabel(placeholder).targetEvent($event).ok(ok).cancel(cancel);
+	                return $mdDialog.show(prompt).then();
+	              });
+	            });
+	          });
+	        });
 	      });
 	    };
 	    $scope.remove = function(name) {

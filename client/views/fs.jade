@@ -1,6 +1,9 @@
-md-content( layout="column" flex )
+md-content( layout="column" layout-align="center center" flex ng-show="load" )
+    md-progress-circular( md-diameter="100" )
+
+md-content( layout="column" flex ng-show="!load" )
     md-card
-        md-toolbar.md-table-toolbar.md-default( ng-show="!showFilter && !selecteds.length" )
+        md-toolbar.md-table-toolbar.md-default( ng-cloak ng-show="!showFilter && !selecteds.length" )
             div.md-toolbar-tools
                 h2.md-title {{ 'fs.toolbar.list' | translate | ucfirst }}
 
@@ -105,10 +108,10 @@ md-content( layout="column" flex )
                 md-icon menu
 
         md-fab-actions
-            md-button.md-fab.md-raised.md-mini( ng-click="open( path )" )
+            md-button.md-fab.md-raised.md-mini( ng-click="list( path )" )
                 md-tooltip( md-direction="top" ) {{ 'fs.fab.refresh' | translate | lower }}
                 md-icon refresh
 
-            md-button.md-fab.md-raised.md-mini( ng-click="open( '/' )" )
+            md-button.md-fab.md-raised.md-mini( ng-click="list( '/' )" )
                 md-tooltip( md-direction="top" ) {{ 'fs.fab.root' | translate | lower }}
                 md-icon folder
