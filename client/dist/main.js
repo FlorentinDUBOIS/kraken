@@ -444,7 +444,7 @@
 	        fpath = [];
 	        for (i in dirnames) {
 	          dirname = dirnames[i];
-	          if (i + 1 < dirnames.length && dirnames[i + 1] === '..') {
+	          if (parseInt(i) + 1 < dirnames.length && dirnames[parseInt(i) + 1] === '..') {
 	            continue;
 	          }
 	          if (dirname === '..') {

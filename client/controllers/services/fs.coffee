@@ -13,13 +13,11 @@ kraken.service '$fs', ['$request', ( $request ) ->
         dirnames = path.split '/'
         fpath    = []
 
-        # bug .. here
         for i, dirname of dirnames
-            continue if i+1 < dirnames.length && dirnames[i+1] is '..'
+            continue if parseInt( i )+1 < dirnames.length && dirnames[parseInt( i )+1] is '..'
             continue if dirname is '..'
 
             fpath.push dirname
-        # to here
 
         return '/' if fpath.length is 0
         return fpath.join( '/' ).substring 1 if fpath.length is 1
