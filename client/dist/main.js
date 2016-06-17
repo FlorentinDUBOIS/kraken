@@ -64,7 +64,7 @@
 	        controller: 'fs',
 	        templateUrl: 'views/fs.jade'
 	      }, {
-	        path: '/fs/:path',
+	        path: '/fs/:signet',
 	        controller: 'fs',
 	        templateUrl: 'views/fs.jade'
 	      }, {
@@ -107,7 +107,7 @@
 	]);
 
 	kraken.controller('kraken.fs', [
-	  '$scope', '$fs', '$translate', '$logger', '$mdDialog', function($scope, $fs, $translate, $logger, $mdDialog) {
+	  '$scope', '$fs', '$translate', '$logger', '$mdDialog', '$routeParams', '$signets', '$compress', function($scope, $fs, $translate, $logger, $mdDialog, $routeParams, $signets, $compress) {
 	    $scope.selecteds = [];
 	    $scope.files = [];
 	    $scope.load = true;
@@ -144,6 +144,8 @@
 	                          return $logger.info(trad);
 	                        });
 	                      }
+	                    } else {
+	                      return $scope.list($scope.path);
 	                    }
 	                  });
 	                }, function() {});
@@ -173,7 +175,55 @@
 	      }
 	      return results;
 	    };
-	    $scope.list($scope.path);
+	    $scope.listFromSignet = function(_id) {
+	      $scope.load = true;
+	      return $signets.getOne(_id, function(error, data) {
+	        return $scope.list(data.path);
+	      });
+	    };
+	    $scope.compress = function(name) {
+	      return $compress.zip($scope.path + "/" + name, function(error, data) {
+	        if (error == null) {
+	          if (data.compressed === true) {
+	            return $translate('fs.compress.success').then(function(trad) {
+	              $logger.info(trad);
+	              return $scope.list($scope.path);
+	            });
+	          }
+	        }
+	      });
+	    };
+	    $scope.uncompress = function(name) {
+	      return $compress.unzip($scope.path + "/" + name, function(error, data) {
+	        if (error == null) {
+	          if (data.uncompressed === true) {
+	            return $translate('fs.uncompress.success').then(function(trad) {
+	              $logger.info(trad);
+	              return $scope.list($scope.path);
+	            });
+	          }
+	        }
+	      });
+	    };
+	    $scope.bookmark = function(name) {
+	      return $signets.create($scope.path + "/" + name, function(error, data) {
+	        if (!error) {
+	          if (data.created === true) {
+	            return $translate('fs.bookmark.success').then(function(trad) {
+	              return $logger.info(trad);
+	            });
+	          }
+	        }
+	      });
+	    };
+	    $scope.isArchive = function(name) {
+	      return /\.zip$/gi.test(name);
+	    };
+	    if ($routeParams.signet != null) {
+	      $scope.listFromSignet($routeParams.signet);
+	    } else {
+	      $scope.list($scope.path);
+	    }
 	  }
 	]);
 
@@ -425,6 +475,17 @@
 	  }
 	]);
 
+	kraken.service('$compress', [
+	  '$request', '$fs', function($request, $fs) {
+	    this.zip = function(name, callback) {
+	      return $request.post($fs.realpath("/compress/" + name), {}, callback);
+	    };
+	    this.unzip = function(name, callback) {
+	      return $request["delete"]($fs.realpath("/compress/" + name), callback);
+	    };
+	  }
+	]);
+
 	kraken.service('$fs', [
 	  '$request', function($request) {
 	    this.slach = function(path) {
@@ -558,6 +619,30 @@
 	      }, function(res) {
 	        return errorHandler(res, callback);
 	      });
+	    };
+	  }
+	]);
+
+	kraken.service('$signets', [
+	  '$request', '$fs', function($request, $fs) {
+	    this.get = function(callback) {
+	      return $request.get('/signets', callback);
+	    };
+	    this.getOne = function(_id, callback) {
+	      return $request.get("/signets/" + _id, callback);
+	    };
+	    this.create = function(path, callback) {
+	      return $request.post('/signets', {
+	        path: $fs.realpath(path)
+	      }, callback);
+	    };
+	    this.update = function(_id, path, callback) {
+	      return $request.put("/signets/" + _id, {
+	        path: $fs.realpath(path)
+	      }, callback);
+	    };
+	    this["delete"] = function(_id, callback) {
+	      return $request["delete"]("/signets/" + _id, callback);
 	    };
 	  }
 	]);
@@ -713,6 +798,15 @@
 					"singular": "item selected",
 					"plural": "items selecteds"
 				}
+			},
+			"bookmark": {
+				"success": "Successfuly bookmarks"
+			},
+			"compress": {
+				"success": "Successfuly compressed"
+			},
+			"uncompress": {
+				"success": "Successfuly uncompressed"
 			}
 		}
 	};

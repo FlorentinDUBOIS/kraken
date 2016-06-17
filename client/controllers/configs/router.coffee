@@ -3,7 +3,7 @@
 kraken.config ['$routeProvider', ( $routeProvider ) ->
     routes = [
         { path: '/fs', controller: 'fs', templateUrl: 'views/fs.jade' }
-        { path: '/fs/:path', controller: 'fs', templateUrl: 'views/fs.jade' }
+        { path: '/fs/:signet', controller: 'fs', templateUrl: 'views/fs.jade' }
         { path: '/manage-account', controller: 'manageAccount', templateUrl: 'views/manage-account.jade' }
     ]
 

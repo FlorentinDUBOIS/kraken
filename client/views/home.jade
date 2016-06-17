@@ -48,7 +48,7 @@ html( ng-app="florentindubois.kraken" )
                                 md-icon.md-float-right( ng-click="getBookmarks()" ) refresh
 
                             md-list-item( md-ink-ripple ng-repeat="item in bookmarks" )
-                                a( ng-href="#/fs{{ item.path }}" flex="100" )
+                                a( ng-href="#/fs/{{ item._id }}" flex="100" )
                                     md-icon( flex="20" ) {{ item.icon }}
                                     span( flex="65" ) {{ item.name }}
                                     md-icon( ng-click="removeBookmark( item._id )" ) delete

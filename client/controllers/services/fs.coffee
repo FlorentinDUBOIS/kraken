@@ -11,6 +11,7 @@ kraken.service '$fs', ['$request', ( $request ) ->
     @realpath = ( path ) =>
         path     = @slach path
         dirnames = path.split '/'
+
         fpath    = []
 
         for i, dirname of dirnames

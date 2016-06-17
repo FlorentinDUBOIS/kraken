@@ -101,6 +101,18 @@
                 "singular": "item selected",
                 "plural": "items selecteds"
             }
+        },
+
+        "bookmark": {
+            "success": "Successfuly bookmarks"
+        },
+
+        "compress": {
+            "success": "Successfuly compressed"
+        },
+
+        "uncompress": {
+            "success": "Successfuly uncompressed"
         }
     }
 }

@@ -39,6 +39,11 @@ router
                 res.json data
 
     .patch ( req, res ) ->
+        if -1 is pfs.rewrite( req.body.path ).indexOf pfs.rewrite '/'
+            logger.error 'try to rename over root'
+
+            return res.status( 403 ).end()
+
         fs.rename pfs.rewrite( req.params['0'] ), pfs.rewrite( req.body.path ), ( error ) ->
             if error?
                 logger.error error.message

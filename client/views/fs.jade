@@ -62,7 +62,7 @@ md-content( layout="column" flex ng-show="!load" )
 
                                 md-menu-content( width="4" )
                                     md-menu-item(  ng-if="file.directory" )
-                                        md-button
+                                        md-button( ng-click="bookmark( file.name )" )
                                             md-icon( md-menu-align-target ) add
                                             span {{ 'fs.options.bookmarks' | translate | ucfirst }}
 
@@ -81,13 +81,13 @@ md-content( layout="column" flex ng-show="!load" )
                                             md-icon( md-menu-align-target ) file_download
                                             span {{ 'fs.options.download' | translate | ucfirst }}
 
-                                    md-menu-item
-                                        md-button
+                                    md-menu-item( ng-if="!isArchive( file.name )" )
+                                        md-button( ng-click="compress( file.name )" )
                                             md-icon( md-menu-align-target ) archive
                                             span {{ 'fs.options.archive' | translate | ucfirst }}
 
-                                    md-menu-item(  ng-if="!file.directory" )
-                                        md-button
+                                    md-menu-item(  ng-if="isArchive( file.name )" )
+                                        md-button( ng-click="uncompress( file.name )" )
                                             md-icon( md-menu-align-target ) unarchive
                                             span {{ 'fs.options.unarchive' | translate | ucfirst }}
 
