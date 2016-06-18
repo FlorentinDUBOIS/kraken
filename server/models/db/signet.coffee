@@ -3,7 +3,7 @@
 mongoose = require 'server/models/db/database'
 
 # -----------------------------------------------------------------------------
-# create Schemas
+# create Schema
 SignetSchema = new mongoose.Schema
     user: mongoose.Schema.Types.ObjectId
     path: mongoose.Schema.Types.String

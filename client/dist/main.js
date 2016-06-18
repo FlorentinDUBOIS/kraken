@@ -624,6 +624,23 @@
 	  }
 	]);
 
+	kraken.service('$share', [
+	  '$request', function($request) {
+	    this.getAll = function(callback) {
+	      return $request.get('/share', callback);
+	    };
+	    this.get = function(_id, callback) {
+	      return $request.get("/share/" + _id, callback);
+	    };
+	    this.create = function(data, callback) {
+	      return $request.post('/share', data, callback);
+	    };
+	    this.remove = function(_id, callback) {
+	      return $request["delete"]("/share/" + _id, callback);
+	    };
+	  }
+	]);
+
 	kraken.service('$signets', [
 	  '$request', '$fs', function($request, $fs) {
 	    this.get = function(callback) {
