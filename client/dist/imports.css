@@ -1634,7 +1634,7 @@
 .md-text-justify {
   text-align: justify !important; }
 
-.md-font-inherit {
+.md-font-inherit, md-menu-content a {
   color: inherit;
   font-family: inherit;
   text-decoration: inherit;

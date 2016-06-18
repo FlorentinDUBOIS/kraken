@@ -76,10 +76,11 @@ md-content( layout="column" flex ng-show="!load" )
                                             md-icon( md-menu-align-target ) create
                                             span {{ 'fs.options.rename' | translate | ucfirst }}
 
-                                    md-menu-item(  ng-if="!file.directory" )
-                                        md-button
-                                            md-icon( md-menu-align-target ) file_download
-                                            span {{ 'fs.options.download' | translate | ucfirst }}
+                                    a( ng-href="{{ realpath( 'mount/' + path + '/' + file.name ) }}" download="{{ file.name }}" )
+                                        md-menu-item(  ng-if="!file.directory" )
+                                            md-button
+                                                md-icon( md-menu-align-target ) file_download
+                                                span {{ 'fs.options.download' | translate | ucfirst }}
 
                                     md-menu-item( ng-if="!isArchive( file.name )" )
                                         md-button( ng-click="compress( file.name )" )

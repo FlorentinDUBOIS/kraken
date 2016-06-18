@@ -112,6 +112,7 @@
 	    $scope.files = [];
 	    $scope.load = true;
 	    $scope.path = '/';
+	    $scope.realpath = $fs.realpath;
 	    $scope.list = function(path) {
 	      $scope.load = true;
 	      $scope.path = $fs.realpath(path);
