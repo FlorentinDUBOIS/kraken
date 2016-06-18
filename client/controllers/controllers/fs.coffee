@@ -12,7 +12,7 @@ kraken.controller 'kraken.fs', ['$scope', '$fs', '$translate', '$logger', '$mdDi
     # list
     $scope.list = ( path ) ->
         $scope.load = true
-        $scope.path = path
+        $scope.path = $fs.realpath path
 
         $fs.list path, ( error, files ) ->
             $scope.load  = false

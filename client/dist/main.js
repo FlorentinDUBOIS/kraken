@@ -114,7 +114,7 @@
 	    $scope.path = '/';
 	    $scope.list = function(path) {
 	      $scope.load = true;
-	      $scope.path = path;
+	      $scope.path = $fs.realpath(path);
 	      return $fs.list(path, function(error, files) {
 	        $scope.load = false;
 	        if (error == null) {
