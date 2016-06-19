@@ -107,7 +107,7 @@
 	]);
 
 	kraken.controller('kraken.fs', [
-	  '$scope', '$fs', '$translate', '$logger', '$mdDialog', '$routeParams', '$signets', '$compress', function($scope, $fs, $translate, $logger, $mdDialog, $routeParams, $signets, $compress) {
+	  '$scope', '$fs', '$translate', '$logger', '$mdDialog', '$routeParams', '$signets', '$compress', '$share', function($scope, $fs, $translate, $logger, $mdDialog, $routeParams, $signets, $compress, $share) {
 	    $scope.selecteds = [];
 	    $scope.files = [];
 	    $scope.load = true;
@@ -219,6 +219,40 @@
 	    };
 	    $scope.isArchive = function(name) {
 	      return /\.zip$/gi.test(name);
+	    };
+	    $scope.share = function(name, $event) {
+	      return $translate('fs.shareDialog.title').then(function(title) {
+	        return $translate('fs.shareDialog.text').then(function(text) {
+	          return $translate('fs.shareDialog.placeholder').then(function(placeholder) {
+	            return $translate('fs.shareDialog.ok').then(function(ok) {
+	              return $translate('fs.shareDialog.cancel').then(function(cancel) {
+	                var prompt;
+	                prompt = $mdDialog.prompt();
+	                prompt.title(title).textContent(text).placeholder(placeholder).ariaLabel(placeholder).targetEvent($event).ok(ok).cancel(cancel);
+	                return $mdDialog.show(prompt).then(function(password) {
+	                  return $share.create($fs.realpath($scope.path + "/" + name), password, function(error, data) {
+	                    if (error == null) {
+	                      if (data.created === true) {
+	                        return $translate('fs.shareDialog.success').then(function(success) {
+	                          $logger.info(success);
+	                          return $translate('fs.shareSuccessDialog.title').then(function(title) {
+	                            return $translate('fs.shareSuccessDialog.placeholder').then(function(placeholder) {
+	                              var dialog;
+	                              dialog = $mdDialog.alert();
+	                              dialog.title(title).textContent($share.link(data._id)).ariaLabel(placeholder).targetEvent($event).ok(ok);
+	                              return $mdDialog.show(dialog);
+	                            });
+	                          });
+	                        });
+	                      }
+	                    }
+	                  });
+	                }, function() {});
+	              });
+	            });
+	          });
+	        });
+	      });
 	    };
 	    if ($routeParams.signet != null) {
 	      $scope.listFromSignet($routeParams.signet);
@@ -359,6 +393,28 @@
 	  }
 	]);
 
+	kraken.run([
+	  '$rootScope', '$location', '$user', '$translate', '$logger', function($rootScope, $location, $user, $translate, $logger) {
+	    var paths;
+	    paths = ['/manage-account'];
+	    $rootScope.$on('$routeChangeStart', function() {
+	      if (-1 === paths.indexOf($location.path())) {
+	        return;
+	      }
+	      return $user.isAdministrator(function(error, data) {
+	        if (error == null) {
+	          if (!data.administrator) {
+	            return $translate('request.notAuthorized').then(function(trad) {
+	              $logger.error(trad);
+	              return $location.path('/fs');
+	            });
+	          }
+	        }
+	      });
+	    });
+	  }
+	]);
+
 	kraken.filter('bytes', [
 	  function() {
 	    return function(input, precision) {
@@ -424,28 +480,6 @@
 	      }
 	      return input;
 	    };
-	  }
-	]);
-
-	kraken.run([
-	  '$rootScope', '$location', '$user', '$translate', '$logger', function($rootScope, $location, $user, $translate, $logger) {
-	    var paths;
-	    paths = ['/manage-account'];
-	    $rootScope.$on('$routeChangeStart', function() {
-	      if (-1 === paths.indexOf($location.path())) {
-	        return;
-	      }
-	      return $user.isAdministrator(function(error, data) {
-	        if (error == null) {
-	          if (!data.administrator) {
-	            return $translate('request.notAuthorized').then(function(trad) {
-	              $logger.error(trad);
-	              return $location.path('/fs');
-	            });
-	          }
-	        }
-	      });
-	    });
 	  }
 	]);
 
@@ -546,13 +580,22 @@
 	kraken.service('$logger', [
 	  '$mdToast', function($mdToast) {
 	    this.info = function(message) {
-	      return $mdToast.show($mdToast.simple().textContent(message));
+	      var toast;
+	      toast = $mdToast.simple();
+	      toast.textContent(message).position('top right');
+	      return $mdToast.show(toast);
 	    };
 	    this.warn = function(message) {
-	      return $mdToast.show($mdToast.simple().textContent(message));
+	      var toast;
+	      toast = $mdToast.simple();
+	      toast.textContent(message).position('top right');
+	      return $mdToast.show(toast);
 	    };
 	    this.error = function(message) {
-	      return $mdToast.show($mdToast.simple().textContent(message));
+	      var toast;
+	      toast = $mdToast.simple();
+	      toast.textContent(message).position('top right');
+	      return $mdToast.show(toast);
 	    };
 	  }
 	]);
@@ -625,18 +668,24 @@
 	]);
 
 	kraken.service('$share', [
-	  '$request', function($request) {
+	  '$request', '$window', function($request, $window) {
 	    this.getAll = function(callback) {
 	      return $request.get('/share', callback);
 	    };
 	    this.get = function(_id, callback) {
 	      return $request.get("/share/" + _id, callback);
 	    };
-	    this.create = function(data, callback) {
-	      return $request.post('/share', data, callback);
+	    this.create = function(path, password, callback) {
+	      return $request.post('/share', {
+	        path: path,
+	        password: password
+	      }, callback);
 	    };
 	    this.remove = function(_id, callback) {
 	      return $request["delete"]("/share/" + _id, callback);
+	    };
+	    this.link = function(_id) {
+	      return $window.location.origin + "/mount/share/" + _id;
 	    };
 	  }
 	]);
@@ -789,6 +838,18 @@
 				"cancel": "Cancel",
 				"success": "Successfuly renamed"
 			},
+			"shareDialog": {
+				"title": "Share",
+				"text": "Share a file or folder",
+				"placeholder": "Password",
+				"ok": "Ok",
+				"cancel": "Cancel",
+				"success": "Successfuly shared"
+			},
+			"shareSuccessDialog": {
+				"title": "Link to access",
+				"placeholder": ""
+			},
 			"table": {
 				"name": "Name",
 				"size": "Size",
@@ -810,7 +871,7 @@
 				"root": "Go to root"
 			},
 			"toolbar": {
-				"filter": "Filter",
+				"filter": "",
 				"list": "List",
 				"item": {
 					"singular": "item selected",

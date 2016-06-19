@@ -20,7 +20,7 @@ router
             redirect: '/home'
 
     .delete ( req, res ) ->
-        return res.json redirect: false unless req.session?
+        return res.json redirect: '/' if not req.user? or not req.session?
 
         req.session.destroy ( error ) ->
             if error?

@@ -53,7 +53,7 @@ md-content( layout="column" flex ng-show="!load" )
                     tr( md-row md-select="file" md-select-id="name" ng-repeat="file in files | orderBy: 'directory': true | orderBy: order | filter: filter" ng-cloak )
                         td( md-cell ) {{ file.name }}
                         td( md-cell layout="row" layout-align="center center" )
-                            md-button.md-icon-button
+                            md-button.md-icon-button( ng-click="share( file.name, $event )" )
                                 md-icon share
 
                             md-menu.md-secondary

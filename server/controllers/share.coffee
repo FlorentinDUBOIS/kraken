@@ -1,9 +1,9 @@
 # -----------------------------------------------------------------------------
 # requirements
-router   = require( 'express' ).Router()
-Share    = require( 'server/models/db' ).models.Share
-logger   = require 'server/models/logger'
-passport = require 'passport'
+router = require( 'express' ).Router()
+Share  = require( 'server/models/db' ).models.Share
+logger = require 'server/models/logger'
+sha512 = require 'sha512'
 
 # -----------------------------------------------------------------------------
 # router
@@ -19,18 +19,21 @@ router
             res.json shares
 
     .post ( req, res ) ->
-        data     = {}
-        for i in req.body
-            if i isnt 'password'
-                data[i] = req.body[i]
+        data =
+            user: req.user._id
+            path: req.body.path
+            password: sha512( req.body.password ).toString 'hex'
 
-        Share.register new Share( data ), req.body.password, ( error, user ) ->
+        share = new Share data
+        share.save ( error ) ->
             if error?
                 logger.error error.message
 
                 return res.status( 500 ).end()
 
-            res.json created: true
+            res.json
+                created: true
+                _id: share._id
 
 router
     .route '/share/:_id'

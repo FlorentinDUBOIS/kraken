@@ -12,11 +12,11 @@ router
         ]
 
         if req.user.administrator is true
-            routesAdministrator = [
+            administrator = [
                 { icon: 'account_circle', name: 'navigation.manageAccount', link: '#/manage-account' }
             ]
 
-            for i, route of routesAdministrator
+            for i, route of administrator
                 routes.push route
 
         res.json routes

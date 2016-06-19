@@ -71,6 +71,20 @@
             "success": "Successfuly renamed"
         },
 
+        "shareDialog": {
+            "title": "Share",
+            "text": "Share a file or folder",
+            "placeholder": "Password",
+            "ok": "Ok",
+            "cancel": "Cancel",
+            "success": "Successfuly shared"
+        },
+
+        "shareSuccessDialog": {
+            "title": "Link to access",
+            "placeholder": ""
+        },
+
         "table": {
             "name": "Name",
             "size": "Size",
@@ -95,7 +109,7 @@
         },
 
         "toolbar" : {
-            "filter": "Filter",
+            "filter": "",
             "list": "List",
             "item": {
                 "singular": "item selected",
