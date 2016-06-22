@@ -71,15 +71,6 @@
             "success": "Successfuly renamed"
         },
 
-        "shareDialog": {
-            "title": "Share",
-            "text": "Share a file or folder",
-            "placeholder": "Password",
-            "ok": "Ok",
-            "cancel": "Cancel",
-            "success": "Successfuly shared"
-        },
-
         "shareSuccessDialog": {
             "title": "Link to access",
             "placeholder": ""
@@ -105,7 +96,8 @@
         "fab": {
             "menu": "Menu",
             "refresh": "Refresh",
-            "root": "Go to root"
+            "root": "Go to root",
+            "share": "Shared file or folder"
         },
 
         "toolbar" : {

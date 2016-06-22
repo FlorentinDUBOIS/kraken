@@ -1,6 +1,6 @@
 # -----------------------------------------------------------------------------
 # create kraken fs controller
-kraken.controller 'kraken.fs', ['$scope', '$fs', '$translate', '$logger', '$mdDialog', '$routeParams', '$signets', '$compress', '$share', ( $scope, $fs, $translate, $logger, $mdDialog, $routeParams, $signets, $compress, $share ) ->
+kraken.controller 'kraken.fs', ['$scope', '$fs', '$translate', '$logger', '$mdDialog', '$routeParams', '$signets', '$compress', ( $scope, $fs, $translate, $logger, $mdDialog, $routeParams, $signets, $compress ) ->
     # -----------------------------------------------------------------------------
     # init variables
     $scope.selecteds = []
@@ -114,44 +114,6 @@ kraken.controller 'kraken.fs', ['$scope', '$fs', '$translate', '$logger', '$mdDi
     # is archive
     $scope.isArchive = ( name ) ->
         /\.zip$/gi.test name
-
-    # -----------------------------------------------------------------------------
-    # share
-    $scope.share = ( name, $event ) ->
-        $translate( 'fs.shareDialog.title' ).then ( title ) ->
-            $translate( 'fs.shareDialog.text' ).then ( text ) ->
-                $translate( 'fs.shareDialog.placeholder' ).then ( placeholder ) ->
-                    $translate( 'fs.shareDialog.ok' ).then ( ok ) ->
-                        $translate( 'fs.shareDialog.cancel' ).then ( cancel ) ->
-                            prompt = $mdDialog.prompt()
-                            prompt
-                                .title title
-                                .textContent text
-                                .placeholder placeholder
-                                .ariaLabel placeholder
-                                .targetEvent $event
-                                .ok ok
-                                .cancel cancel
-
-                            $mdDialog.show( prompt ).then ( password ) ->
-                                $share.create $fs.realpath( "#{ $scope.path }/#{ name }" ), password, ( error, data ) ->
-                                    unless error?
-                                        if data.created is true
-                                            $translate( 'fs.shareDialog.success' ).then ( success ) ->
-                                                $logger.info success
-
-                                                $translate( 'fs.shareSuccessDialog.title' ).then ( title ) ->
-                                                    $translate( 'fs.shareSuccessDialog.placeholder' ).then ( placeholder ) ->
-                                                        dialog = $mdDialog.alert()
-                                                        dialog
-                                                            .title title
-                                                            .textContent $share.link data._id
-                                                            .ariaLabel placeholder
-                                                            .targetEvent $event
-                                                            .ok ok
-
-                                                        $mdDialog.show dialog
-                            , ->
 
     # -----------------------------------------------------------------------------
     # init

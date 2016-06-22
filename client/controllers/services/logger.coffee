@@ -3,7 +3,7 @@ kraken.service '$logger', ['$mdToast', ( $mdToast ) ->
         toast = $mdToast.simple()
         toast
             .textContent message
-            .position 'top right'
+            .position 'bottom right'
 
         $mdToast.show toast
 
@@ -11,7 +11,7 @@ kraken.service '$logger', ['$mdToast', ( $mdToast ) ->
         toast = $mdToast.simple()
         toast
             .textContent message
-            .position 'top right'
+            .position 'bottom right'
 
         $mdToast.show toast
 
@@ -19,7 +19,7 @@ kraken.service '$logger', ['$mdToast', ( $mdToast ) ->
         toast = $mdToast.simple()
         toast
             .textContent message
-            .position 'top right'
+            .position 'bottom right'
 
         $mdToast.show toast
 
