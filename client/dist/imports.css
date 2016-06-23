@@ -1751,6 +1751,10 @@ md-toolbar > .md-toolbar-tools md-input-container.md-toolbar-input {
   margin: 0;
   height: 30px; }
 
+.md-input-container {
+  margin: 18px 0;
+  padding: 2px; }
+
 ng-view,
 [ng-view] {
   height: 100%;

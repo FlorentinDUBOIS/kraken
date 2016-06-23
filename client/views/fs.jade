@@ -53,6 +53,9 @@ md-content( layout="column" flex ng-show="!load" )
                     tr( md-row md-select="file" md-select-id="name" ng-repeat="file in files | orderBy: 'directory': true | orderBy: order | filter: filter" ng-cloak )
                         td( md-cell ) {{ file.name }}
                         td( md-cell layout="row" layout-align="center center" )
+                            md-button.md-icon-button( ng-click="share( file.name )" )
+                                md-icon share
+
                             md-menu.md-secondary
                                 md-button.md-icon-button( ng-click="$mdOpenMenu( $event )" )
                                     md-icon( md-menu-origin ) more_horiz
@@ -111,3 +114,27 @@ md-content( layout="column" flex ng-show="!load" )
             md-button.md-fab.md-raised.md-mini( ng-click="list( '/' )" )
                 md-tooltip( md-direction="top" ) {{ 'fs.fab.root' | translate | lower }}
                 md-icon folder
+
+md-sidenav.md-sidenav-right.md-whiteframe-4dp( md-component-id="right" )
+    md-content( layout-padding )
+        form( name="shareForm" ng-submit="submitShare()" layout="column" )
+            h4 {{ 'fs.shareForm.path.description' | translate | ucfirst }}
+            md-input-container
+                label {{ 'fs.shareForm.path.label' | translate | ucfirst }}
+                input( type="text" name="path" value="{{ share.path }}" disabled )
+
+            h4 {{ 'fs.shareForm.password.description' | translate | ucfirst }}
+            md-input-container
+                label {{ 'fs.shareForm.password.label' | translate | ucfirst }}
+                input( type="password" name="password" ng-model="share.password" required )
+                div( ng-messages="shareForm.password.$error" )
+                    div( ng-message="required" ) {{ 'fs.shareForm.password.required' | translate | ucfirst }}
+
+            h4 {{ 'fs.shareForm.available.description' | translate | ucfirst }}
+            div.md-input-container
+                md-datepicker( name="available" ng-model="share.available" md-placeholder="{{ 'fs.shareForm.available.label' | translate | ucfirst }}" required )
+                div.validation-messages( ng-messages="shareForm.available.$error" )
+                    div( ng-message="required" ) {{ 'fs.shareForm.available.required' | translate | ucfirst }}
+
+            div( layout="row" layout-align="end center" )
+                md-button.md-raised.md-primary( type="submit" ) {{ 'fs.shareForm.share' | translate | ucfirst }}

@@ -49,9 +49,24 @@ html( ng-app="florentindubois.kraken" )
 
                             md-list-item( md-ink-ripple ng-repeat="item in bookmarks" )
                                 a( ng-href="#/fs/{{ item._id }}" flex="100" )
-                                    md-icon( flex="20" ) {{ item.icon }}
+                                    md-icon( flex="20" ) folder
                                     span( flex="65" ) {{ item.name }}
                                     md-icon( ng-click="removeBookmark( item._id )" ) delete
+
+                            md-divider( ng-show="shares.length != 0 && user.length != 0" )
+                            md-subheader( ng-show="shares.length == 1" )
+                                span {{ 'navigation.share.singular' | translate | ucfirst }}
+                                md-icon.md-float-right( ng-click="getShares()" ) refresh
+
+                            md-subheader( ng-show="shares.length >  1" )
+                                span {{ 'navigation.share.plural' | translate | ucfirst }}
+                                md-icon.md-float-right( ng-click="getShares()" ) refresh
+
+                            md-list-item( md-ink-ripple ng-repeat="item in shares" )
+                                a( flex="100" )
+                                    md-icon( flex="20" ) folder
+                                    span( flex="65" ) {{ item.name }}
+                                    md-icon( ng-click="removeShare( item._id )" ) delete
 
                 md-content( flex layout-padding )
                     div( flex ng-view )

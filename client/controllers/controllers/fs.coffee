@@ -1,12 +1,13 @@
 # -----------------------------------------------------------------------------
 # create kraken fs controller
-kraken.controller 'kraken.fs', ['$scope', '$fs', '$translate', '$logger', '$mdDialog', '$routeParams', '$signets', '$compress', ( $scope, $fs, $translate, $logger, $mdDialog, $routeParams, $signets, $compress ) ->
+kraken.controller 'kraken.fs', ['$scope', '$fs', '$translate', '$logger', '$mdDialog', '$routeParams', '$signets', '$compress', '$mdSidenav', '$share', ( $scope, $fs, $translate, $logger, $mdDialog, $routeParams, $signets, $compress, $mdSidenav, $share ) ->
     # -----------------------------------------------------------------------------
     # init variables
     $scope.selecteds = []
     $scope.files     = []
     $scope.load      = true
     $scope.path      = '/'
+    $scope.share     = {}
 
     # -----------------------------------------------------------------------------
     # realpath
@@ -114,6 +115,26 @@ kraken.controller 'kraken.fs', ['$scope', '$fs', '$translate', '$logger', '$mdDi
     # is archive
     $scope.isArchive = ( name ) ->
         /\.zip$/gi.test name
+
+    # -----------------------------------------------------------------------------
+    # share
+    $scope.share = ( name ) ->
+        $scope.share.path = $fs.realpath "#{ $scope.path }/#{ name }"
+        $mdSidenav( 'right' ).toggle()
+
+    # -----------------------------------------------------------------------------
+    # submit share
+    $scope.submitShare = ->
+        $share.create $scope.share.path, $scope.share.password, $scope.share.available, ( error, data ) ->
+            unless error?
+                if data.created is true
+                    $mdSidenav( 'right' ).toggle()
+                    $scope.share = {}
+
+                    $translate( 'fs.successShare' ).then ( trad ) ->
+                        $logger.info trad
+
+        false
 
     # -----------------------------------------------------------------------------
     # init

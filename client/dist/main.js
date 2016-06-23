@@ -107,11 +107,12 @@
 	]);
 
 	kraken.controller('kraken.fs', [
-	  '$scope', '$fs', '$translate', '$logger', '$mdDialog', '$routeParams', '$signets', '$compress', function($scope, $fs, $translate, $logger, $mdDialog, $routeParams, $signets, $compress) {
+	  '$scope', '$fs', '$translate', '$logger', '$mdDialog', '$routeParams', '$signets', '$compress', '$mdSidenav', '$share', function($scope, $fs, $translate, $logger, $mdDialog, $routeParams, $signets, $compress, $mdSidenav, $share) {
 	    $scope.selecteds = [];
 	    $scope.files = [];
 	    $scope.load = true;
 	    $scope.path = '/';
+	    $scope.share = {};
 	    $scope.realpath = $fs.realpath;
 	    $scope.list = function(path) {
 	      $scope.load = true;
@@ -220,6 +221,24 @@
 	    $scope.isArchive = function(name) {
 	      return /\.zip$/gi.test(name);
 	    };
+	    $scope.share = function(name) {
+	      $scope.share.path = $fs.realpath($scope.path + "/" + name);
+	      return $mdSidenav('right').toggle();
+	    };
+	    $scope.submitShare = function() {
+	      $share.create($scope.share.path, $scope.share.password, $scope.share.available, function(error, data) {
+	        if (error == null) {
+	          if (data.created === true) {
+	            $mdSidenav('right').toggle();
+	            $scope.share = {};
+	            return $translate('fs.successShare').then(function(trad) {
+	              return $logger.info(trad);
+	            });
+	          }
+	        }
+	      });
+	      return false;
+	    };
 	    if ($routeParams.signet != null) {
 	      $scope.listFromSignet($routeParams.signet);
 	    } else {
@@ -316,9 +335,10 @@
 	]);
 
 	kraken.controller('kraken.navigation', [
-	  '$scope', '$user', '$window', '$mdSidenav', '$menu', '$bookmarks', '$translate', '$logger', function($scope, $user, $window, $mdSidenav, $menu, $bookmarks, $translate, $logger) {
+	  '$scope', '$user', '$window', '$mdSidenav', '$menu', '$bookmarks', '$translate', '$logger', '$share', function($scope, $user, $window, $mdSidenav, $menu, $bookmarks, $translate, $logger, $share) {
 	    $scope.menu = [];
 	    $scope.bookmarks = [];
+	    $scope.shares = [];
 	    $scope.openSidenav = function() {
 	      return $mdSidenav('left').toggle();
 	    };
@@ -343,6 +363,18 @@
 	        }
 	      });
 	    };
+	    $scope.removeShare = function(_id) {
+	      return $share.remove(_id, function(error, data) {
+	        if (error == null) {
+	          if (data.removed) {
+	            return $translate('navigation.removeShare').then(function(trad) {
+	              $logger.info(trad);
+	              return $scope.getShares();
+	            });
+	          }
+	        }
+	      });
+	    };
 	    $scope.getBookmarks = function() {
 	      return $bookmarks.getAll(function(error, bookmarks) {
 	        if (error == null) {
@@ -350,6 +382,14 @@
 	        }
 	      });
 	    };
+	    $scope.getShares = function() {
+	      return $share.getAll(function(error, shares) {
+	        if (error == null) {
+	          return $scope.shares = shares;
+	        }
+	      });
+	    };
+	    $scope.getShares();
 	    $scope.getBookmarks();
 	    $menu.getItems(function(error, items) {
 	      if (error == null) {
@@ -633,6 +673,30 @@
 	  }
 	]);
 
+	kraken.service('$share', [
+	  '$request', '$window', function($request, $window) {
+	    this.getAll = function(callback) {
+	      return $request.get('/share', callback);
+	    };
+	    this.get = function(_id, callback) {
+	      return $request.get("/share/" + _id, callback);
+	    };
+	    this.create = function(path, password, available, callback) {
+	      return $request.post('/share', {
+	        path: path,
+	        password: password,
+	        available: available
+	      }, callback);
+	    };
+	    this.remove = function(_id, callback) {
+	      return $request["delete"]("/share/" + _id, callback);
+	    };
+	    this.link = function(_id) {
+	      return $window.location.origin + "/mount/share/" + _id;
+	    };
+	  }
+	]);
+
 	kraken.service('$signets', [
 	  '$request', '$fs', function($request, $fs) {
 	    this.get = function(callback) {
@@ -730,9 +794,14 @@
 			"manageAccount": "Manage account",
 			"menu": "Menu",
 			"removeBookmark": "Successfuly removed bookmark",
+			"removeShare": "Successfuly removed sharing",
 			"bookmark": {
 				"singular": "Bookmark",
 				"plural": "Bookmarks"
+			},
+			"share": {
+				"singular": "Share",
+				"plural": "Shares"
 			}
 		},
 		"request": {
@@ -773,6 +842,7 @@
 		},
 		"fs": {
 			"remove": "Successfuly removed",
+			"successShare": "Successfuly share",
 			"renameDialog": {
 				"title": "Rename",
 				"text": "Rename a file or folder",
@@ -780,6 +850,23 @@
 				"ok": "Ok",
 				"cancel": "Cancel",
 				"success": "Successfuly renamed"
+			},
+			"shareForm": {
+				"path": {
+					"label": "Path",
+					"description": "Path that will be share"
+				},
+				"password": {
+					"label": "Password",
+					"required": "This is required",
+					"description": "Choose password to protect the link"
+				},
+				"available": {
+					"label": "Date",
+					"required": "This is required",
+					"description": "Date for the validity of the link"
+				},
+				"share": "Share"
 			},
 			"shareSuccessDialog": {
 				"title": "Link to access",
