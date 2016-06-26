@@ -101,7 +101,7 @@
 
         "shareSuccessDialog": {
             "title": "Link to access",
-            "placeholder": ""
+            "ok": "Ok"
         },
 
         "table": {

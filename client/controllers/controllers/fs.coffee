@@ -1,6 +1,6 @@
 # -----------------------------------------------------------------------------
 # create kraken fs controller
-kraken.controller 'kraken.fs', ['$scope', '$fs', '$translate', '$logger', '$mdDialog', '$routeParams', '$signets', '$compress', '$mdSidenav', '$share', ( $scope, $fs, $translate, $logger, $mdDialog, $routeParams, $signets, $compress, $mdSidenav, $share ) ->
+kraken.controller 'kraken.fs', ['$scope', '$fs', '$translate', '$logger', '$mdDialog', '$routeParams', '$signets', '$compress', '$mdSidenav', '$share', '$window', ( $scope, $fs, $translate, $logger, $mdDialog, $routeParams, $signets, $compress, $mdSidenav, $share, $window ) ->
     # -----------------------------------------------------------------------------
     # init variables
     $scope.selecteds = []
@@ -124,12 +124,25 @@ kraken.controller 'kraken.fs', ['$scope', '$fs', '$translate', '$logger', '$mdDi
 
     # -----------------------------------------------------------------------------
     # submit share
-    $scope.submitShare = ->
+    $scope.submitShare = ( $event ) ->
         $share.create $scope.share.path, $scope.share.password, $scope.share.available, ( error, data ) ->
             unless error?
                 if data.created is true
                     $mdSidenav( 'right' ).toggle()
                     $scope.share = {}
+
+                    $translate( 'fs.shareSuccessDialog.title' ).then ( title ) ->
+                        $translate( 'fs.shareSuccessDialog.ok' ).then ( ok ) ->
+                            alert = $mdDialog
+                                .alert()
+                                .parent angular.element $window.document.querySelector 'body'
+                                .title title
+                                .ariaLabel title
+                                .textContent $share.link data._id
+                                .ok ok
+                                .targetEvent $event
+
+                            $mdDialog.show alert
 
                     $translate( 'fs.successShare' ).then ( trad ) ->
                         $logger.info trad

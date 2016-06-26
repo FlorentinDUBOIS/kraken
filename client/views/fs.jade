@@ -117,7 +117,7 @@ md-content( layout="column" flex ng-show="!load" )
 
 md-sidenav.md-sidenav-right.md-whiteframe-4dp( md-component-id="right" )
     md-content( layout-padding )
-        form( name="shareForm" ng-submit="submitShare()" layout="column" )
+        form( name="shareForm" ng-submit="submitShare( $event )" layout="column" )
             h4 {{ 'fs.shareForm.path.description' | translate | ucfirst }}
             md-input-container
                 label {{ 'fs.shareForm.path.label' | translate | ucfirst }}

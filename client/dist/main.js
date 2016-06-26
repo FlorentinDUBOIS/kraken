@@ -107,7 +107,7 @@
 	]);
 
 	kraken.controller('kraken.fs', [
-	  '$scope', '$fs', '$translate', '$logger', '$mdDialog', '$routeParams', '$signets', '$compress', '$mdSidenav', '$share', function($scope, $fs, $translate, $logger, $mdDialog, $routeParams, $signets, $compress, $mdSidenav, $share) {
+	  '$scope', '$fs', '$translate', '$logger', '$mdDialog', '$routeParams', '$signets', '$compress', '$mdSidenav', '$share', '$window', function($scope, $fs, $translate, $logger, $mdDialog, $routeParams, $signets, $compress, $mdSidenav, $share, $window) {
 	    $scope.selecteds = [];
 	    $scope.files = [];
 	    $scope.load = true;
@@ -225,12 +225,19 @@
 	      $scope.share.path = $fs.realpath($scope.path + "/" + name);
 	      return $mdSidenav('right').toggle();
 	    };
-	    $scope.submitShare = function() {
+	    $scope.submitShare = function($event) {
 	      $share.create($scope.share.path, $scope.share.password, $scope.share.available, function(error, data) {
 	        if (error == null) {
 	          if (data.created === true) {
 	            $mdSidenav('right').toggle();
 	            $scope.share = {};
+	            $translate('fs.shareSuccessDialog.title').then(function(title) {
+	              return $translate('fs.shareSuccessDialog.ok').then(function(ok) {
+	                var alert;
+	                alert = $mdDialog.alert().parent(angular.element($window.document.querySelector('body'))).title(title).ariaLabel(title).textContent($share.link(data._id)).ok(ok).targetEvent($event);
+	                return $mdDialog.show(alert);
+	              });
+	            });
 	            return $translate('fs.successShare').then(function(trad) {
 	              return $logger.info(trad);
 	            });
@@ -399,6 +406,28 @@
 	  }
 	]);
 
+	kraken.run([
+	  '$rootScope', '$location', '$user', '$translate', '$logger', function($rootScope, $location, $user, $translate, $logger) {
+	    var paths;
+	    paths = ['/manage-account'];
+	    $rootScope.$on('$routeChangeStart', function() {
+	      if (-1 === paths.indexOf($location.path())) {
+	        return;
+	      }
+	      return $user.isAdministrator(function(error, data) {
+	        if (error == null) {
+	          if (!data.administrator) {
+	            return $translate('request.notAuthorized').then(function(trad) {
+	              $logger.error(trad);
+	              return $location.path('/fs');
+	            });
+	          }
+	        }
+	      });
+	    });
+	  }
+	]);
+
 	kraken.filter('bytes', [
 	  function() {
 	    return function(input, precision) {
@@ -464,28 +493,6 @@
 	      }
 	      return input;
 	    };
-	  }
-	]);
-
-	kraken.run([
-	  '$rootScope', '$location', '$user', '$translate', '$logger', function($rootScope, $location, $user, $translate, $logger) {
-	    var paths;
-	    paths = ['/manage-account'];
-	    $rootScope.$on('$routeChangeStart', function() {
-	      if (-1 === paths.indexOf($location.path())) {
-	        return;
-	      }
-	      return $user.isAdministrator(function(error, data) {
-	        if (error == null) {
-	          if (!data.administrator) {
-	            return $translate('request.notAuthorized').then(function(trad) {
-	              $logger.error(trad);
-	              return $location.path('/fs');
-	            });
-	          }
-	        }
-	      });
-	    });
 	  }
 	]);
 
@@ -870,7 +877,7 @@
 			},
 			"shareSuccessDialog": {
 				"title": "Link to access",
-				"placeholder": ""
+				"ok": "Ok"
 			},
 			"table": {
 				"name": "Name",
