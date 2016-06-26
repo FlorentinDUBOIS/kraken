@@ -53,6 +53,9 @@ router
             res.json renamed: true
 
     .delete ( req, res ) ->
+        if req.user.administrator isnt true
+            return res.status( 403 ).end()
+
         fs.stat pfs.rewrite( req.params['0'] ), ( error, stat ) ->
             if error?
                 logger.error error.message

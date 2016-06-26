@@ -1,6 +1,6 @@
 # -----------------------------------------------------------------------------
 # create kraken fs controller
-kraken.controller 'kraken.fs', ['$scope', '$fs', '$translate', '$logger', '$mdDialog', '$routeParams', '$signets', '$compress', '$mdSidenav', '$share', '$window', ( $scope, $fs, $translate, $logger, $mdDialog, $routeParams, $signets, $compress, $mdSidenav, $share, $window ) ->
+kraken.controller 'kraken.fs', ['$scope', '$fs', '$translate', '$logger', '$mdDialog', '$routeParams', '$signets', '$compress', '$mdSidenav', '$window', ( $scope, $fs, $translate, $logger, $mdDialog, $routeParams, $signets, $compress, $mdSidenav, $window ) ->
     # -----------------------------------------------------------------------------
     # init variables
     $scope.selecteds = []
@@ -115,39 +115,6 @@ kraken.controller 'kraken.fs', ['$scope', '$fs', '$translate', '$logger', '$mdDi
     # is archive
     $scope.isArchive = ( name ) ->
         /\.zip$/gi.test name
-
-    # -----------------------------------------------------------------------------
-    # share
-    $scope.share = ( name ) ->
-        $scope.share.path = $fs.realpath "#{ $scope.path }/#{ name }"
-        $mdSidenav( 'right' ).toggle()
-
-    # -----------------------------------------------------------------------------
-    # submit share
-    $scope.submitShare = ( $event ) ->
-        $share.create $scope.share.path, $scope.share.password, $scope.share.available, ( error, data ) ->
-            unless error?
-                if data.created is true
-                    $mdSidenav( 'right' ).toggle()
-                    $scope.share = {}
-
-                    $translate( 'fs.shareSuccessDialog.title' ).then ( title ) ->
-                        $translate( 'fs.shareSuccessDialog.ok' ).then ( ok ) ->
-                            alert = $mdDialog
-                                .alert()
-                                .parent angular.element $window.document.querySelector 'body'
-                                .title title
-                                .ariaLabel title
-                                .textContent $share.link data._id
-                                .ok ok
-                                .targetEvent $event
-
-                            $mdDialog.show alert
-
-                    $translate( 'fs.successShare' ).then ( trad ) ->
-                        $logger.info trad
-
-        false
 
     # -----------------------------------------------------------------------------
     # init

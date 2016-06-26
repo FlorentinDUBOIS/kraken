@@ -19,8 +19,8 @@ router
             res.json users
 
     .post ( req, res ) ->
-        data     = {}
-        for i in req.body
+        data = {}
+        for i of req.body
             if i isnt 'password'
                 data[i] = req.body[i]
 

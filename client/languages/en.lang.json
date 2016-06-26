@@ -67,7 +67,6 @@
 
     "fs": {
         "remove": "Successfuly removed",
-        "successShare": "Successfuly share",
 
         "renameDialog": {
             "title": "Rename",
@@ -76,32 +75,6 @@
             "ok": "Ok",
             "cancel": "Cancel",
             "success": "Successfuly renamed"
-        },
-
-        "shareForm": {
-            "path": {
-                "label": "Path",
-                "description": "Path that will be share"
-            },
-
-            "password": {
-                "label": "Password",
-                "required": "This is required",
-                "description": "Choose password to protect the link"
-            },
-
-            "available": {
-                "label": "Date",
-                "required": "This is required",
-                "description": "Date for the validity of the link"
-            },
-
-            "share": "Share"
-        },
-
-        "shareSuccessDialog": {
-            "title": "Link to access",
-            "ok": "Ok"
         },
 
         "table": {
