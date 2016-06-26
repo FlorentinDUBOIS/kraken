@@ -13,6 +13,16 @@ md-table-container {
                     }
                 }
             }
+
+            & > tbody {
+                & > tr {
+                    & > td {
+                        & > a {
+                            @extend .md-font-inherit;
+                        }
+                    }
+                }
+            }
         }
     }
 }

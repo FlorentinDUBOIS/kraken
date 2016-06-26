@@ -47,8 +47,11 @@ md-content( layout="column" flex ng-show="!load" )
                         th( md-column md-numeric="true" md-order-by="mtime" ) {{ 'fs.table.mtime' | translate | ucfirst }}
 
                 tbody( md-body )
-                    tr( md-row md-select="file" md-select-id="name" ng-repeat="file in files | orderBy: order | orderBy: 'directory': true | filter: filter" ng-cloak )
-                        td( md-cell ) {{ file.name }}
+                    tr( md-row md-select="file" md-select-id="name" ng-repeat="file in files | orderBy: order | filter: filter" ng-cloak )
+                        td( md-cell ng-if="file.directory" ng-click="open( file.name )" ) {{ file.name }}
+                        td( md-cell ng-if="!file.directory" )
+                            a( ng-href="{{ realpath( 'mount/' + path + '/' + file.name ) }}" download="{{ file.name }}" ) {{ file.name }}
+
                         td( md-cell layout="row" layout-align="center center" )
                             md-menu.md-secondary
                                 md-button.md-icon-button( ng-click="$mdOpenMenu( $event )" )
