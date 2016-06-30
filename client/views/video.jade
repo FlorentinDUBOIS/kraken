@@ -1,0 +1,13 @@
+md-dialog( ng-cloak="true" aria-label="{{ basename }}" )
+    md-toolbar
+        div.md-toolbar-tools
+            h4 {{ basename }}
+            
+            span( flex )
+                
+            md-button.md-icon-button( ng-click="close()" )
+                md-icon close
+            
+    md-dialog-content( layout="row" layout-align="center center" )
+        video#video( controls autoplay flex="100" )
+            source( ng-src="{{ name }}" type="{{ mime }}" )

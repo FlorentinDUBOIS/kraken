@@ -1,6 +1,6 @@
 # -----------------------------------------------------------------------------
 # create kraken fs controller
-kraken.controller 'kraken.fs', ['$scope', '$fs', '$translate', '$logger', '$mdDialog', '$routeParams', '$signets', '$compress', '$mdSidenav', '$window', ( $scope, $fs, $translate, $logger, $mdDialog, $routeParams, $signets, $compress, $mdSidenav, $window ) ->
+kraken.controller 'kraken.fs', ['$scope', '$fs', '$translate', '$logger', '$mdDialog', '$routeParams', '$signets', '$compress', '$mdSidenav', '$window', '$audio', '$video', ( $scope, $fs, $translate, $logger, $mdDialog, $routeParams, $signets, $compress, $mdSidenav, $window, $audio, $video ) ->
     # -----------------------------------------------------------------------------
     # init variables
     $scope.selecteds = []
@@ -115,6 +115,19 @@ kraken.controller 'kraken.fs', ['$scope', '$fs', '$translate', '$logger', '$mdDi
     # is archive
     $scope.isArchive = ( name ) ->
         /\.zip$/gi.test name
+
+    # -----------------------------------------------------------------------------
+    # playable
+    $scope.isPlayable = ( name ) ->
+        $audio.isPlayable( $fs.realpath "#{ $scope.path }/#{ name }" ) or $video.isPlayable( $fs.realpath "#{ $scope.path }/#{ name }" )
+
+    # -----------------------------------------------------------------------------
+    # play
+    $scope.play = ( name, $event ) ->
+        if $audio.isPlayable $fs.realpath "#{ $scope.path }/#{ name }"
+            $audio.play $scope.path, name, $event
+        else if $video.isPlayable $fs.realpath "#{ $scope.path }/#{ name }"
+            $video.play $scope.path, name, $event
 
     # -----------------------------------------------------------------------------
     # init

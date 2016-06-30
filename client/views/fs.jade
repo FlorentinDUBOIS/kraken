@@ -58,7 +58,12 @@ md-content( layout="column" flex ng-show="!load" )
                                     md-icon( md-menu-origin ) more_horiz
 
                                 md-menu-content( width="4" )
-                                    md-menu-item(  ng-if="file.directory" )
+                                    md-menu-item( ng-if="!file.directory && isPlayable( file.name )" )
+                                        md-button( ng-click="play( file.name, $event )" )
+                                            md-icon play_arrow
+                                            span {{ 'fs.options.play' | translate | ucfirst }}
+                                    
+                                    md-menu-item( ng-if="file.directory" )
                                         md-button( ng-click="bookmark( file.name )" )
                                             md-icon( md-menu-align-target ) add
                                             span {{ 'fs.options.bookmarks' | translate | ucfirst }}
@@ -74,7 +79,7 @@ md-content( layout="column" flex ng-show="!load" )
                                             span {{ 'fs.options.rename' | translate | ucfirst }}
 
                                     a( ng-href="{{ realpath( 'mount/' + path + '/' + file.name ) }}" download="{{ file.name }}" )
-                                        md-menu-item(  ng-if="!file.directory" )
+                                        md-menu-item( ng-if="!file.directory" )
                                             md-button
                                                 md-icon( md-menu-align-target ) file_download
                                                 span {{ 'fs.options.download' | translate | ucfirst }}
@@ -84,7 +89,7 @@ md-content( layout="column" flex ng-show="!load" )
                                             md-icon( md-menu-align-target ) archive
                                             span {{ 'fs.options.archive' | translate | ucfirst }}
 
-                                    md-menu-item(  ng-if="isArchive( file.name )" )
+                                    md-menu-item( ng-if="isArchive( file.name )" )
                                         md-button( ng-click="uncompress( file.name )" )
                                             md-icon( md-menu-align-target ) unarchive
                                             span {{ 'fs.options.unarchive' | translate | ucfirst }}

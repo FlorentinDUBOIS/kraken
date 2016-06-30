@@ -91,7 +91,8 @@
             "download": "Download",
             "archive": "Compress",
             "unarchive": "Uncompress",
-            "delete": "Delete"
+            "delete": "Delete",
+            "play": "Play"
         },
 
         "fab": {
@@ -120,6 +121,16 @@
 
         "uncompress": {
             "success": "Successfuly uncompressed"
+        }
+    },
+
+    "service": {
+        "$audio": {
+            "error": "This is not a supported audio format"
+        },
+
+        "$video": {
+            "error": "This is not a supported movie format"
         }
     }
 }

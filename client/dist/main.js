@@ -107,7 +107,7 @@
 	]);
 
 	kraken.controller('kraken.fs', [
-	  '$scope', '$fs', '$translate', '$logger', '$mdDialog', '$routeParams', '$signets', '$compress', '$mdSidenav', '$window', function($scope, $fs, $translate, $logger, $mdDialog, $routeParams, $signets, $compress, $mdSidenav, $window) {
+	  '$scope', '$fs', '$translate', '$logger', '$mdDialog', '$routeParams', '$signets', '$compress', '$mdSidenav', '$window', '$audio', '$video', function($scope, $fs, $translate, $logger, $mdDialog, $routeParams, $signets, $compress, $mdSidenav, $window, $audio, $video) {
 	    $scope.selecteds = [];
 	    $scope.files = [];
 	    $scope.load = true;
@@ -220,6 +220,16 @@
 	    };
 	    $scope.isArchive = function(name) {
 	      return /\.zip$/gi.test(name);
+	    };
+	    $scope.isPlayable = function(name) {
+	      return $audio.isPlayable($fs.realpath($scope.path + "/" + name)) || $video.isPlayable($fs.realpath($scope.path + "/" + name));
+	    };
+	    $scope.play = function(name, $event) {
+	      if ($audio.isPlayable($fs.realpath($scope.path + "/" + name))) {
+	        return $audio.play($scope.path, name, $event);
+	      } else if ($video.isPlayable($fs.realpath($scope.path + "/" + name))) {
+	        return $video.play($scope.path, name, $event);
+	      }
 	    };
 	    if ($routeParams.signet != null) {
 	      $scope.listFromSignet($routeParams.signet);
@@ -448,6 +458,77 @@
 	        }
 	      });
 	    });
+	  }
+	]);
+
+	kraken.service('$audio', [
+	  '$window', '$mdDialog', '$logger', '$translate', function($window, $mdDialog, $logger, $translate) {
+	    var playables;
+	    playables = [
+	      {
+	        extension: 'mp3',
+	        mime: 'audio/mpeg'
+	      }, {
+	        extension: 'wav',
+	        mime: 'audio/wav'
+	      }
+	    ];
+	    this.isPlayable = function(name) {
+	      var j, len, playable;
+	      for (j = 0, len = playables.length; j < len; j++) {
+	        playable = playables[j];
+	        if ((new RegExp("(\." + playable.extension + ")$", 'i')).test(name)) {
+	          return true;
+	        }
+	      }
+	      return false;
+	    };
+	    this.mime = function(name) {
+	      var j, len, playable;
+	      for (j = 0, len = playables.length; j < len; j++) {
+	        playable = playables[j];
+	        if ((new RegExp("(\." + playable.extension + ")$", 'i')).test(name)) {
+	          return playable.mime;
+	        }
+	      }
+	      return null;
+	    };
+	    this.extension = function(name) {
+	      var j, len, playable;
+	      for (j = 0, len = playables.length; j < len; j++) {
+	        playable = playables[j];
+	        if ((new RegExp("(\." + playable.extension + ")$", 'i')).test(name)) {
+	          return playable.extension;
+	        }
+	      }
+	      return null;
+	    };
+	    this.play = (function(_this) {
+	      return function(path, name, $event) {
+	        if (_this.isPlayable(name)) {
+	          return $mdDialog.show({
+	            parent: angular.element($window.document.querySelector('body')),
+	            targetEvent: $event,
+	            clickOutsideToClose: true,
+	            templateUrl: 'views/audio.jade',
+	            controller: [
+	              '$scope', '$mdDialog', '$fs', function($scope, $mdDialog, $fs) {
+	                $scope.name = $fs.realpath("mount/" + path + "/" + name);
+	                $scope.mime = _this.mime(name);
+	                $scope.basename = name;
+	                $scope.close = function() {
+	                  return $mdDialog.hide();
+	                };
+	              }
+	            ]
+	          });
+	        } else {
+	          return $translate('service.$audio.error').then(function(trad) {
+	            return $logger.error(trad);
+	          });
+	        }
+	      };
+	    })(this);
 	  }
 	]);
 
@@ -694,6 +775,80 @@
 	  }
 	]);
 
+	kraken.service('$video', [
+	  '$window', '$mdDialog', '$logger', '$translate', function($window, $mdDialog, $logger, $translate) {
+	    var playables;
+	    playables = [
+	      {
+	        extension: 'mp4',
+	        mime: 'video/mp4'
+	      }, {
+	        extension: 'webm',
+	        mime: 'video/webm'
+	      }, {
+	        extension: 'ogg',
+	        mime: 'application/ogg'
+	      }
+	    ];
+	    this.isPlayable = function(name) {
+	      var j, len, playable;
+	      for (j = 0, len = playables.length; j < len; j++) {
+	        playable = playables[j];
+	        if ((new RegExp("(\." + playable.extension + ")$", 'i')).test(name)) {
+	          return true;
+	        }
+	      }
+	      return false;
+	    };
+	    this.mime = function(name) {
+	      var j, len, playable;
+	      for (j = 0, len = playables.length; j < len; j++) {
+	        playable = playables[j];
+	        if ((new RegExp("(\." + playable.extension + ")$", 'i')).test(name)) {
+	          return playable.mime;
+	        }
+	      }
+	      return null;
+	    };
+	    this.extension = function(name) {
+	      var j, len, playable;
+	      for (j = 0, len = playables.length; j < len; j++) {
+	        playable = playables[j];
+	        if ((new RegExp("(\." + playable.extension + ")$", 'i')).test(name)) {
+	          return playable.extension;
+	        }
+	      }
+	      return null;
+	    };
+	    this.play = (function(_this) {
+	      return function(path, name, $event) {
+	        if (_this.isPlayable(name)) {
+	          return $mdDialog.show({
+	            parent: angular.element($window.document.querySelector('body')),
+	            targetEvent: $event,
+	            clickOutsideToClose: true,
+	            templateUrl: 'views/video.jade',
+	            controller: [
+	              '$scope', '$mdDialog', '$fs', function($scope, $mdDialog, $fs) {
+	                $scope.name = $fs.realpath("mount/" + path + "/" + name);
+	                $scope.mime = _this.mime(name);
+	                $scope.basename = name;
+	                $scope.close = function() {
+	                  return $mdDialog.hide();
+	                };
+	              }
+	            ]
+	          });
+	        } else {
+	          return $translate('service.$video.error').then(function(trad) {
+	            return $logger.error(trad);
+	          });
+	        }
+	      };
+	    })(this);
+	  }
+	]);
+
 
 /***/ },
 /* 2 */
@@ -801,7 +956,8 @@
 				"download": "Download",
 				"archive": "Compress",
 				"unarchive": "Uncompress",
-				"delete": "Delete"
+				"delete": "Delete",
+				"play": "Play"
 			},
 			"fab": {
 				"menu": "Menu",
@@ -825,6 +981,14 @@
 			},
 			"uncompress": {
 				"success": "Successfuly uncompressed"
+			}
+		},
+		"service": {
+			"$audio": {
+				"error": "This is not a supported audio format"
+			},
+			"$video": {
+				"error": "This is not a supported movie format"
 			}
 		}
 	};
