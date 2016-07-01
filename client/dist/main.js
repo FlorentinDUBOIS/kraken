@@ -221,6 +221,9 @@
 	    $scope.isArchive = function(name) {
 	      return /\.zip$/gi.test(name);
 	    };
+	    $scope.isAudioPlayable = function(name) {
+	      return $audio.isPlayable($fs.realpath($scope.path + "/" + name));
+	    };
 	    $scope.isPlayable = function(name) {
 	      return $audio.isPlayable($fs.realpath($scope.path + "/" + name)) || $video.isPlayable($fs.realpath($scope.path + "/" + name));
 	    };
@@ -230,6 +233,9 @@
 	      } else if ($video.isPlayable($fs.realpath($scope.path + "/" + name))) {
 	        return $video.play($scope.path, name, $event);
 	      }
+	    };
+	    $scope.queue = function(name, $event) {
+	      return $audio.queue($scope.path, name, $event);
 	    };
 	    if ($routeParams.signet != null) {
 	      $scope.listFromSignet($routeParams.signet);
@@ -462,73 +468,117 @@
 	]);
 
 	kraken.service('$audio', [
-	  '$window', '$mdDialog', '$logger', '$translate', function($window, $mdDialog, $logger, $translate) {
-	    var playables;
-	    playables = [
-	      {
-	        extension: 'mp3',
-	        mime: 'audio/mpeg'
-	      }, {
-	        extension: 'wav',
-	        mime: 'audio/wav'
-	      }
-	    ];
+	  '$window', '$mdBottomSheet', '$fs', function($window, $mdBottomSheet, $fs) {
+	    var audio, extensions, open, queue, queueIndex;
+	    extensions = ['mp3', 'wav'];
+	    queue = [];
+	    queueIndex = 0;
+	    audio = $window.document.createElement('audio');
+	    open = false;
+	    audio.addEventListener('canplay', function() {
+	      return audio.play();
+	    });
+	    audio.addEventListener('ended', (function(_this) {
+	      return function() {
+	        if (queueIndex + 1 < queue.length) {
+	          return _this.next();
+	        }
+	      };
+	    })(this));
 	    this.isPlayable = function(name) {
-	      var j, len, playable;
-	      for (j = 0, len = playables.length; j < len; j++) {
-	        playable = playables[j];
-	        if ((new RegExp("(\." + playable.extension + ")$", 'i')).test(name)) {
+	      var extension, j, len;
+	      for (j = 0, len = extensions.length; j < len; j++) {
+	        extension = extensions[j];
+	        if ((new RegExp("(\." + extension + ")$")).test(name)) {
 	          return true;
 	        }
 	      }
 	      return false;
 	    };
-	    this.mime = function(name) {
-	      var j, len, playable;
-	      for (j = 0, len = playables.length; j < len; j++) {
-	        playable = playables[j];
-	        if ((new RegExp("(\." + playable.extension + ")$", 'i')).test(name)) {
-	          return playable.mime;
-	        }
-	      }
-	      return null;
-	    };
-	    this.extension = function(name) {
-	      var j, len, playable;
-	      for (j = 0, len = playables.length; j < len; j++) {
-	        playable = playables[j];
-	        if ((new RegExp("(\." + playable.extension + ")$", 'i')).test(name)) {
-	          return playable.extension;
-	        }
-	      }
-	      return null;
-	    };
-	    this.play = (function(_this) {
-	      return function(path, name, $event) {
-	        if (_this.isPlayable(name)) {
-	          return $mdDialog.show({
-	            parent: angular.element($window.document.querySelector('body')),
-	            targetEvent: $event,
-	            clickOutsideToClose: true,
-	            templateUrl: 'views/audio.jade',
-	            controller: [
-	              '$scope', '$mdDialog', '$fs', function($scope, $mdDialog, $fs) {
-	                $scope.name = $fs.realpath("mount/" + path + "/" + name);
-	                $scope.mime = _this.mime(name);
-	                $scope.basename = name;
-	                $scope.close = function() {
-	                  return $mdDialog.hide();
-	                };
-	              }
-	            ]
-	          });
-	        } else {
-	          return $translate('service.$audio.error').then(function(trad) {
-	            return $logger.error(trad);
-	          });
-	        }
+	    this.open = (function(_this) {
+	      return function(path, name) {
+	        return $mdBottomSheet.show({
+	          parent: angular.element($window.document.querySelector('body')),
+	          clickOutsideToClose: false,
+	          disableBackdrop: true,
+	          disableParentScroll: false,
+	          escapeToClose: false,
+	          templateUrl: 'views/audio.jade',
+	          controller: [
+	            '$scope', '$mdBottomSheet', '$interval', function($scope, $mdBottomSheet, $interval) {
+	              $scope.playing = true;
+	              audio.addEventListener('loadstart', function() {
+	                $scope.endTime = audio.duration;
+	                return $scope.duration = audio.currentTime;
+	              });
+	              audio.addEventListener('loadedmetadata', function() {
+	                return $scope.endTime = audio.seekable.end(0);
+	              });
+	              $scope.next = _this.next;
+	              $scope.previous = _this.previous;
+	              $scope.play = function() {
+	                audio.play();
+	                return $scope.playing = true;
+	              };
+	              $scope.pause = function() {
+	                audio.pause();
+	                return $scope.playing = false;
+	              };
+	              $scope.stop = function() {
+	                $mdBottomSheet.hide();
+	                audio.pause();
+	                open = false;
+	                queue = [];
+	                queueIndex = 0;
+	                return $scope.playing = false;
+	              };
+	              $scope.volume = audio.volume * 100;
+	              $scope.changeVolume = function() {
+	                return audio.volume = $scope.volume / 100;
+	              };
+	              $scope.duration = audio.currentTime;
+	              $scope.changeDuration = function() {
+	                return audio.currentTime = $scope.duration;
+	              };
+	              $interval(function() {
+	                return $scope.duration = audio.currentTime;
+	              }, 500);
+	            }
+	          ]
+	        });
 	      };
 	    })(this);
+	    this.play = (function(_this) {
+	      return function(path, name) {
+	        if (!open) {
+	          _this.open(path, name);
+	          open = true;
+	        }
+	        audio.src = $fs.realpath("mount/" + path + "/" + name);
+	        return audio.load();
+	      };
+	    })(this);
+	    this.previous = (function(_this) {
+	      return function() {
+	        var song;
+	        song = queue[queueIndex--];
+	        return _this.play(song.path, song.name);
+	      };
+	    })(this);
+	    this.next = (function(_this) {
+	      return function() {
+	        var song;
+	        song = queue[queueIndex++];
+	        return _this.play(song.path, song.name);
+	      };
+	    })(this);
+	    this.queue = function(path, name, $event) {
+	      return queue.push({
+	        path: path,
+	        name: name,
+	        $event: $event
+	      });
+	    };
 	  }
 	]);
 
@@ -957,7 +1007,8 @@
 				"archive": "Compress",
 				"unarchive": "Uncompress",
 				"delete": "Delete",
-				"play": "Play"
+				"play": "Play",
+				"queue": "Queue"
 			},
 			"fab": {
 				"menu": "Menu",

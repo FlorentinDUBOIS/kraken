@@ -2,9 +2,9 @@
 # kraken video service
 kraken.service '$video', ['$window', '$mdDialog', '$logger', '$translate', ( $window, $mdDialog, $logger, $translate ) ->
     playables = [
-        { extension: 'mp4', mime: 'video/mp4' }
+        { extension: 'mp4',  mime: 'video/mp4' }
         { extension: 'webm', mime: 'video/webm' }
-        { extension: 'ogg', mime: 'application/ogg' }
+        { extension: 'ogg',  mime: 'application/ogg' }
     ]
 
     @isPlayable = ( name ) ->
@@ -40,7 +40,7 @@ kraken.service '$video', ['$window', '$mdDialog', '$logger', '$translate', ( $wi
                     $scope.mime     = @mime name
                     $scope.basename = name
 
-                    $scope.close = =>
+                    $scope.close = ->
                         $mdDialog.hide()
 
                     return

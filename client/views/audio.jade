@@ -1,14 +1,22 @@
-md-dialog( ng-cloak="true" aria-label="{{ basename }}" )
-    md-toolbar
-        div.md-toolbar-tools
-            h4 {{ basename }}
-            
-            span( flex )
-                
-            md-button.md-icon-button( ng-click="close()" )
-                md-icon close
-            
-    md-dialog-content
-        div.md-dialog-content( layout="row" layout-align="center center" )
-            audio#audio( controls autoplay flex="100" )
-                source( ng-src="{{ name }}" type="{{ mime }}" )
+md-bottom-sheet( layout="row" layout-align="center center" ng-cloack="true" )
+    md-button.md-icon-button( ng-click="play()" ng-if="!playing" )
+        md-icon play_arrow
+        
+    md-button.md-icon-button( ng-click="pause()" ng-if="playing" )
+        md-icon pause
+        
+    md-button.md-icon-button( ng-click="stop()" )
+        md-icon stop
+        
+    md-button.md-icon-button( ng-click="previous()" )
+        md-icon skip_previous
+        
+    md-button.md-icon-button( ng-click="next()" )
+        md-icon skip_next
+        
+    md-slider.md-primary( aria-label="duration" flex ng-change="changeDuration()" ng-model="duration" value="{{ duration }}" min="0" max="{{ endTime }}" )
+
+    md-button.md-icon-button( ng-click="mute()" )
+        md-icon volume_up
+        
+    md-slider.md-primary( aria-label="volume" flex="15" ng-change="changeVolume()" ng-model="volume" value="{{ volume }}" min="0" max="100" )

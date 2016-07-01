@@ -117,6 +117,11 @@ kraken.controller 'kraken.fs', ['$scope', '$fs', '$translate', '$logger', '$mdDi
         /\.zip$/gi.test name
 
     # -----------------------------------------------------------------------------
+    # is audio playable
+    $scope.isAudioPlayable = ( name ) ->
+        $audio.isPlayable $fs.realpath "#{ $scope.path }/#{ name }"
+
+    # -----------------------------------------------------------------------------
     # playable
     $scope.isPlayable = ( name ) ->
         $audio.isPlayable( $fs.realpath "#{ $scope.path }/#{ name }" ) or $video.isPlayable( $fs.realpath "#{ $scope.path }/#{ name }" )
@@ -128,6 +133,11 @@ kraken.controller 'kraken.fs', ['$scope', '$fs', '$translate', '$logger', '$mdDi
             $audio.play $scope.path, name, $event
         else if $video.isPlayable $fs.realpath "#{ $scope.path }/#{ name }"
             $video.play $scope.path, name, $event
+
+    # -----------------------------------------------------------------------------
+    # queue
+    $scope.queue = ( name, $event ) ->
+        $audio.queue $scope.path, name, $event
 
     # -----------------------------------------------------------------------------
     # init

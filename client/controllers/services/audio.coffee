@@ -1,54 +1,127 @@
 # -----------------------------------------------------------------------------
 # kraken audio service
-kraken.service '$audio', ['$window', '$mdDialog', '$logger', '$translate', ( $window, $mdDialog, $logger, $translate ) ->
-    playables = [
-        { extension: 'mp3', mime: 'audio/mpeg' }
-        { extension: 'wav', mime: 'audio/wav' }
-        # { extension: 'ogg', mime: 'audio/ogg' }
+kraken.service '$audio', ['$window', '$mdBottomSheet', '$fs', ( $window, $mdBottomSheet, $fs ) ->
+    # -----------------------------------------------------------------------------
+    # extensions allowed
+    extensions = [
+        'mp3'
+        'wav'
     ]
 
+    # -----------------------------------------------------------------------------
+    # variables
+    queue      = []
+    queueIndex = 0
+    audio      = $window.document.createElement 'audio'
+    open       = false
+
+    # -----------------------------------------------------------------------------
+    # event binding
+    audio.addEventListener 'canplay', ->
+        audio.play()
+
+    audio.addEventListener 'ended', =>
+        if queueIndex+1 < queue.length
+            @next()
+
+    # -----------------------------------------------------------------------------
+    # is playable
     @isPlayable = ( name ) ->
-        for playable in playables
-            if ( new RegExp "(\.#{ playable.extension })$", 'i' ).test name
+        for extension in extensions
+            if ( new RegExp "(\.#{ extension })$" ).test name
                 return true
 
         false
 
-    @mime = ( name ) ->
-        for playable in playables
-            if ( new RegExp "(\.#{ playable.extension })$", 'i' ).test name
-                return playable.mime
+    # -----------------------------------------------------------------------------
+    # open
+    @open = ( path, name ) =>
+        $mdBottomSheet.show
+            parent: angular.element $window.document.querySelector 'body'
+            clickOutsideToClose: false
+            disableBackdrop: true
+            disableParentScroll: false
+            escapeToClose: false
+            templateUrl: 'views/audio.jade'
+            controller: ['$scope', '$mdBottomSheet', '$interval', ( $scope, $mdBottomSheet, $interval ) =>
+                $scope.playing = true
 
-        null
+                audio.addEventListener 'loadstart', ->
+                    $scope.endTime  = audio.duration
+                    $scope.duration = audio.currentTime
 
-    @extension = ( name ) ->
-        for playable in playables
-            if ( new RegExp "(\.#{ playable.extension })$", 'i' ).test name
-                return playable.extension
+                audio.addEventListener 'loadedmetadata', ->
+                    $scope.endTime  = audio.seekable.end( 0 )
 
-        null
+                $scope.next     = @next
+                $scope.previous = @previous
+                $scope.play = ->
+                    audio.play()
 
-    @play = ( path, name, $event ) =>
-        if @isPlayable name
-            $mdDialog.show
-                parent: angular.element $window.document.querySelector 'body'
-                targetEvent: $event
-                clickOutsideToClose: true
-                templateUrl: 'views/audio.jade'
-                controller: ['$scope', '$mdDialog', '$fs', ( $scope, $mdDialog, $fs ) =>
-                    $scope.name     = $fs.realpath "mount/#{ path }/#{ name }"
-                    $scope.mime     = @mime name
-                    $scope.basename = name
+                    $scope.playing = true
 
-                    $scope.close = =>
-                        $mdDialog.hide()
+                $scope.pause = ->
+                    audio.pause()
 
-                    return
-                ]
+                    $scope.playing = false
 
-        else
-            $translate( 'service.$audio.error' ).then ( trad ) ->
-                $logger.error trad
+                $scope.stop = ->
+                    $mdBottomSheet.hide()
+
+                    audio.pause()
+
+                    open           = false
+                    queue          = []
+                    queueIndex     = 0
+                    $scope.playing = false
+
+                $scope.volume       = audio.volume * 100
+                $scope.changeVolume = ->
+                    audio.volume    = $scope.volume / 100
+
+                $scope.duration       = audio.currentTime
+                $scope.changeDuration = ->
+                    audio.currentTime = $scope.duration
+
+                $interval ->
+                    $scope.duration = audio.currentTime
+                , 500
+
+                return
+            ]
+
+    # -----------------------------------------------------------------------------
+    # play a song
+    @play = ( path, name ) =>
+        if not open
+            @open( path, name )
+
+            open = true
+
+        audio.src = $fs.realpath "mount/#{ path }/#{ name }"
+        audio.load()
+
+    # -----------------------------------------------------------------------------
+    # previous
+    @previous = =>
+        song = queue[queueIndex--]
+
+        @play song.path, song.name
+
+    # -----------------------------------------------------------------------------
+    # next
+    @next = =>
+        song = queue[queueIndex++]
+
+        @play song.path, song.name
+
+    # -----------------------------------------------------------------------------
+    # queue a song
+    @queue = ( path, name, $event ) ->
+        queue.push
+            path:   path
+            name:   name
+            $event: $event
 
     return
 ]
