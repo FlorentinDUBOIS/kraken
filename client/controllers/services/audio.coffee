@@ -59,16 +59,28 @@ kraken.service '$audio', ['$window', '$mdBottomSheet', '$fs', '$logger', ( $wind
                 audio.addEventListener 'loadedmetadata', ->
                     $scope.endTime  = audio.seekable.end( 0 )
 
+                audio.addEventListener 'canplay', ->
+                    $scope.queueIndex = queueIndex
+                    $scope.queue      = queue
+
                 # -----------------------------------------------------------------------------
                 # functions
 
                 # -----------------------------------------------------------------------------
                 # next
-                $scope.next     = @next
+                $scope.next = =>
+                    @next()
+
+                    $scope.queueIndex = queueIndex
+                    $scope.queue      = queue
 
                 # -----------------------------------------------------------------------------
                 # previous
-                $scope.previous = @previous
+                $scope.previous = =>
+                    @previous()
+
+                    $scope.queueIndex = queueIndex
+                    $scope.queue      = queue
 
                 # -----------------------------------------------------------------------------
                 # play
@@ -102,10 +114,10 @@ kraken.service '$audio', ['$window', '$mdBottomSheet', '$fs', '$logger', ( $wind
 
                     audio.pause()
 
-                    open           = false
-                    queue          = []
-                    queueIndex     = 0
-                    $scope.playing = false
+                    open              = false
+                    $scope.playing    = false
+                    $scope.queue      = queue      = []
+                    $scope.queueIndex = queueIndex = 0
 
                 # -----------------------------------------------------------------------------
                 # change volume

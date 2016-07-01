@@ -235,21 +235,23 @@
 	      }
 	    };
 	    $scope.queue = function(name) {
-	      return $audio.queue($scope.path, name);
+	      $audio.queue($scope.path, name);
+	      return $translate('fs.toolbar.playlist.success').then(function(trad) {
+	        return $logger.info(trad);
+	      });
 	    };
 	    $scope.queueSelecteds = function() {
-	      var file, j, len, ref, results;
+	      var file, j, len, ref;
 	      ref = $scope.selecteds;
-	      results = [];
 	      for (j = 0, len = ref.length; j < len; j++) {
 	        file = ref[j];
 	        if ($audio.isPlayable(file.name)) {
-	          results.push($scope.queue(file.name));
-	        } else {
-	          results.push(void 0);
+	          $audio.queue($scope.path, file.name);
 	        }
 	      }
-	      return results;
+	      return $translate('fs.toolbar.playlist.success').then(function(trad) {
+	        return $logger.info(trad);
+	      });
 	    };
 	    $scope.playQueue = function() {
 	      return $audio.playQueue();
@@ -437,9 +439,15 @@
 	        if (0 !== parseInt(hours)) {
 	          time += (parseInt(hours)) + ":";
 	        }
-	        minutes = seconds / 60;
-	        seconds = seconds % 60;
-	        time += (parseInt(minutes)) + ":" + (parseInt(seconds));
+	        minutes = parseInt(seconds / 60);
+	        seconds = parseInt(seconds % 60);
+	        if (minutes < 10 && 0 !== parseInt(hours)) {
+	          minutes = "0" + minutes;
+	        }
+	        if (seconds < 10) {
+	          seconds = "0" + seconds;
+	        }
+	        time += minutes + ":" + seconds;
 	      }
 	      return time;
 	    };
@@ -551,8 +559,20 @@
 	              audio.addEventListener('loadedmetadata', function() {
 	                return $scope.endTime = audio.seekable.end(0);
 	              });
-	              $scope.next = _this.next;
-	              $scope.previous = _this.previous;
+	              audio.addEventListener('canplay', function() {
+	                $scope.queueIndex = queueIndex;
+	                return $scope.queue = queue;
+	              });
+	              $scope.next = function() {
+	                _this.next();
+	                $scope.queueIndex = queueIndex;
+	                return $scope.queue = queue;
+	              };
+	              $scope.previous = function() {
+	                _this.previous();
+	                $scope.queueIndex = queueIndex;
+	                return $scope.queue = queue;
+	              };
 	              $scope.play = function() {
 	                audio.play();
 	                return $scope.playing = true;
@@ -572,9 +592,9 @@
 	                $mdBottomSheet.hide();
 	                audio.pause();
 	                open = false;
-	                queue = [];
-	                queueIndex = 0;
-	                return $scope.playing = false;
+	                $scope.playing = false;
+	                $scope.queue = queue = [];
+	                return $scope.queueIndex = queueIndex = 0;
 	              };
 	              $scope.volume = audio.volume * 100;
 	              $scope.changeVolume = function() {
@@ -1078,7 +1098,14 @@
 				"item": {
 					"singular": "item selected",
 					"plural": "items selecteds"
-				}
+				},
+				"layer": "Parent folder",
+				"filterList": "Filter",
+				"playlist": {
+					"add": "Add to playlist",
+					"success": "Added to playlist"
+				},
+				"delete": "Delete"
 			},
 			"bookmark": {
 				"success": "Successfuly bookmarks"

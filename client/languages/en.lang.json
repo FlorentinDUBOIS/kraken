@@ -110,7 +110,16 @@
             "item": {
                 "singular": "item selected",
                 "plural": "items selecteds"
-            }
+            },
+
+            "layer": "Parent folder",
+            "filterList": "Filter",
+            "playlist": {
+                "add": "Add to playlist",
+                "success": "Added to playlist"
+            },
+
+            "delete": "Delete"
         },
 
         "bookmark": {

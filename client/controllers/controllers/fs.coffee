@@ -139,13 +139,21 @@ kraken.controller 'kraken.fs', ['$scope', '$fs', '$translate', '$logger', '$mdDi
     $scope.queue = ( name ) ->
         $audio.queue $scope.path, name
 
+        $translate( 'fs.toolbar.playlist.success' ).then ( trad ) ->
+            $logger.info trad
+
     # -----------------------------------------------------------------------------
     # queue selecteds
     $scope.queueSelecteds = ->
         for file in $scope.selecteds
             if $audio.isPlayable file.name
-                $scope.queue file.name
+                $audio.queue $scope.path, file.name
 
+        $translate( 'fs.toolbar.playlist.success' ).then ( trad ) ->
+            $logger.info trad
+
+    # -----------------------------------------------------------------------------
+    # play songs in queue
     $scope.playQueue = ->
         $audio.playQueue()
 
