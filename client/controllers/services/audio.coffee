@@ -1,6 +1,6 @@
 # -----------------------------------------------------------------------------
 # kraken audio service
-kraken.service '$audio', ['$window', '$mdBottomSheet', '$fs', ( $window, $mdBottomSheet, $fs ) ->
+kraken.service '$audio', ['$window', '$mdBottomSheet', '$fs', '$logger', ( $window, $mdBottomSheet, $fs, $logger ) ->
     # -----------------------------------------------------------------------------
     # extensions allowed
     extensions = [
@@ -36,6 +36,8 @@ kraken.service '$audio', ['$window', '$mdBottomSheet', '$fs', ( $window, $mdBott
     # -----------------------------------------------------------------------------
     # open
     @open = ( path, name ) =>
+        # -----------------------------------------------------------------------------
+        # open the bottom sheet
         $mdBottomSheet.show
             parent: angular.element $window.document.querySelector 'body'
             clickOutsideToClose: false
@@ -44,8 +46,12 @@ kraken.service '$audio', ['$window', '$mdBottomSheet', '$fs', ( $window, $mdBott
             escapeToClose: false
             templateUrl: 'views/audio.jade'
             controller: ['$scope', '$mdBottomSheet', '$interval', ( $scope, $mdBottomSheet, $interval ) =>
+                # -----------------------------------------------------------------------------
+                # init
                 $scope.playing = true
 
+                # -----------------------------------------------------------------------------
+                # event binding
                 audio.addEventListener 'loadstart', ->
                     $scope.endTime  = audio.duration
                     $scope.duration = audio.currentTime
@@ -53,18 +59,44 @@ kraken.service '$audio', ['$window', '$mdBottomSheet', '$fs', ( $window, $mdBott
                 audio.addEventListener 'loadedmetadata', ->
                     $scope.endTime  = audio.seekable.end( 0 )
 
+                # -----------------------------------------------------------------------------
+                # functions
+
+                # -----------------------------------------------------------------------------
+                # next
                 $scope.next     = @next
+
+                # -----------------------------------------------------------------------------
+                # previous
                 $scope.previous = @previous
+
+                # -----------------------------------------------------------------------------
+                # play
                 $scope.play = ->
                     audio.play()
 
                     $scope.playing = true
 
+                # -----------------------------------------------------------------------------
+                # pause
                 $scope.pause = ->
                     audio.pause()
 
                     $scope.playing = false
 
+                # -----------------------------------------------------------------------------
+                # mute
+                $scope.mute = ->
+                    audio.volume = $scope.volume = 0
+
+                # -----------------------------------------------------------------------------
+                # loop controller
+                $scope.loop = false
+                $scope.setLoop = ( value ) ->
+                    audio.loop = $scope.loop = value
+
+                # -----------------------------------------------------------------------------
+                # stop
                 $scope.stop = ->
                     $mdBottomSheet.hide()
 
@@ -75,17 +107,23 @@ kraken.service '$audio', ['$window', '$mdBottomSheet', '$fs', ( $window, $mdBott
                     queueIndex     = 0
                     $scope.playing = false
 
+                # -----------------------------------------------------------------------------
+                # change volume
                 $scope.volume       = audio.volume * 100
                 $scope.changeVolume = ->
                     audio.volume    = $scope.volume / 100
 
+                # -----------------------------------------------------------------------------
+                # change duration
                 $scope.duration       = audio.currentTime
                 $scope.changeDuration = ->
                     audio.currentTime = $scope.duration
 
+                # -----------------------------------------------------------------------------
+                # check every seconds
                 $interval ->
                     $scope.duration = audio.currentTime
-                , 500
+                , 1000
 
                 return
             ]
@@ -98,30 +136,39 @@ kraken.service '$audio', ['$window', '$mdBottomSheet', '$fs', ( $window, $mdBott
 
             open = true
 
+        $logger.info name
+
         audio.src = $fs.realpath "mount/#{ path }/#{ name }"
         audio.load()
 
     # -----------------------------------------------------------------------------
+    # play queue
+    @playQueue = =>
+        if queue.length
+            @play queue[0].path, queue[0].name
+
+    # -----------------------------------------------------------------------------
     # previous
     @previous = =>
-        song = queue[queueIndex--]
+        unless queueIndex-1 < 0
+            song = queue[queueIndex--]
 
-        @play song.path, song.name
+            @play song.path, song.name
 
     # -----------------------------------------------------------------------------
     # next
     @next = =>
-        song = queue[queueIndex++]
+        unless queueIndex+1 >= queue.length
+            song = queue[queueIndex++]
 
-        @play song.path, song.name
+            @play song.path, song.name
 
     # -----------------------------------------------------------------------------
     # queue a song
-    @queue = ( path, name, $event ) ->
+    @queue = ( path, name ) ->
         queue.push
             path:   path
             name:   name
-            $event: $event
 
     return
 ]

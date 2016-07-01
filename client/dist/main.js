@@ -227,15 +227,32 @@
 	    $scope.isPlayable = function(name) {
 	      return $audio.isPlayable($fs.realpath($scope.path + "/" + name)) || $video.isPlayable($fs.realpath($scope.path + "/" + name));
 	    };
-	    $scope.play = function(name, $event) {
+	    $scope.play = function(name) {
 	      if ($audio.isPlayable($fs.realpath($scope.path + "/" + name))) {
-	        return $audio.play($scope.path, name, $event);
+	        return $audio.play($scope.path, name);
 	      } else if ($video.isPlayable($fs.realpath($scope.path + "/" + name))) {
-	        return $video.play($scope.path, name, $event);
+	        return $video.play($scope.path, name);
 	      }
 	    };
-	    $scope.queue = function(name, $event) {
-	      return $audio.queue($scope.path, name, $event);
+	    $scope.queue = function(name) {
+	      return $audio.queue($scope.path, name);
+	    };
+	    $scope.queueSelecteds = function() {
+	      var file, j, len, ref, results;
+	      ref = $scope.selecteds;
+	      results = [];
+	      for (j = 0, len = ref.length; j < len; j++) {
+	        file = ref[j];
+	        if ($audio.isPlayable(file.name)) {
+	          results.push($scope.queue(file.name));
+	        } else {
+	          results.push(void 0);
+	        }
+	      }
+	      return results;
+	    };
+	    $scope.playQueue = function() {
+	      return $audio.playQueue();
 	    };
 	    if ($routeParams.signet != null) {
 	      $scope.listFromSignet($routeParams.signet);
@@ -409,6 +426,26 @@
 	  }
 	]);
 
+	kraken.filter('time', [
+	  function() {
+	    return function(seconds) {
+	      var hours, minutes, time;
+	      time = "";
+	      if (seconds != null) {
+	        hours = seconds / 3600;
+	        seconds = seconds % 3600;
+	        if (0 !== parseInt(hours)) {
+	          time += (parseInt(hours)) + ":";
+	        }
+	        minutes = seconds / 60;
+	        seconds = seconds % 60;
+	        time += (parseInt(minutes)) + ":" + (parseInt(seconds));
+	      }
+	      return time;
+	    };
+	  }
+	]);
+
 	kraken.filter('truncate', [
 	  function() {
 	    return function(input, at) {
@@ -468,7 +505,7 @@
 	]);
 
 	kraken.service('$audio', [
-	  '$window', '$mdBottomSheet', '$fs', function($window, $mdBottomSheet, $fs) {
+	  '$window', '$mdBottomSheet', '$fs', '$logger', function($window, $mdBottomSheet, $fs, $logger) {
 	    var audio, extensions, open, queue, queueIndex;
 	    extensions = ['mp3', 'wav'];
 	    queue = [];
@@ -524,6 +561,13 @@
 	                audio.pause();
 	                return $scope.playing = false;
 	              };
+	              $scope.mute = function() {
+	                return audio.volume = $scope.volume = 0;
+	              };
+	              $scope.loop = false;
+	              $scope.setLoop = function(value) {
+	                return audio.loop = $scope.loop = value;
+	              };
 	              $scope.stop = function() {
 	                $mdBottomSheet.hide();
 	                audio.pause();
@@ -542,7 +586,7 @@
 	              };
 	              $interval(function() {
 	                return $scope.duration = audio.currentTime;
-	              }, 500);
+	              }, 1000);
 	            }
 	          ]
 	        });
@@ -554,29 +598,40 @@
 	          _this.open(path, name);
 	          open = true;
 	        }
+	        $logger.info(name);
 	        audio.src = $fs.realpath("mount/" + path + "/" + name);
 	        return audio.load();
+	      };
+	    })(this);
+	    this.playQueue = (function(_this) {
+	      return function() {
+	        if (queue.length) {
+	          return _this.play(queue[0].path, queue[0].name);
+	        }
 	      };
 	    })(this);
 	    this.previous = (function(_this) {
 	      return function() {
 	        var song;
-	        song = queue[queueIndex--];
-	        return _this.play(song.path, song.name);
+	        if (!(queueIndex - 1 < 0)) {
+	          song = queue[queueIndex--];
+	          return _this.play(song.path, song.name);
+	        }
 	      };
 	    })(this);
 	    this.next = (function(_this) {
 	      return function() {
 	        var song;
-	        song = queue[queueIndex++];
-	        return _this.play(song.path, song.name);
+	        if (!(queueIndex + 1 >= queue.length)) {
+	          song = queue[queueIndex++];
+	          return _this.play(song.path, song.name);
+	        }
 	      };
 	    })(this);
-	    this.queue = function(path, name, $event) {
+	    this.queue = function(path, name) {
 	      return queue.push({
 	        path: path,
-	        name: name,
-	        $event: $event
+	        name: name
 	      });
 	    };
 	  }
@@ -1014,7 +1069,8 @@
 				"menu": "Menu",
 				"refresh": "Refresh",
 				"root": "Go to root",
-				"share": "Shared file or folder"
+				"share": "Shared file or folder",
+				"queue": "Play songs of queue"
 			},
 			"toolbar": {
 				"filter": "",
@@ -1036,7 +1092,16 @@
 		},
 		"service": {
 			"$audio": {
-				"error": "This is not a supported audio format"
+				"error": "This is not a supported audio format",
+				"play": "Play",
+				"pause": "Pause",
+				"stop": "Stop",
+				"loop": "Loop",
+				"previous": "Previous",
+				"next": "Next",
+				"mute": "Mute",
+				"duration": "Duration",
+				"volume": "Volume"
 			},
 			"$video": {
 				"error": "This is not a supported movie format"

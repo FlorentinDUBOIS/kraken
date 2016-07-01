@@ -15,7 +15,7 @@ md-content( layout="column" flex ng-show="!load" )
                 md-button.md-icon-button( ng-click="showFilter = true" )
                     md-icon filter_list
 
-        md-toolbar.md-table-toolbar.md-default( ng-show="showFilter" )
+        md-toolbar.md-table-toolbar.md-default( ng-show="showFilter && !selecteds.length" )
             div.md-toolbar-tools
                 md-input-container.md-toolbar-input
                     md-icon search
@@ -33,6 +33,9 @@ md-content( layout="column" flex ng-show="!load" )
                 h2.md-title( ng-show="selecteds.length >  1" ) {{ selecteds.length }} {{ 'fs.toolbar.item.plural'   | translate | ucfirst }}
 
                 div( flex )
+                    
+                md-button.md-icon-button( ng-click="queueSelecteds()" )
+                    md-icon playlist_add
 
                 md-button.md-icon-button( ng-click="removeSelecteds()" )
                     md-icon delete
@@ -121,3 +124,7 @@ md-content( layout="column" flex ng-show="!load" )
             md-button.md-fab.md-raised.md-mini( ng-click="list( '/' )" )
                 md-tooltip( md-direction="top" ) {{ 'fs.fab.root' | translate | lower }}
                 md-icon folder
+
+            md-button.md-fab.md-raised.md-mini( ng-click="playQueue()" )
+                md-tooltip( md-direction="top" ) {{ 'fs.fab.queue' | translate | lower }}
+                md-icon playlist_play

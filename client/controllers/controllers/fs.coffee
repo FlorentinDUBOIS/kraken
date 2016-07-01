@@ -128,16 +128,26 @@ kraken.controller 'kraken.fs', ['$scope', '$fs', '$translate', '$logger', '$mdDi
 
     # -----------------------------------------------------------------------------
     # play
-    $scope.play = ( name, $event ) ->
+    $scope.play = ( name ) ->
         if $audio.isPlayable $fs.realpath "#{ $scope.path }/#{ name }"
-            $audio.play $scope.path, name, $event
+            $audio.play $scope.path, name
         else if $video.isPlayable $fs.realpath "#{ $scope.path }/#{ name }"
-            $video.play $scope.path, name, $event
+            $video.play $scope.path, name
 
     # -----------------------------------------------------------------------------
     # queue
-    $scope.queue = ( name, $event ) ->
-        $audio.queue $scope.path, name, $event
+    $scope.queue = ( name ) ->
+        $audio.queue $scope.path, name
+
+    # -----------------------------------------------------------------------------
+    # queue selecteds
+    $scope.queueSelecteds = ->
+        for file in $scope.selecteds
+            if $audio.isPlayable file.name
+                $scope.queue file.name
+
+    $scope.playQueue = ->
+        $audio.playQueue()
 
     # -----------------------------------------------------------------------------
     # init

@@ -100,7 +100,8 @@
             "menu": "Menu",
             "refresh": "Refresh",
             "root": "Go to root",
-            "share": "Shared file or folder"
+            "share": "Shared file or folder",
+            "queue": "Play songs of queue"
         },
 
         "toolbar" : {
@@ -127,7 +128,16 @@
 
     "service": {
         "$audio": {
-            "error": "This is not a supported audio format"
+            "error": "This is not a supported audio format",
+            "play": "Play",
+            "pause": "Pause",
+            "stop": "Stop",
+            "loop": "Loop",
+            "previous": "Previous",
+            "next": "Next",
+            "mute": "Mute",
+            "duration": "Duration",
+            "volume": "Volume"
         },
 
         "$video": {
