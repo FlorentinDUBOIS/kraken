@@ -11,13 +11,13 @@ md-bottom-sheet( layout="row" layout-align="center center" ng-cloack="true" )
         md-tooltip( md-direction="top" ) {{ 'service.$audio.stop' | translate | lower }}
         md-icon stop
         
-    md-button.md-icon-button( ng-if="loop" ng-click="setLoop( true )" )
+    md-button.md-icon-button( ng-if="!loop" ng-click="setLoop( true )" )
         md-tooltip( md-direction="top" ) {{ 'service.$audio.loop' | translate | lower }}
         md-icon loop
         
-    md-button.md-icon-button( ng-if="!loop" ng-click="setLoop( false )" )
+    md-button.md-icon-button( ng-if="loop" ng-click="setLoop( false )" )
         md-tooltip( md-direction="top" ) {{ 'service.$audio.loop' | translate | lower }}
-        md-icon loop
+        md-icon not_interested
             
     md-button.md-icon-button( ng-click="previous()" )
         md-tooltip( md-direction="top" ) {{ 'service.$audio.previous' | translate | lower }}
@@ -36,18 +36,13 @@ md-bottom-sheet( layout="row" layout-align="center center" ng-cloack="true" )
         
     md-button.md-text-center( aria-label="end time" disabled ) {{ endTime | time }}
     
-    md-button.md-icon-button( ng-if="volume >= 50" ng-click="mute()" )
+    md-button.md-icon-button( ng-click="mute()" )
         md-tooltip( md-direction="top" ) {{ 'service.$audio.mute' | translate | lower }}
-        md-icon volume_up
-        
-    md-button.md-icon-button( ng-if="volume > 0 && volume < 50" ng-click="mute()" )
-        md-tooltip( md-direction="top" ) {{ 'service.$audio.mute' | translate | lower }}
-        md-icon volume_down
-            
-    md-button.md-icon-button( ng-if="volume == 0" ng-click="mute()" )
-        md-tooltip( md-direction="top" ) {{ 'service.$audio.mute' | translate | lower }}
-        md-icon volume_mute
-        
+        md-icon( ng-if="volume >= 50" ) volume_up
+        md-icon( ng-if="volume >= 25 && volume < 50" ) volume_down
+        md-icon( ng-if="volume > 0 && volume < 25" )
+        md-icon( ng-if="volume == 0" ) volume_off
+                    
     md-button.md-icon-button.md-text-center( aria-label="volume" disabled ) {{ volume | number }}
         
     div( flex="15" )

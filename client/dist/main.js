@@ -107,7 +107,7 @@
 	]);
 
 	kraken.controller('kraken.fs', [
-	  '$scope', '$fs', '$translate', '$logger', '$mdDialog', '$routeParams', '$signets', '$compress', '$mdSidenav', '$window', '$audio', '$video', function($scope, $fs, $translate, $logger, $mdDialog, $routeParams, $signets, $compress, $mdSidenav, $window, $audio, $video) {
+	  '$scope', '$fs', '$translate', '$logger', '$mdDialog', '$routeParams', '$signets', '$compress', '$mdSidenav', '$window', '$audio', '$video', '$image', function($scope, $fs, $translate, $logger, $mdDialog, $routeParams, $signets, $compress, $mdSidenav, $window, $audio, $video, $image) {
 	    $scope.selecteds = [];
 	    $scope.files = [];
 	    $scope.load = true;
@@ -255,6 +255,12 @@
 	    };
 	    $scope.playQueue = function() {
 	      return $audio.playQueue();
+	    };
+	    $scope.isViewable = function(name) {
+	      return $image.isViewable(name);
+	    };
+	    $scope.view = function(name) {
+	      return $image.view($scope.path, name);
 	    };
 	    if ($routeParams.signet != null) {
 	      $scope.listFromSignet($routeParams.signet);
@@ -525,8 +531,10 @@
 	    });
 	    audio.addEventListener('ended', (function(_this) {
 	      return function() {
-	        if (queueIndex + 1 < queue.length) {
-	          return _this.next();
+	        if (!audio.loop) {
+	          if (queueIndex + 1 < queue.length) {
+	            return _this.next();
+	          }
 	        }
 	      };
 	    })(this));
@@ -590,6 +598,7 @@
 	              };
 	              $scope.stop = function() {
 	                $mdBottomSheet.hide();
+	                $window.document.querySelector('.md-bottom-right, .md-bottom-left').classList.remove('md-over');
 	                audio.pause();
 	                open = false;
 	                $scope.playing = false;
@@ -602,10 +611,14 @@
 	              };
 	              $scope.duration = audio.currentTime;
 	              $scope.changeDuration = function() {
-	                return audio.currentTime = $scope.duration;
+	                if (audio.currentTime != null) {
+	                  return audio.currentTime = $scope.duration;
+	                }
 	              };
 	              $interval(function() {
-	                return $scope.duration = audio.currentTime;
+	                if (audio.currentTime != null) {
+	                  return $scope.duration = audio.currentTime;
+	                }
 	              }, 1000);
 	            }
 	          ]
@@ -614,6 +627,7 @@
 	    })(this);
 	    this.play = (function(_this) {
 	      return function(path, name) {
+	        $window.document.querySelector('.md-bottom-right, .md-bottom-left').classList.add('md-over');
 	        if (!open) {
 	          _this.open(path, name);
 	          open = true;
@@ -748,6 +762,36 @@
 	        }, callback);
 	      };
 	    })(this);
+	  }
+	]);
+
+	kraken.service('$image', [
+	  '$mdDialog', '$window', function($mdDialog, $window) {
+	    var extensions;
+	    extensions = ['png', 'jpg', 'jpeg', 'gif', 'svg'];
+	    this.isViewable = function(name) {
+	      var extension, j, len;
+	      for (j = 0, len = extensions.length; j < len; j++) {
+	        extension = extensions[j];
+	        if ((new RegExp("(\." + extension + ")$", 'i')).test(name)) {
+	          return true;
+	        }
+	      }
+	      return false;
+	    };
+	    this.view = function(path, name) {
+	      return $mdDialog.show({
+	        parent: angular.element($window.document.querySelector('body')),
+	        clickOutsideToClose: true,
+	        escapeToClose: true,
+	        templateUrl: 'views/image.jade',
+	        controller: [
+	          '$fs', '$scope', function($fs, $scope) {
+	            $scope.src = $fs.realpath("mount/" + path + "/" + name);
+	          }
+	        ]
+	      });
+	    };
 	  }
 	]);
 
@@ -912,7 +956,7 @@
 	        mime: 'video/webm'
 	      }, {
 	        extension: 'ogg',
-	        mime: 'application/ogg'
+	        mime: 'video/ogg'
 	      }
 	    ];
 	    this.isPlayable = function(name) {
@@ -946,12 +990,12 @@
 	      return null;
 	    };
 	    this.play = (function(_this) {
-	      return function(path, name, $event) {
+	      return function(path, name) {
 	        if (_this.isPlayable(name)) {
 	          return $mdDialog.show({
 	            parent: angular.element($window.document.querySelector('body')),
-	            targetEvent: $event,
 	            clickOutsideToClose: true,
+	            escapeToClose: true,
 	            templateUrl: 'views/video.jade',
 	            controller: [
 	              '$scope', '$mdDialog', '$fs', function($scope, $mdDialog, $fs) {
@@ -1083,7 +1127,8 @@
 				"unarchive": "Uncompress",
 				"delete": "Delete",
 				"play": "Play",
-				"queue": "Queue"
+				"queue": "Queue",
+				"view": "view"
 			},
 			"fab": {
 				"menu": "Menu",

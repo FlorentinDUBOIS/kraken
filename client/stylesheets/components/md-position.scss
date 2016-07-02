@@ -10,6 +10,13 @@
                 }
             }
         }
+
+        transition: bottom .5s ease;
+        &.md-over {
+            bottom: 80px;
+
+            transition: bottom .5s ease;
+        }
     }
 }
 

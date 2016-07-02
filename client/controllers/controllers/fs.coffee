@@ -1,6 +1,6 @@
 # -----------------------------------------------------------------------------
 # create kraken fs controller
-kraken.controller 'kraken.fs', ['$scope', '$fs', '$translate', '$logger', '$mdDialog', '$routeParams', '$signets', '$compress', '$mdSidenav', '$window', '$audio', '$video', ( $scope, $fs, $translate, $logger, $mdDialog, $routeParams, $signets, $compress, $mdSidenav, $window, $audio, $video ) ->
+kraken.controller 'kraken.fs', ['$scope', '$fs', '$translate', '$logger', '$mdDialog', '$routeParams', '$signets', '$compress', '$mdSidenav', '$window', '$audio', '$video', '$image', ( $scope, $fs, $translate, $logger, $mdDialog, $routeParams, $signets, $compress, $mdSidenav, $window, $audio, $video, $image ) ->
     # -----------------------------------------------------------------------------
     # init variables
     $scope.selecteds = []
@@ -156,6 +156,15 @@ kraken.controller 'kraken.fs', ['$scope', '$fs', '$translate', '$logger', '$mdDi
     # play songs in queue
     $scope.playQueue = ->
         $audio.playQueue()
+
+    # -----------------------------------------------------------------------------
+    # is viewable
+    $scope.isViewable = ( name ) ->
+        $image.isViewable name
+
+    # -----------------------------------------------------------------------------
+    $scope.view = ( name ) ->
+        $image.view $scope.path, name
 
     # -----------------------------------------------------------------------------
     # init

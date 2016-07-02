@@ -1,12 +1,16 @@
 # -----------------------------------------------------------------------------
 # kraken video service
 kraken.service '$video', ['$window', '$mdDialog', '$logger', '$translate', ( $window, $mdDialog, $logger, $translate ) ->
+    # -----------------------------------------------------------------------------
+    # init variables
     playables = [
         { extension: 'mp4',  mime: 'video/mp4' }
         { extension: 'webm', mime: 'video/webm' }
-        { extension: 'ogg',  mime: 'application/ogg' }
+        { extension: 'ogg',  mime: 'video/ogg' }
     ]
 
+    # -----------------------------------------------------------------------------
+    # is a playable video
     @isPlayable = ( name ) ->
         for playable in playables
             if ( new RegExp "(\.#{ playable.extension })$", 'i' ).test name
@@ -14,6 +18,8 @@ kraken.service '$video', ['$window', '$mdDialog', '$logger', '$translate', ( $wi
 
         false
 
+    # -----------------------------------------------------------------------------
+    # type mime of the file
     @mime = ( name ) ->
         for playable in playables
             if ( new RegExp "(\.#{ playable.extension })$", 'i' ).test name
@@ -21,6 +27,8 @@ kraken.service '$video', ['$window', '$mdDialog', '$logger', '$translate', ( $wi
 
         null
 
+    # -----------------------------------------------------------------------------
+    # extension of the file
     @extension = ( name ) ->
         for playable in playables
             if ( new RegExp "(\.#{ playable.extension })$", 'i' ).test name
@@ -28,12 +36,14 @@ kraken.service '$video', ['$window', '$mdDialog', '$logger', '$translate', ( $wi
 
         null
 
-    @play = ( path, name, $event ) =>
+    # -----------------------------------------------------------------------------
+    # play the video
+    @play = ( path, name ) =>
         if @isPlayable name
             $mdDialog.show
                 parent: angular.element $window.document.querySelector 'body'
-                targetEvent: $event
                 clickOutsideToClose: true
+                escapeToClose: true
                 templateUrl: 'views/video.jade'
                 controller: ['$scope', '$mdDialog', '$fs', ( $scope, $mdDialog, $fs ) =>
                     $scope.name     = $fs.realpath "mount/#{ path }/#{ name }"

@@ -1675,7 +1675,9 @@ md-sidenav md-list > md-list-item {
       display: inline-block; }
 
 .md-fixed {
-  position: fixed; }
+  position: fixed;
+  -webkit-transition: bottom .5s ease;
+  transition: bottom .5s ease; }
   .md-fixed.md-top-left {
     top: 20px;
     left: 20px; }
@@ -1688,9 +1690,15 @@ md-sidenav md-list > md-list-item {
   .md-fixed.md-bottom-right {
     bottom: 20px;
     right: 20px; }
+  .md-fixed.md-over {
+    bottom: 80px;
+    -webkit-transition: bottom .5s ease;
+    transition: bottom .5s ease; }
 
 .md-absolute {
-  position: absolute; }
+  position: absolute;
+  -webkit-transition: bottom .5s ease;
+  transition: bottom .5s ease; }
   .md-absolute.md-top-left {
     top: 20px;
     left: 20px; }
@@ -1703,9 +1711,15 @@ md-sidenav md-list > md-list-item {
   .md-absolute.md-bottom-right {
     bottom: 20px;
     right: 20px; }
+  .md-absolute.md-over {
+    bottom: 80px;
+    -webkit-transition: bottom .5s ease;
+    transition: bottom .5s ease; }
 
 .md-relative {
-  position: relative; }
+  position: relative;
+  -webkit-transition: bottom .5s ease;
+  transition: bottom .5s ease; }
   .md-relative.md-top-left {
     top: 20px;
     left: 20px; }
@@ -1718,6 +1732,10 @@ md-sidenav md-list > md-list-item {
   .md-relative.md-bottom-right {
     bottom: 20px;
     right: 20px; }
+  .md-relative.md-over {
+    bottom: 80px;
+    -webkit-transition: bottom .5s ease;
+    transition: bottom .5s ease; }
 
 .md-float-right {
   float: right; }

@@ -93,7 +93,8 @@
             "unarchive": "Uncompress",
             "delete": "Delete",
             "play": "Play",
-            "queue": "Queue"
+            "queue": "Queue",
+            "view": "view"
         },
 
         "fab": {

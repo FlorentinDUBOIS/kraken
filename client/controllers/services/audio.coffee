@@ -21,8 +21,9 @@ kraken.service '$audio', ['$window', '$mdBottomSheet', '$fs', '$logger', ( $wind
         audio.play()
 
     audio.addEventListener 'ended', =>
-        if queueIndex+1 < queue.length
-            @next()
+        unless audio.loop
+            if queueIndex+1 < queue.length
+                @next()
 
     # -----------------------------------------------------------------------------
     # is playable
@@ -111,6 +112,7 @@ kraken.service '$audio', ['$window', '$mdBottomSheet', '$fs', '$logger', ( $wind
                 # stop
                 $scope.stop = ->
                     $mdBottomSheet.hide()
+                    $window.document.querySelector( '.md-bottom-right, .md-bottom-left' ).classList.remove( 'md-over' )
 
                     audio.pause()
 
@@ -129,12 +131,12 @@ kraken.service '$audio', ['$window', '$mdBottomSheet', '$fs', '$logger', ( $wind
                 # change duration
                 $scope.duration       = audio.currentTime
                 $scope.changeDuration = ->
-                    audio.currentTime = $scope.duration
+                    audio.currentTime = $scope.duration if audio.currentTime?
 
                 # -----------------------------------------------------------------------------
                 # check every seconds
                 $interval ->
-                    $scope.duration = audio.currentTime
+                    $scope.duration = audio.currentTime if audio.currentTime?
                 , 1000
 
                 return
@@ -143,6 +145,8 @@ kraken.service '$audio', ['$window', '$mdBottomSheet', '$fs', '$logger', ( $wind
     # -----------------------------------------------------------------------------
     # play a song
     @play = ( path, name ) =>
+        $window.document.querySelector( '.md-bottom-right, .md-bottom-left' ).classList.add( 'md-over' )
+
         if not open
             @open( path, name )
 
