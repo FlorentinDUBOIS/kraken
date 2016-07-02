@@ -40,7 +40,7 @@ md-bottom-sheet( layout="row" layout-align="center center" ng-cloack="true" )
         md-tooltip( md-direction="top" ) {{ 'service.$audio.mute' | translate | lower }}
         md-icon( ng-if="volume >= 50" ) volume_up
         md-icon( ng-if="volume >= 25 && volume < 50" ) volume_down
-        md-icon( ng-if="volume > 0 && volume < 25" )
+        md-icon( ng-if="volume > 0 && volume < 25" ) volume_mute
         md-icon( ng-if="volume == 0" ) volume_off
                     
     md-button.md-icon-button.md-text-center( aria-label="volume" disabled ) {{ volume | number }}
