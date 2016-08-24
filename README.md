@@ -33,8 +33,35 @@ docker run --name mongodb -p 27017:27017 -d mongo:latest
 Now, run the application and link it, to the mongo database:
 
 ```bash
-docker run --name kraken -p 80:80 --link mongodb:mongo -v /path/to/directory/to/list -d florentindubois/infrastructure:kraken
+docker run --name kraken -p 80:80 --link mongodb:mongo -v </path/to/directory/to/list>:/usr/src/app/mount -e MONGODB_HOST="mongodb" -e MONGODB_PORT="27017" -e MONGODB_BASE="kraken" -d florentindubois/infrastructure:kraken 
 ```
+then run:
+
+```bash
+docker exec -ti kraken bash
+```
+
+and execute:
+
+```bash
+./node_modules/.bin/coffee install.coffee
+```
+
+OK, so now you're ready to test your app, go to:
+
+```
+http://<yourip/domain>
+```
+
+And login with the following credentials:
+
+```
+user:     default
+password: password
+```
+
+Enjoy.
+
 
 ## By run a standalone server
 ### Prerequissites
