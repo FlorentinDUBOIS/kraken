@@ -1,4 +1,4 @@
-# File manager [![Build Status](https://travis-ci.org/FlorentinDUBOIS/file-manager.svg?branch=v2)](https://travis-ci.org/FlorentinDUBOIS/file-manager)
+# File manager [![Build Status](https://travis-ci.org/FlorentinDUBOIS/kraken.svg?branch=v2)](https://travis-ci.org/FlorentinDUBOIS/kraken)
 
 This project have to main goal to provide an easy file manager. That can be use by differents ways. First, This project can be run using a docker or by directly run the node.js application.
 
