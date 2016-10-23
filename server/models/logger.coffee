@@ -1,17 +1,12 @@
 # -----------------------------------------------------------------------------
 # requirements
 winston = require 'winston'
-printit = require 'printit'
-console = printit()
-
-# -----------------------------------------------------------------------------
-# overload log function
-console.log = ( level, message ) ->
-    return console[level] message if console[level]?
-
-    console.info message
+Console = require 'winston-printit'
 
 # -----------------------------------------------------------------------------
 # exports
 module.exports = new winston.Logger
-    transports: [console]
+    transports: [
+        new Console
+            prefix: 'kraken'
+    ]

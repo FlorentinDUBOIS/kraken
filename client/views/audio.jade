@@ -2,50 +2,50 @@ md-bottom-sheet( layout="row" layout-align="center center" ng-cloack="true" )
     md-button.md-icon-button( ng-click="play()" ng-if="!playing" )
         md-tooltip( md-direction="top" ) {{ 'service.$audio.play' | translate | lower }}
         md-icon play_arrow
-        
+
     md-button.md-icon-button( ng-click="pause()" ng-if="playing" )
         md-tooltip( md-direction="top" ) {{ 'service.$audio.pause' | translate | lower }}
         md-icon pause
-        
+
     md-button.md-icon-button( ng-click="stop()" )
         md-tooltip( md-direction="top" ) {{ 'service.$audio.stop' | translate | lower }}
         md-icon stop
-        
+
     md-button.md-icon-button( ng-if="!loop" ng-click="setLoop( true )" )
         md-tooltip( md-direction="top" ) {{ 'service.$audio.loop' | translate | lower }}
         md-icon loop
-        
+
     md-button.md-icon-button( ng-if="loop" ng-click="setLoop( false )" )
         md-tooltip( md-direction="top" ) {{ 'service.$audio.loop' | translate | lower }}
         md-icon not_interested
-            
+
     md-button.md-icon-button( ng-click="previous()" )
         md-tooltip( md-direction="top" ) {{ 'service.$audio.previous' | translate | lower }}
         md-icon skip_previous
-        
+
     md-button.md-text-center( aria-label="position" disabled ) {{ queueIndex+1 | number }} / {{ queue.length | number }}
-        
+
     md-button.md-icon-button( ng-click="next()" )
         md-tooltip( md-direction="top" ) {{ 'service.$audio.next' | translate | lower }}
         md-icon skip_next
-        
+
     md-button.md-text-center( aria-label="current time" disabled ) {{ duration | time }}
     div( flex )
         md-tooltip( md-direction="top" ) {{ 'service.$audio.duration' | translate | lower }}
         md-slider.md-primary( aria-label="duration" flex ng-change="changeDuration()" ng-model="duration" value="{{ duration }}" min="0" max="{{ endTime }}" )
-        
+
     md-button.md-text-center( aria-label="end time" disabled ) {{ endTime | time }}
-    
+
     md-button.md-icon-button( ng-click="mute()" )
         md-tooltip( md-direction="top" ) {{ 'service.$audio.mute' | translate | lower }}
         md-icon( ng-if="volume >= 50" ) volume_up
         md-icon( ng-if="volume >= 25 && volume < 50" ) volume_down
         md-icon( ng-if="volume > 0 && volume < 25" ) volume_mute
         md-icon( ng-if="volume == 0" ) volume_off
-                    
+
     md-button.md-icon-button.md-text-center( aria-label="volume" disabled ) {{ volume | number }}
-        
+
     div( flex="15" )
         md-tooltip( md-direction="top" ) {{ 'service.$audio.volume' | translate | lower }}
         md-slider.md-primary( aria-label="volume" flex ng-change="changeVolume()" ng-model="volume" value="{{ volume }}" min="0" max="100" )
-    
+

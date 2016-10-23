@@ -7,7 +7,8 @@ router = require( 'express' ).Router()
 router
     .route '/'
     .get ( req, res ) ->
-        res.render 'index.jade'
+        res.render 'index.jade',
+            env: process.env
 
 # -----------------------------------------------------------------------------
 # exports

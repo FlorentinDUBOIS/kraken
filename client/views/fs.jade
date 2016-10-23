@@ -35,7 +35,7 @@ md-content( layout="column" flex ng-show="!load" )
                 h2.md-title( ng-show="selecteds.length >  1" ) {{ selecteds.length }} {{ 'fs.toolbar.item.plural'   | translate | ucfirst }}
 
                 div( flex )
-                    
+
                 md-button.md-icon-button( ng-click="queueSelecteds()" )
                     md-tooltip( md-direction="bottom" ) {{ 'fs.toolbar.playlist.add' | translate | lower }}
                     md-icon playlist_add
@@ -69,17 +69,17 @@ md-content( layout="column" flex ng-show="!load" )
                                         md-button( ng-click="play( file.name )" )
                                             md-icon play_arrow
                                             span {{ 'fs.options.play' | translate | ucfirst }}
-                                            
+
                                     md-menu-item( ng-if="!file.directory && isAudioPlayable( file.name )" )
                                         md-button( ng-click="queue( file.name )" )
                                             md-icon playlist_add
                                             span {{ 'fs.options.queue' | translate | ucfirst }}
-                                            
+
                                     md-menu-item( ng-if="!file.directory && isViewable( file.name )" )
                                         md-button( ng-click="view( file.name )" )
                                             md-icon pageview
                                             span {{ 'fs.options.view' | translate | ucfirst }}
-                                    
+
                                     md-menu-item( ng-if="file.directory" )
                                         md-button( ng-click="bookmark( file.name )" )
                                             md-icon( md-menu-align-target ) add

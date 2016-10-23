@@ -65,4 +65,8 @@ html( ng-app="florentindubois.kraken" )
         script( type="application/javascript" src="angular/angular-sanitize.min.js" )
         script( type="application/javascript" src="angular/angular-translate.min.js" )
         script( type="application/javascript" src="angular/md-data-table.min.js" )
-        script( type="application/javascript" src="dist/main.js" )
+
+        if env.NODE_ENV === 'production'
+            script( type="application/javascript" src="dist/main.min.js" )
+        else
+            script( type="application/javascript" src="dist/main.js" )
