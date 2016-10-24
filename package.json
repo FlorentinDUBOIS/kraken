@@ -58,8 +58,10 @@
   },
   "devDependencies": {
     "coffeelint-stylish": "^0.1.2",
+    "envify": "^3.4.1",
     "gulp": "^3.9.1",
     "gulp-autoprefixer": "^3.1.0",
+    "gulp-browserify": "^0.5.1",
     "gulp-coffee": "^2.3.2",
     "gulp-coffeelint": "^0.6.0",
     "gulp-concat": "^2.6.0",
@@ -69,8 +71,6 @@
     "gulp-rename": "^1.2.2",
     "gulp-sass": "^2.3.2",
     "gulp-uglify": "^2.0.0",
-    "json-loader": "^0.5.4",
-    "vinyl-named": "^1.1.0",
-    "webpack-stream": "^3.2.0"
+    "json-loader": "^0.5.4"
   }
 }
