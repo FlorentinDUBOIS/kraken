@@ -19,6 +19,8 @@ logger      = require 'server/models/logger'
 db          = require 'server/models/db'
 passport    = require 'passport'
 Strategy    = require( 'passport-local' ).Strategy
+MongoStore  = require( 'connect-mongo' )( session )
+mongoose    = require 'server/models/db/database'
 
 # -----------------------------------------------------------------------------
 # uncaughtException
@@ -65,6 +67,7 @@ server.use session
     secret: uuid.v4()
     resave: false
     saveUninitialized: true
+    store: new MongoStore mongooseConnection: mongoose.connection
 
 server.use passport.initialize()
 server.use passport.session()
