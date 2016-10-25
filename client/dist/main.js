@@ -42,7 +42,6 @@ kraken.config([
 
 kraken.config([
   '$translateProvider', 'en_US', function($translateProvider, en_US) {
-    console.log(en_US);
     $translateProvider.translations('en_US', en_US);
     $translateProvider.useSanitizeValueStrategy(null);
     $translateProvider.preferredLanguage('en_US');
