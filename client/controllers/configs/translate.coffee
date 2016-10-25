@@ -1,14 +1,11 @@
 # -----------------------------------------------------------------------------
 # config multi languages
-kraken.config ['$translateProvider', ( $translateProvider ) ->
-    languages = ['en']
-
-    for language in languages
-        $translateProvider.translations language, require "json!../languages/#{ language }.lang.json"
+kraken.config ['$translateProvider', 'en_US', ( $translateProvider, en_US ) ->
+    $translateProvider.translations 'en_US', en_US
 
     $translateProvider.useSanitizeValueStrategy null
-    $translateProvider.preferredLanguage 'en'
-    $translateProvider.fallbackLanguage 'en'
+    $translateProvider.preferredLanguage 'en_US'
+    $translateProvider.fallbackLanguage 'en_US'
 
     return
 ]

@@ -2,8 +2,6 @@
 # requirements
 gulp    = require 'gulp'
 plugins = (require 'gulp-load-plugins' )()
-webpack = require 'webpack-stream'
-named   = require 'vinyl-named'
 
 # -----------------------------------------------------------------------------
 # default task
@@ -28,9 +26,7 @@ gulp.task 'build:angular', ['devlint:coffee'], ->
         .pipe plugins.plumberNotifier()
         .pipe plugins.concat 'main.js'
         .pipe plugins.coffee bare: true
-        .pipe gulp.dest 'client/dist'
-        .pipe named()
-        .pipe webpack()
+        .pipe plugins.browserify( transforms: ['envify'])
         .pipe gulp.dest 'client/dist'
         .pipe plugins.rename suffix: '.min'
         .pipe plugins.uglify compress: {}
