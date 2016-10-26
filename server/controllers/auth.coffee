@@ -6,18 +6,19 @@ logger   = require 'server/models/logger'
 routes   = require 'server/admin'
 allows   = require 'server/allow'
 passport = require 'passport'
+in_array = require 'in_array'
 
 # -----------------------------------------------------------------------------
 # routes
 router.all '*', ( req, res, next ) ->
-    for allow in allows
-        if allow.method.test( req.method ) and -1 isnt allow.routes.indexOf req.params['0']
+    for i, allow of allows
+        if allow.method is req.method.toLowerCase() and in_array req.params['0'], allow.routes
             return next()
 
     return res.status( 403 ).redirect '/' unless req.user?
 
     for route in routes
-        if route.url.test( req.params['0'] ) and -1 isnt route.methods.indexOf req.method
+        if route.url.test( req.params['0'] ) and in_array req.method, route.methods
             if req.user.administrator is false
                 return res.status( 403 ).end()
 

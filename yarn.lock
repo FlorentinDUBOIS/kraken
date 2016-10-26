@@ -2063,6 +2063,10 @@ imurmurhash@^0.1.4:
   version "0.1.4"
   resolved "https://registry.yarnpkg.com/imurmurhash/-/imurmurhash-0.1.4.tgz#9218b9b2b928a238b13dc4fb6b6d576f231453ea"
 
+in_array:
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/in_array/-/in_array-1.1.0.tgz#e6022d89377625f931c8a18c114a999eab8f3d44"
+
 in-publish@^2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/in-publish/-/in-publish-2.0.0.tgz#e20ff5e3a2afc2690320b6dc552682a9c7fadf51"

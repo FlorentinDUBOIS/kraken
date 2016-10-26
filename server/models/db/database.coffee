@@ -39,6 +39,7 @@ uri = "mongodb://#{ host }:#{ port }/#{ base }"
 if user and password
     uri = "mongodb://#{ user }:#{ password }@#{ host }:#{ port }/#{ base }"
 
+mongoose.Promise = Promise
 mongoose.connect uri, ( error ) ->
     if error
         logger.error error.message

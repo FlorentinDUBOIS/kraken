@@ -1,5 +1,5 @@
 module.exports = [
-    { method: /^get$/gi, routes: ['/'] }
-    { method: /^post$/gi, routes: ['/log'] }
-    { method: /^delete$/gi, routes: ['/log'] }
+    { method: 'get', routes: ['/', '/setup'] }
+    { method: 'post', routes: ['/log', '/setup'] }
+    { method: 'delete', routes: ['/log'] }
 ]

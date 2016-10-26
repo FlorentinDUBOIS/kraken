@@ -34,6 +34,22 @@ kraken.constant "en_US",
         "error":
             "required": "This field is required"
 
+    "setup":
+        "title": "Set up"
+        "username": "Username"
+        "firstname": "First name"
+        "lastname": "Last name"
+        "password": "Password"
+        "email": "Email"
+        "submit": "Finish !"
+        "success": "Successfuly connected"
+        "wrong": "Wrong password or username"
+
+        "error":
+            "required": "This field is required"
+            "email": "A minimum of 8 characters and a maximum of 64 is required"
+            "request": "An error occured when set up"
+
     "manageAccount":
         "username": "User name"
         "password": "Password"
