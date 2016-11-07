@@ -43,7 +43,7 @@ Enjoy.
 ## By run a standalone server
 ### Prerequissites
 
-You need to have installed the node.js environnement, npm anda mongoDB database.
+You need to have installed the node.js environnement, npm and a mongoDB database.
 
 ### Installation
 
