@@ -1,10 +1,10 @@
 # Kraken [![Build Status](https://travis-ci.org/FlorentinDUBOIS/kraken.svg?branch=v2)](https://travis-ci.org/FlorentinDUBOIS/kraken)
 
-This project have to main goal to provide an easy file manager. That can be use by differents ways. First, This project can be run using a docker or by directly run the node.js application.
+This project have to main goal to provide an easy file manager. That can be use in differents ways. First, this project can be run by using a docker or directly by running the node.js application.
 
 ## Environnements variables
 
-There are three environnements variables than can be used for configure the application. Those variables allow to connect to the mongo database.
+There are three environment variables that can be used to configure the application. These variables are used to connect to the mongo database.
 
 ```bash
 export MONGODB_HOST="localhost"
@@ -34,7 +34,7 @@ docker exec -ti kraken bash
 OK, so now you're ready to test your app, go to:
 
 ```
-http://<yourip/domain>
+http://<yourIP/domain>
 ```
 
 Enjoy.
@@ -43,7 +43,7 @@ Enjoy.
 ## By run a standalone server
 ### Prerequissites
 
-You need to have installed the node.js environnement and npm.
+You need to have installed the node.js environnement, npm anda mongoDB database.
 
 ### Installation
 
@@ -51,6 +51,12 @@ First, clone the projects:
 
 ```bash
 git clone https://github.com/FlorentinDUBOIS/file-manager.git
+```
+
+Go into the folder just cloned:
+
+```bash
+cd file-manager
 ```
 
 Create a symbolic link to mount your file system:
@@ -62,5 +68,13 @@ ln -s /path/to/directory/to/list ./mount
 Now, install dependencies:
 
 ```bash
-cd kraken && npm install
+npm install
 ```
+
+OK, so now you're ready to test your app, go to:
+
+```
+http://<yourIP/domain>
+```
+
+Enjoy.
