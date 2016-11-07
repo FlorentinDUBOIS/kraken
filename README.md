@@ -1,16 +1,6 @@
-# File manager [![Build Status](https://travis-ci.org/FlorentinDUBOIS/kraken.svg?branch=v2)](https://travis-ci.org/FlorentinDUBOIS/kraken)
+# Kraken [![Build Status](https://travis-ci.org/FlorentinDUBOIS/kraken.svg?branch=v2)](https://travis-ci.org/FlorentinDUBOIS/kraken)
 
 This project have to main goal to provide an easy file manager. That can be use by differents ways. First, This project can be run using a docker or by directly run the node.js application.
-
-## Default user
-
-On this project, the first time, you must create the default user after installing it, by calling this command:
-
-```bash
-./node_modules/.bin/coffee install.coffee
-```
-
-Now, you have on your mongo database an user that have as username `default` and as password `password`
 
 ## Environnements variables
 
@@ -41,23 +31,10 @@ then run:
 docker exec -ti kraken bash
 ```
 
-and execute:
-
-```bash
-./node_modules/.bin/coffee install.coffee
-```
-
 OK, so now you're ready to test your app, go to:
 
 ```
 http://<yourip/domain>
-```
-
-And login with the following credentials:
-
-```
-user:     default
-password: password
 ```
 
 Enjoy.
@@ -86,10 +63,4 @@ Now, install dependencies:
 
 ```bash
 npm install
-```
-
-Run the server
-
-```bash
-./node_modules/.bin/coffee server.coffee
 ```
