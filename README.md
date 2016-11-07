@@ -62,5 +62,5 @@ ln -s /path/to/directory/to/list ./mount
 Now, install dependencies:
 
 ```bash
-npm install
+cd kraken && npm install
 ```
