@@ -83,7 +83,7 @@ port = myFavoriteNumber
 ###OK, so now you're ready to test your app, go to:
 
 ```bash
-http://<yourIP/domain>
+yourIP:PortNumber
 ```
 
 Enjoy.
