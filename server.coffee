@@ -23,6 +23,11 @@ MongoStore  = require( 'connect-mongo' )( session )
 mongoose    = require 'server/models/db/database'
 
 # -----------------------------------------------------------------------------
+# varables
+
+port = 8080
+
+# -----------------------------------------------------------------------------
 # uncaughtException
 process.on 'uncaughtException', ( error ) ->
     logger.error error.message
@@ -104,5 +109,5 @@ walker.on 'file', ( root, stat, next ) ->
 
 # -----------------------------------------------------------------------------
 # launch server
-server.listen process.env.PORT || 80, ->
-    logger.info "Server launch at port #{ process.env.PORT || 80 }"
+server.listen process.env.PORT || port, ->
+    logger.info "Server launch at port #{ process.env.PORT || port }"

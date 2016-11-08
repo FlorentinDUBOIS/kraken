@@ -31,13 +31,7 @@ then run:
 docker exec -ti kraken bash
 ```
 
-OK, so now you're ready to test your app, go to:
-
-```
-http://<yourIP/domain>
-```
-
-Enjoy.
+See how finish this install in the bottom.
 
 
 ## By run a standalone server
@@ -71,9 +65,24 @@ Now, install dependencies:
 npm install
 ```
 
-OK, so now you're ready to test your app, go to:
+See how finish just below.
+
+## Set port and run the beast
+
+###You can use an evironment variable like this:
+
+```bash
+echo 'PORT=MyNumberPort' >> /etc/environment
+```
+or,you can change the default port in the server.coffee file:
 
 ```
+port = myFavoriteNumber
+```
+
+###OK, so now you're ready to test your app, go to:
+
+```bash
 http://<yourIP/domain>
 ```
 
