@@ -31,7 +31,7 @@ then run:
 docker exec -ti kraken bash
 ```
 
-See how finish this install in the bottom.
+See how finish this install below.
 
 
 ## By run a standalone server
@@ -76,7 +76,7 @@ echo 'PORT=MyNumberPort' >> /etc/environment
 ```
 or,you can change the default port in the server.coffee file:
 
-```
+```javascript
 port = myFavoriteNumber
 ```
 
