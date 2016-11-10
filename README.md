@@ -72,7 +72,7 @@ See how finish just below.
 ###You can use an evironment variable like this:
 
 ```bash
-echo 'PORT=MyNumberPort' >> /etc/environment
+echo PORT=MyNumberPort >> $HOME/.profile
 ```
 or,you can change the default port in the server.coffee file:
 
@@ -83,7 +83,8 @@ port = myFavoriteNumber
 ###OK, so now you're ready to test your app, go to:
 
 ```bash
-yourIP:PortNumber
+http://x.x.x.x:yyyy'
 ```
+x.x.x.x is to replace by your IP address and yyyy your port number
 
 Enjoy.
