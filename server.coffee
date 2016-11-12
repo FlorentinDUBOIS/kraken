@@ -23,9 +23,8 @@ MongoStore  = require( 'connect-mongo' )( session )
 mongoose    = require 'server/models/db/database'
 
 # -----------------------------------------------------------------------------
-# varables
-
-port = 8080
+# default variables for facade
+port = 80
 
 # -----------------------------------------------------------------------------
 # uncaughtException
