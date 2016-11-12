@@ -67,20 +67,19 @@ npm install
 
 See how finish just below.
 
-## Set port and run the beast
+## Set environment variable
 
-###You can use an evironment variable like this:
+### You can use an evironment variable like this:
+> example provide to the port number
 
 ```bash
-echo PORT=MyNumberPort >> $HOME/.profile
+echo PORT=yyyy >> $HOME/.profile
 ```
-or,you can change the default port in the server.coffee file:
+> You can also append the PORT environment variable in /etc/environment
 
-```javascript
-port = myFavoriteNumber
-```
+yyyy is your port number
 
-###OK, so now you're ready to test your app, go to:
+### OK, so now you're ready to test your app, go to:
 
 ```bash
 http://x.x.x.x:yyyy'
