@@ -1,0 +1,30 @@
+{
+  "name": "kraken",
+  "version": "3.0.0",
+  "description": "A file manager that you will fall in love <3",
+  "main": "index.html",
+  "repository": "git@github.com:FlorentinDUBOIS/kraken.git",
+  "author": "Florentin DUBOIS <contact@florentin-dubois.fr>",
+  "license": "MIT",
+  "scripts": {
+    "compile": "webpack",
+    "compile:w": "webpack -w",
+    "compile:p": "webpack -p",
+    "compile:wp": "webpack -w -p",
+    "format": "prettier -l src/**/*.tsx?"
+  },
+  "devDependencies": {
+    "@types/react": "^15.0.34",
+    "@types/react-dom": "^15.5.1",
+    "@types/react-redux": "^4.4.45",
+    "prettier": "^1.5.2",
+    "react": "^15.6.1",
+    "react-dom": "^15.6.1",
+    "react-redux": "^5.0.5",
+    "redux": "^3.7.1",
+    "rxjs": "^5.4.2",
+    "ts-loader": "^2.2.2",
+    "typescript": "^2.4.1",
+    "webpack": "^3.0.0"
+  }
+}
