@@ -10,10 +10,6 @@
   version "4.6.0"
   resolved "https://registry.yarnpkg.com/@types/history/-/history-4.6.0.tgz#093d67ed780d889c9543f6dca24ebee0b6b9fc45"
 
-"@types/jss@^0.6.27":
-  version "0.6.27"
-  resolved "https://registry.yarnpkg.com/@types/jss/-/jss-0.6.27.tgz#d88f317de844f880758f54d8ef41013f32ddd03e"
-
 "@types/material-ui@^0.17.15":
   version "0.17.15"
   resolved "https://registry.yarnpkg.com/@types/material-ui/-/material-ui-0.17.15.tgz#d3af9e9c4214ac03f1a25b6a659063d5230558f4"
@@ -125,8 +121,8 @@ ajv@^4.9.1:
     json-stable-stringify "^1.0.1"
 
 ajv@^5.1.5:
-  version "5.2.1"
-  resolved "https://registry.yarnpkg.com/ajv/-/ajv-5.2.1.tgz#dcd03045175883ba1b636e5ae9ec3df9ab85323a"
+  version "5.2.2"
+  resolved "https://registry.yarnpkg.com/ajv/-/ajv-5.2.2.tgz#47c68d69e86f5d953103b0074a9430dc63da5e39"
   dependencies:
     co "^4.6.0"
     fast-deep-equal "^1.0.0"
