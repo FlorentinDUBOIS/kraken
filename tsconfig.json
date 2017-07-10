@@ -2,13 +2,12 @@
   "compilerOptions": {
     "target": "es6",
     "module": "commonjs",
-    "allowJs": false,
     "jsx": "react",
     "removeComments": true,
 
     "strict": true,
     "noImplicitAny": true,
-    "strictNullChecks": true,
+    "strictNullChecks": false,
     "noImplicitThis": true,
 
     "noUnusedLocals": true,
